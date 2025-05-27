@@ -1,4 +1,6 @@
 export const createProject = (name, emoji) => {
   const todoArr = [];
-  return { name, emoji, todoArr };
+  const id = crypto.randomUUID();
+
+  return { name, emoji, todoArr, id };
 };
