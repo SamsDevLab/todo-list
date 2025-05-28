@@ -8,31 +8,48 @@ export const projManager = function () {
     projArr.push(createProject(name, emoji));
   };
 
-  const addTodo = (title, description, ...rest) => {
-    const newTodo = createTodo(title, description, ...rest);
-
-    /* 
-    My current plan is to loop through the projArr, get the the UUID of each project, then
-    add the todo to the according project based on the project's UUID. But I'm having
-    trouble figuring out how this will work.
-    */
+  const getId = function (element) {
+    const id = projArr[element].id;
+    return id;
   };
 
-  return { addProject, addTodo }; //
+  const addTodo = (projId, title, description, ...rest) => {
+    const newTodo = createTodo(title, description, ...rest);
+
+    const targetProj = projArr.find((project) => project.id === projId);
+    targetProj.todoArr.push(newTodo);
+  };
+
+  return { addProject, addTodo, getId }; //
 };
 
-// const projects = projManager();
-// projects.addProject("Home", "Smiley");
-// projects.addProject("Finance", "Cash");
+const projectManager = projManager();
 
-// projects.addTodo(
+// Testing Below
+// projectManager.addProject("Home", "Smiley");
+// projectManager.addProject("Finance", "Cash");
+
+// const firstProjId = projectManager.getId(0);
+// const secondProjId = projectManager.getId(1);
+
+// projectManager.addTodo(
+//   firstProjId,
 //   "Spring Clean the House", // title
 //   "Dust, Vacuum, Pull out Couches, etc.", //description
-//   "356bcb23-f85a-490e-9912-df94af02bd94", //projId
 //   "05/23/2025", // Date
 //   "High", // priority
 //   "No Notes", // Notes
 //   "Incomplete" // completionStatus
+// );
+
+// projectManager.addTodo(
+//   secondProjId,
+//   "Deductions",
+//   "Sort through all deductions before filing taxes",
+//   "04/01/2025",
+//   "High",
+//   "Ensure you go through every receipt",
+//   "Incomplete"
 // );
 
 /* 
