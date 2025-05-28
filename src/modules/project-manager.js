@@ -23,15 +23,22 @@ export const projManager = function () {
     targetProj.todoArr.push(newTodo);
   };
 
-  // console.log(projArr);
+  // Change todo's title
+  const updateTitle = (todo, newTitle) => {
+    todo.title = newTitle;
+  };
+
+  // Update todo's description
+  const updateDescription = (todo, newDescription) => {
+    todo.description = newDescription;
+  };
+
+  const updateDueDate = (todo, newDate) => {
+    todo.dueDate = newDate;
+  };
 
   // Toggle todo's completion status
-  const toggleCompletionStatus = (todo) => {
-    /* 
-    Can potentially use a 'click' event listener here to automagically call
-    this function when the completion toggle button is pressed on the Todo
-    */
-
+  const updateCompletionStatus = (todo) => {
     if (todo.completionStatus === "Incomplete") {
       todo.completionStatus = "Complete";
     } else if (todo.completionStatus === "Complete") {
@@ -39,12 +46,12 @@ export const projManager = function () {
     }
   };
 
-  // Change todo's priority
-  const changePriority = (todo, newPriority) => {
-    /* 
-    Can potentially use a 'change' event listener here to automagically call
-    this function when a new selection is chosen on the dropdown menu */
+  const updateNotes = (todo, newNotes) => {
+    todo.notes = newNotes;
+  };
 
+  // Change todo's priority
+  const updatePriority = (todo, newPriority) => {
     todo.priority = newPriority;
     console.log(todo);
   };
@@ -53,87 +60,14 @@ export const projManager = function () {
     addProject,
     addTodo,
     getProjId,
-    toggleCompletionStatus,
-    changePriority,
+    updateTitle,
+    updateDescription,
+    updateDueDate,
+    updatePriority,
+    updateNotes,
+    updateCompletionStatus,
   };
 };
 
 const projectManager = projManager();
 projectManager.addProject("Default");
-
-// Testing Below
-
-const defaultProjId = projectManager.getProjId(0);
-
-// Change Todo Priority Testing
-const todoTest = createTodo(
-  "Spring Clean the House", // title
-  "Dust, Vacuum, Pull out Couches, etc.", //description
-  "05/23/2025", // Date
-  "High", // priority
-  "No Notes", // Notes
-  "Incomplete"
-);
-projectManager.changePriority(todoTest, "Low");
-
-// Get Project ID Testing:
-// const secondProjId = projectManager.getId(1);
-
-// Add Project Testing:
-// projectManager.addProject("Home", "Smiley");
-// projectManager.addProject("Finance", "Cash");
-
-// Add Todo Testing:
-// projectManager.addTodo(
-//   defaultProjId,
-//   "Spring Clean the House", // title
-//   "Dust, Vacuum, Pull out Couches, etc.", //description
-//   "05/23/2025", // Date
-//   "High", // priority
-//   "No Notes", // Notes
-//   "Incomplete" // completionStatus
-// );
-
-// projectManager.addTodo(
-//   secondProjId,
-//   "Deductions",
-//   "Sort through all deductions before filing taxes",
-//   "04/01/2025",
-//   "High",
-//   "Ensure you go through every receipt",
-//   "Incomplete"
-// );
-
-// Toggle Completion Status Testing:
-// const todoTest = createTodo(
-//   "Spring Clean the House", // title
-//   "Dust, Vacuum, Pull out Couches, etc.", //description
-//   "05/23/2025", // Date
-//   "High", // priority
-//   "No Notes", // Notes
-//   "Incomplete"
-// );
-// projectManager.toggleCompletionStatus(todoTest);
-
-// Todo Parameters:
-/* 
-    title,
-    description,
-    projectId,
-    dueDate,
-    priority,
-    notes,
-    completionStatus,
-    todoId,
-*/
-
-/* 
-Changes that will occur in todos:
-• Completion Status - There will need to be a toggle with choices of "Complete"/"Incomplete"
-• Priority - This will be a dropdown in the DOM - choices: "High", "Medium", "Low"
-
-For Priority:
-•Could place an extra dropdown in the UI after the task has been created so user can change priority quickly
-  • May or may not do this ^. From a design standpoint, if you were to do this for priority, why not date? This could lead to a rabbit hole.
-    • Could just make it so project, date, completion status, priority, edit, and trash show once task is created. User can edit through the "edit" menu
-*/
