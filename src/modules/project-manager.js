@@ -13,6 +13,8 @@ export const projManager = function () {
     return id;
   };
 
+  // console.log(projArr);
+
   const addTodo = (projId, title, description, ...rest) => {
     const newTodo = createTodo(title, description, ...rest);
 
@@ -24,6 +26,7 @@ export const projManager = function () {
 };
 
 const projectManager = projManager();
+projectManager.addProject("Default");
 
 // Testing Below
 // projectManager.addProject("Home", "Smiley");
