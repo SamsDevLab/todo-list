@@ -100,8 +100,10 @@ select {
   font: inherit;
 }
 
-/* Project Below */
-.main-container {
+/*****************************/
+/****** Project Below ********/
+/*****************************/
+#main-container {
   height: 100vh;
   display: grid;
   grid-template-columns: 0.4fr 1fr;
@@ -117,8 +119,7 @@ select {
   gap: 5rem;
 }
 
-.main-left #tasks-container,
-.main-left #projects-container {
+.main-left .section-container {
   background-color: indianred;
   height: 17.5rem;
   width: 15rem;
@@ -129,22 +130,34 @@ select {
   gap: 1rem;
 }
 
+.main-left .section-header {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 /* Right Side */
 .main-right {
   background-color: indianred;
   display: grid;
   grid-template-rows: 0.1fr 1fr;
+  gap: 1rem;
   padding: 1rem;
 }
 
-.main-right #header {
+.main-right .section-header {
   grid-row: 1/2;
   display: flex;
   align-items: center;
+  background-color: cornflowerblue;
 }
 
-#header h1 {
-  font-size: 2rem;
+.main-right .section-header {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.section-header h1 {
+  font-size: 1rem;
 }
 
 .main-right #body {
@@ -161,5 +174,5 @@ select {
 }
 
 .main-right h2 {
-  font-size: 2rem;
+  font-size: 1rem;
 }
