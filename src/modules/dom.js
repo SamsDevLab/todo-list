@@ -1,16 +1,17 @@
 import { projManager } from "/src/index.js";
+const projectManager = projManager();
 
 export const dom = () => {
   // Grab Main Container
   const mainContainer = document.querySelector("#main-container");
 
   // Grab New Todo and New Project Button via data-attributes
-  const sectionHeaderBtns = document.querySelectorAll("[data-action]");
+  const sectionHeaderBtns = document.querySelectorAll("[data-add]");
   sectionHeaderBtns.forEach((button) =>
     button.addEventListener("click", (event) => {
-      if (event.target.dataset.action === "add-todo") {
+      if (event.target.dataset.add === "add-todo") {
         openTodo();
-      } else if (event.target.dataset.action === "add-project") {
+      } else if (event.target.dataset.add === "add-project") {
         openProject();
       }
     })
@@ -20,15 +21,41 @@ export const dom = () => {
 
   // Open Todo Modal
   const openTodo = () => {
-    const todoModal = document.querySelector('[data-modal="open-todo"]');
+    const todoModal = document.querySelector('[data-open-modal="open-todo"]');
     todoModal.showModal();
   };
 
   // Open Project Modal
   const openProject = () => {
-    const projModal = document.querySelector('[data-modal="open-project"]');
+    const projModal = document.querySelector(
+      '[data-open-modal="open-project"]'
+    );
     projModal.showModal();
   };
+
+  // Add Listeners to Submit Buttons
+  const submitButtons = document.querySelectorAll("[data-submit]");
+  submitButtons.forEach((button) =>
+    button.addEventListener("click", (event) => {
+      if (event.target.dataset.submit === "submit-todo") {
+        event.preventDefault();
+        submitTodo();
+      } else if (event.target.dataset.submit === "submit-project") {
+        event.preventDefault();
+        submitProject();
+      }
+    })
+  );
+
+  // Create New Todos/Projects:
+  // const submitTodo = () => {
+  //   const todoInputs = document.querySelectorAll("[data-todo-input]");
+
+  //   projectManager.addTodo(...todoInputs);
+  //   // todoInputs.forEach((input) => console.log(input.value));
+  // };
+
+  // const submitProject = () => {};
 
   ////// SideBar /////////
   // Create Project Buttons in Sidebar
