@@ -6,36 +6,73 @@
     <title>Todo List by Sam's Dev Lab</title>
   </head>
   <body>
-    <div class="main-container">
+    <div id="main-container">
       <div class="main-div main-left">
-        <div id="todos-container">
-          <div id="todos-header">
+        <div class="section-container">
+          <div class="section-header">
             <h2>Todos</h2>
-            <button id="add-todo">+</button>
+            <button data-action="add-todo">+</button>
           </div>
-          <button class="buttons add-todos">Add Task</button>
-          <button class="buttons all-todos">All Tasks</button>
-          <button class="buttons today-todos">Today</button>
-          <button class="buttons upcoming-todos">Upcoming</button>
-          <button class="buttons anytime-todos">Anytime</button>
+          <button>All Tasks</button>
+          <button>Today</button>
+          <button>Upcoming</button>
+          <button>Anytime</button>
+          <dialog data-modal>
+            <form action="./index.js" method="get" data-form="submit-todo">
+              <div>
+                <label for="title">Title:</label>
+                <input type="text" id="title" />
+              </div>
+              <div>
+                <label for="description">Description:</label>
+                <input type="text" id="description" />
+              </div>
+              <div>
+                <label for="due-date">Due Date:</label>
+                <input type="text" id="due-date" />
+              </div>
+              <div>
+                <label for="priority">Priority:</label>
+                <input type="text" id="priority" />
+              </div>
+              <div>
+                <label for="notes">Notes</label>
+                <input type="text" id="notes" />
+              </div>
+            </form>
+          </dialog>
         </div>
-        <div id="projects-container">
-          <div id="projects-header">
+        <div class="section-container">
+          <div class="section-header">
             <h2>Projects</h2>
-            <button id="add-project">+</button>
+            <button data-action="add-project">+</button>
           </div>
           <h3>
             Could insert a dropdown when clicking a project to show which tasks
             are inside each project. Or, just populating the projects tasks
             underneath the project (sans dropdown) for a quick ref
           </h3>
-          <button class="buttons">Project 1</button>
-          <button class="buttons">Project 2</button>
-          <button class="buttons">Project 3</button>
+          <button>Project 1</button>
+          <button>Project 2</button>
+          <button>Project 3</button>
+          <dialog>
+            <form action="./index.js" method="get" data-form="submit-project">
+              <h2>Add Project</h2>
+              <div>
+                <label for="project-name">Project Name:</label>
+                <input type="text" id="project-name" />
+              </div>
+              <div>
+                <label for="project-symbol">Project Symbol:</label>
+                <input type="text" id="project-symbol" />
+              </div>
+              <button>Submit</button>
+            </form>
+          </dialog>
         </div>
       </div>
       <div class="main-div main-right">
-        <div id="header">
+        <div class="section-header">
           <h1>Todo List by Sam's Dev Lab</h1>
           <h2>Can place a toggle for light/dark mode</h2>
         </div>
