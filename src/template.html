@@ -8,24 +8,46 @@
   <body>
     <div class="main-container">
       <div class="main-div main-left">
-        <div id="tasks-container">
-          <button class="buttons">All Tasks</button>
-          <button class="buttons">Today</button>
-          <button class="buttons">Upcoming</button>
-          <button class="buttons">Anytime</button>
+        <div id="todos-container">
+          <div id="todos-header">
+            <h2>Todos</h2>
+            <button id="add-todo">+</button>
+          </div>
+          <button class="buttons add-todos">Add Task</button>
+          <button class="buttons all-todos">All Tasks</button>
+          <button class="buttons today-todos">Today</button>
+          <button class="buttons upcoming-todos">Upcoming</button>
+          <button class="buttons anytime-todos">Anytime</button>
         </div>
         <div id="projects-container">
-          <h2>Projects</h2>
+          <div id="projects-header">
+            <h2>Projects</h2>
+            <button id="add-project">+</button>
+          </div>
+          <h3>
+            Could insert a dropdown when clicking a project to show which tasks
+            are inside each project. Or, just populating the projects tasks
+            underneath the project (sans dropdown) for a quick ref
+          </h3>
           <button class="buttons">Project 1</button>
           <button class="buttons">Project 2</button>
           <button class="buttons">Project 3</button>
         </div>
       </div>
       <div class="main-div main-right">
-        <div id="header"><h1>Todo List by Sam's Dev Lab</h1></div>
+        <div id="header">
+          <h1>Todo List by Sam's Dev Lab</h1>
+          <h2>Can place a toggle for light/dark mode</h2>
+        </div>
         <div id="body">
-          <h2>Populate Here</h2>
-          <div id="test-div-body"></div>
+          <h2>
+            Populate Here with Project/Category (i.e. All
+            Tasks/Today/Upcoming/Anytime)
+          </h2>
+          <div id="test-div-body">
+            This will be the area where all of the tasks will populate. Each
+            task will need a div
+          </div>
         </div>
       </div>
     </div>
