@@ -22,6 +22,7 @@ export const dom = () => {
   // Open Todo Modal
   const openTodo = () => {
     const todoModal = document.querySelector('[data-open-modal="open-todo"]');
+    todoModal.style.display = "block";
     todoModal.showModal();
   };
 
@@ -48,12 +49,12 @@ export const dom = () => {
   );
 
   // Create New Todos/Projects:
-  // const submitTodo = () => {
-  //   const todoInputs = document.querySelectorAll("[data-todo-input]");
+  const submitTodo = () => {
+    const todoInputs = document.querySelectorAll("[data-todo-input]");
 
-  //   projectManager.addTodo(...todoInputs);
-  //   // todoInputs.forEach((input) => console.log(input.value));
-  // };
+    projectManager.addTodo(...todoInputs);
+    // todoInputs.forEach((input) => console.log(input.value));
+  };
 
   // const submitProject = () => {};
 
