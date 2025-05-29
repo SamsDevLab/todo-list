@@ -11,41 +11,59 @@
         <div class="section-container">
           <div class="section-header">
             <h2>Todos</h2>
-            <button data-action="add-todo">+</button>
+            <button data-add="add-todo">+</button>
           </div>
           <button>All Tasks</button>
           <button>Today</button>
           <button>Upcoming</button>
           <button>Anytime</button>
-          <dialog data-modal>
-            <form action="./index.js" method="get" data-form="submit-todo">
+          <dialog data-open-modal="open-todo">
+            <h2>Add Todo</h2>
+            <form action="./index.js" method="get">
               <div>
                 <label for="title">Title:</label>
-                <input type="text" id="title" />
+                <input type="text" id="title" data-todo-input="title" />
               </div>
               <div>
                 <label for="description">Description:</label>
-                <input type="text" id="description" />
+                <input
+                  type="text"
+                  id="description"
+                  data-todo-input="description"
+                />
               </div>
               <div>
                 <label for="due-date">Due Date:</label>
-                <input type="text" id="due-date" />
+                <input type="date" id="due-date" data-todo-input="due-date" />
               </div>
               <div>
                 <label for="priority">Priority:</label>
-                <input type="text" id="priority" />
+                <select
+                  name="priority"
+                  id="priority"
+                  data-todo-input="priority"
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
               </div>
               <div>
                 <label for="notes">Notes</label>
-                <input type="text" id="notes" />
+                <textarea
+                  name="textarea"
+                  id="notes"
+                  data-todo-input="notes"
+                ></textarea>
               </div>
+              <button data-submit="submit-todo">Submit</button>
             </form>
           </dialog>
         </div>
         <div class="section-container">
           <div class="section-header">
             <h2>Projects</h2>
-            <button data-action="add-project">+</button>
+            <button data-add="add-project">+</button>
           </div>
           <h3>
             Could insert a dropdown when clicking a project to show which tasks
@@ -55,18 +73,26 @@
           <button>Project 1</button>
           <button>Project 2</button>
           <button>Project 3</button>
-          <dialog>
-            <form action="./index.js" method="get" data-form="submit-project">
+          <dialog data-open-modal="open-project">
+            <form action="./index.js" method="get">
               <h2>Add Project</h2>
               <div>
                 <label for="project-name">Project Name:</label>
-                <input type="text" id="project-name" />
+                <input
+                  type="text"
+                  id="project-name"
+                  data-project-input="project-name"
+                />
               </div>
               <div>
                 <label for="project-symbol">Project Symbol:</label>
-                <input type="text" id="project-symbol" />
+                <input
+                  type="text"
+                  id="project-symbol"
+                  data-project-input="project-symbol"
+                />
               </div>
-              <button>Submit</button>
+              <button data-submit="submit-project">Submit</button>
             </form>
           </dialog>
         </div>
