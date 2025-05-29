@@ -109,6 +109,19 @@ select {
   grid-template-columns: 0.4fr 1fr;
 }
 
+/* Modal */
+dialog {
+  left: 35%;
+  top: 20%;
+  height: 50%;
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
 /* Left Side */
 .main-left {
   background-color: cornflowerblue;
