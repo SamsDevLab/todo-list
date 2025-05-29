@@ -111,6 +111,10 @@ select {
 
 /* Modal */
 dialog {
+  display: none;
+}
+
+dialog:open {
   left: 35%;
   top: 20%;
   height: 50%;
