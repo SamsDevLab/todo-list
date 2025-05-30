@@ -6,32 +6,36 @@ export const dom = () => {
   const mainContainer = document.querySelector("#main-container");
 
   // Grab New Todo and New Project Button via data-attributes
-  const sectionHeaderBtns = document.querySelectorAll("[data-add]");
+  const sectionHeaderBtns = document.querySelectorAll("[data-add-button]");
   sectionHeaderBtns.forEach((button) =>
     button.addEventListener("click", (event) => {
-      if (event.target.dataset.add === "add-todo") {
+      if (event.target.dataset.addButton === "add-todo") {
         openTodo();
-      } else if (event.target.dataset.add === "add-project") {
+      } else if (event.target.dataset.addButton === "add-project") {
         openProject();
       }
     })
   );
 
   /////// Modals /////////
+  const queryTodo = () => {
+    const modal = document.querySelector('[data-modal="todo"]');
+    return { modal };
+  };
+
+  const queryProject = () => {
+    const modal = document.querySelector('[data-modal="project"]');
+    return { modal };
+  };
 
   // Open Todo Modal
   const openTodo = () => {
-    const todoModal = document.querySelector('[data-open-modal="open-todo"]');
-    todoModal.style.display = "block";
-    todoModal.showModal();
+    queryTodo().modal.showModal();
   };
 
   // Open Project Modal
   const openProject = () => {
-    const projModal = document.querySelector(
-      '[data-open-modal="open-project"]'
-    );
-    projModal.showModal();
+    queryProject().modal.showModal();
   };
 
   // Add Listeners to Submit Buttons
@@ -49,14 +53,36 @@ export const dom = () => {
   );
 
   // Create New Todos/Projects:
-  const submitTodo = () => {
-    const todoInputs = document.querySelectorAll("[data-todo-input]");
+  // const submitTodo = () => {
+  //   const todoInputs = document.querySelectorAll("[data-todo-input]");
 
-    projectManager.addTodo(...todoInputs);
-    // todoInputs.forEach((input) => console.log(input.value));
+  //   projectManager.addTodo(...todoInputs);
+  //   // todoInputs.forEach((input) => console.log(input.value));
+  // };
+
+  // Add Listeners to Cancel Buttons
+  const cancelButtons = document.querySelectorAll("[data-cancel]");
+  cancelButtons.forEach((button) =>
+    button.addEventListener("click", (event) => {
+      if (event.target.dataset.cancel === "cancel-todo") {
+        event.preventDefault();
+        cancelTodo();
+      } else if (event.target.dataset.cancel === "cancel-project") {
+        event.preventDefault();
+        cancelProject();
+      }
+    })
+  );
+
+  // Close Todo modal
+  const cancelTodo = () => {
+    queryTodo().modal.close();
   };
 
-  // const submitProject = () => {};
+  // Close Project Modal
+  const cancelProject = () => {
+    queryProject().modal.close();
+  };
 
   ////// SideBar /////////
   // Create Project Buttons in Sidebar
