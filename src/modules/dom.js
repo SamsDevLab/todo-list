@@ -5,6 +5,18 @@ export const dom = () => {
   // Grab Main Container
   const mainContainer = document.querySelector("#main-container");
 
+  // Query
+  const projects = projectManager.projArr;
+  const projectDropdown = document.querySelector('[data-todo-input="project"]');
+
+  projects.forEach((project) => {
+    const option = document.createElement("option");
+    option.innerText = project.name;
+    option.dataset.projectId = project.id;
+
+    projectDropdown.appendChild(option);
+  });
+
   // Grab New Todo and New Project Button via data-attributes
   const sectionHeaderBtns = document.querySelectorAll("[data-add-button]");
   sectionHeaderBtns.forEach((button) =>
@@ -52,13 +64,19 @@ export const dom = () => {
     })
   );
 
-  // Create New Todos/Projects:
-  // const submitTodo = () => {
-  //   const todoInputs = document.querySelectorAll("[data-todo-input]");
+  const queryTodoInputs = () => {
+    const values = document.querySelectorAll("[data-todo-input]");
+    return { values };
+  };
 
-  //   projectManager.addTodo(...todoInputs);
-  //   // todoInputs.forEach((input) => console.log(input.value));
-  // };
+  // Create New Todos/Projects:
+  const submitTodo = () => {
+    const todoValues = queryTodoInputs().values;
+    console.log(todoValues);
+
+    // projectManager.addTodo(...todoInputs);
+    // todoInputs.forEach((input) => console.log(input.value));
+  };
 
   // Add Listeners to Cancel Buttons
   const cancelButtons = document.querySelectorAll("[data-cancel]");
