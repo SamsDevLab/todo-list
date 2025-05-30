@@ -56,7 +56,10 @@ export const projManager = function () {
     console.log(todo);
   };
 
+  addProject("Default");
+
   return {
+    projArr,
     addProject,
     addTodo,
     getProjId,
@@ -68,6 +71,3 @@ export const projManager = function () {
     updateCompletionStatus,
   };
 };
-
-const projectManager = projManager();
-projectManager.addProject("Default");
