@@ -5,7 +5,6 @@ export const dom = () => {
   // Grab Main Container
   const mainContainer = document.querySelector("#main-container");
 
-  // Query
   const projects = projectManager.projArr;
   const projectDropdown = document.querySelector('[data-todo-input="project"]');
 
@@ -57,28 +56,45 @@ export const dom = () => {
       if (event.target.dataset.submit === "submit-todo") {
         event.preventDefault();
         submitTodo();
-        queryTodo().modal.close();
+        closeTodoModal();
       } else if (event.target.dataset.submit === "submit-project") {
         event.preventDefault();
         submitProject();
+        closeProjectModal();
       }
     })
   );
 
+  // Grab Todo Form Input Values and Pass to addTodo to create a new Todo
   const queryTodoInputs = () => {
-    const nodeList = document.querySelectorAll("[data-todo-input]");
-    let nodeInputsObj = {};
+    const todoNodeList = document.querySelectorAll("[data-todo-input]");
+    let todoNodeInputsObj = {};
 
-    nodeList.forEach((node) => {
-      nodeInputsObj[node.id] = node;
+    todoNodeList.forEach((node) => {
+      todoNodeInputsObj[node.id] = node;
     });
 
-    return nodeInputsObj;
+    return todoNodeInputsObj;
   };
 
   const submitTodo = () => {
     const todoInputsObj = queryTodoInputs();
     projectManager.addTodo(todoInputsObj);
+  };
+
+  // Grab Project Form Input Values and Pass into addProject to Create New:
+  const queryProjectInputs = () => {
+    const projNodeList = document.querySelectorAll("[data-project-input]");
+    const projValues = [];
+
+    projNodeList.forEach((node) => projValues.push(node.value));
+
+    return projValues;
+  };
+
+  const submitProject = () => {
+    const projInputValues = queryProjectInputs();
+    projectManager.addProject(projInputValues);
   };
 
   // Add Listeners to Cancel Buttons
@@ -87,21 +103,21 @@ export const dom = () => {
     button.addEventListener("click", (event) => {
       if (event.target.dataset.cancel === "cancel-todo") {
         event.preventDefault();
-        cancelTodo();
+        closeTodoModal();
       } else if (event.target.dataset.cancel === "cancel-project") {
         event.preventDefault();
-        cancelProject();
+        closeProjectModal();
       }
     })
   );
 
   // Close Todo modal
-  const cancelTodo = () => {
+  const closeTodoModal = () => {
     queryTodo().modal.close();
   };
 
   // Close Project Modal
-  const cancelProject = () => {
+  const closeProjectModal = () => {
     queryProject().modal.close();
   };
 
