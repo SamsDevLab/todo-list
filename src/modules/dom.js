@@ -57,6 +57,7 @@ export const dom = () => {
       if (event.target.dataset.submit === "submit-todo") {
         event.preventDefault();
         submitTodo();
+        queryTodo().modal.close();
       } else if (event.target.dataset.submit === "submit-project") {
         event.preventDefault();
         submitProject();
@@ -65,17 +66,19 @@ export const dom = () => {
   );
 
   const queryTodoInputs = () => {
-    const values = document.querySelectorAll("[data-todo-input]");
-    return { values };
+    const nodeList = document.querySelectorAll("[data-todo-input]");
+    let nodeInputsObj = {};
+
+    nodeList.forEach((node) => {
+      nodeInputsObj[node.id] = node;
+    });
+
+    return nodeInputsObj;
   };
 
-  // Create New Todos/Projects:
   const submitTodo = () => {
-    const todoValues = queryTodoInputs().values;
-    console.log(todoValues);
-
-    // projectManager.addTodo(...todoInputs);
-    // todoInputs.forEach((input) => console.log(input.value));
+    const todoInputsObj = queryTodoInputs();
+    projectManager.addTodo(todoInputsObj);
   };
 
   // Add Listeners to Cancel Buttons
