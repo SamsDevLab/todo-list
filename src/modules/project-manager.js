@@ -15,9 +15,27 @@ export const projManager = function () {
     return id;
   };
 
-  // Creates a new todo and project adds todo to it's arr
-  const addTodo = (projId, title, description, ...rest) => {
-    const newTodo = createTodo(title, description, ...rest);
+  const extractTodoInputValues = (inputs) => {
+    const valuesArr = [];
+    Object.values(inputs).forEach((input) => {
+      valuesArr.push(input.value);
+    });
+
+    return valuesArr;
+  };
+
+  const grabSelectedProjId = (inputs) => {
+    const selectedProj = inputs.project.selectedOptions;
+    const projId = selectedProj[0].dataset.projectId;
+
+    return projId;
+  };
+
+  const addTodo = (todoInputs) => {
+    const todoValues = extractTodoInputValues(todoInputs);
+    const newTodo = createTodo(...todoValues);
+
+    const projId = grabSelectedProjId(todoInputs);
 
     const targetProj = projArr.find((project) => project.id === projId);
     targetProj.todoArr.push(newTodo);
@@ -57,6 +75,7 @@ export const projManager = function () {
   };
 
   addProject("Default");
+  addProject("Finance");
 
   return {
     projArr,
