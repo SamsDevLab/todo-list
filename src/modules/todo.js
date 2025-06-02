@@ -3,6 +3,7 @@ export const createTodo = function (
   description,
   dueDate,
   priority,
+  project,
   notes,
   completionStatus
 ) {
@@ -12,6 +13,7 @@ export const createTodo = function (
     description,
     dueDate,
     priority,
+    project,
     notes,
     completionStatus,
     todoId,
