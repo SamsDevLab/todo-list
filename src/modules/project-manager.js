@@ -5,9 +5,15 @@ export const projManager = function () {
   const projArr = [];
 
   // Creates project and adds it to projArr
-  const addProject = (name, emoji) => {
-    projArr.push(createProject(name, emoji));
+  const addProject = (projValues) => {
+    const newProj = createProject(...projValues);
+
+    projArr.push(newProj);
+    console.log(projArr);
   };
+
+  const defaultProject = ["(none)", ""];
+  addProject(defaultProject);
 
   // Grabs project's randomUUID
   const getProjId = function (element) {
@@ -31,6 +37,8 @@ export const projManager = function () {
     return projId;
   };
 
+  // console.log(projArr);
+
   const addTodo = (todoInputs) => {
     const todoValues = extractTodoInputValues(todoInputs);
     const newTodo = createTodo(...todoValues);
@@ -39,6 +47,8 @@ export const projManager = function () {
 
     const targetProj = projArr.find((project) => project.id === projId);
     targetProj.todoArr.push(newTodo);
+
+    console.log(projArr);
   };
 
   // Change todo's title
@@ -73,9 +83,6 @@ export const projManager = function () {
     todo.priority = newPriority;
     console.log(todo);
   };
-
-  addProject("Default");
-  addProject("Finance");
 
   return {
     projArr,
