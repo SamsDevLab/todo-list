@@ -8,7 +8,7 @@
   <body>
     <div id="main-container">
       <div class="main-div main-left">
-        <div class="section-container">
+        <div class="section-container" data-section="todo">
           <div class="section-header">
             <h2>Todos</h2>
             <button data-add-button="add-todo">+</button>
@@ -69,16 +69,11 @@
             </form>
           </dialog>
         </div>
-        <div class="section-container">
+        <div class="section-container" data-section="projects">
           <div class="section-header">
             <h2>Projects</h2>
             <button data-add-button="add-project">+</button>
           </div>
-          <h3>
-            Could insert a dropdown when clicking a project to show which tasks
-            are inside each project. Or, just populating the projects tasks
-            underneath the project (sans dropdown) for a quick ref
-          </h3>
           <dialog data-modal="project">
             <form action="./index.js" method="get" data-form="project">
               <h2>Add Project</h2>
