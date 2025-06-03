@@ -5,31 +5,10 @@ export const dom = () => {
   // Grab Main Container
   const mainContainer = document.querySelector("#main-container");
 
-  // const queryProjectDropdown = () => {
-  //   const projectDropdown = document.querySelector(
-  //     '[data-todo-input="project"]'
-  //   );
-  //   return projectDropdown;
-  // };
-
-  // const createDropdownOption = (lastArrayItem) => {
-  //   const option = document.createElement("option");
-  //   option.innerText = lastArrayItem.name;
-  //   option.dataset.projectId = lastArrayItem.id;
-
-  //   return option;
-  // };
-
-  // const addProjToDropdown = () => {
-  //   const projectArr = projectManager.projArr;
-  //   const lastArrItem = projectArr[projectArr.length - 1];
-
-  //   console.log(projectArr);
-  //   const projectDropdown = queryProjectDropdown();
-
-  //   const option = createDropdownOption(lastArrItem);
-  //   projectDropdown.appendChild(option);
-  // };
+  const getProjArr = () => {
+    const projArr = projectManager.projArr;
+    return projArr;
+  };
 
   // Grab New Todo and New Project Button via data-attributes
   const sectionHeaderBtns = document.querySelectorAll("[data-add-button]");
@@ -79,6 +58,7 @@ export const dom = () => {
         addProjToDropdown();
         resetProjForm();
         closeProjectModal();
+        addProjButtonToDom();
       }
     })
   );
@@ -142,7 +122,7 @@ export const dom = () => {
   };
 
   const addProjToDropdown = () => {
-    const projectArr = projectManager.projArr;
+    const projectArr = getProjArr();
     const lastArrItem = projectArr[projectArr.length - 1];
 
     const projectDropdown = queryProjectDropdown();
@@ -186,6 +166,54 @@ export const dom = () => {
     queryProject().modal.close();
   };
 
+  const queryProjectSection = () => {
+    const projSection = document.querySelector("[data-section = 'projects']");
+    return projSection;
+  };
+
+  const createProjDiv = () => {
+    const projectDiv = document.createElement("div");
+    projectDiv.classList.add("project-div");
+    return projectDiv;
+  };
+
+  const createProjButton = (lastArrayItem) => {
+    const button = document.createElement("button");
+    button.classList.add("project-button");
+    button.innerText = lastArrayItem.name;
+
+    return button;
+  };
+
+  const createProjDeleteButton = () => {
+    const projDelButton = document.createElement("button");
+    projDelButton.classList.add("delete-button");
+
+    return projDelButton;
+  };
+
+  const addProjButtonToDom = () => {
+    const projSection = queryProjectSection();
+    const projArr = getProjArr();
+    const lastArrItem = projArr[projArr.length - 1];
+
+    /* 
+    Start here when you get done with lunch. 
+     - Need to write event listeners for the projButton and projDeleteButton
+     - The projDeleteButton will need access to the project's ID so it can delete the entire project
+        without disrupting anything. This is a primary reason that the project ID was created.\
+    - Emojis for the projects are on backburner for time being (may or may not include them in final draft)
+    */
+
+    const projDiv = createProjDiv();
+    const projButton = createProjButton(lastArrItem);
+    const projDeleteButton = createProjDeleteButton();
+
+    projDiv.appendChild(projButton);
+    projDiv.appendChild(projDeleteButton);
+    projSection.appendChild(projDiv);
+  };
+
   ////// SideBar /////////
   // Create Project Buttons in Sidebar
 
@@ -201,3 +229,10 @@ export const dom = () => {
 };
 
 dom();
+
+/* 
+Current Plan of Attack: 
+- Work on Adding new Todo/Project Elements to the DOM
+- After that, work on Filtering Todos by: All Tasks, Today, Upcoming, Anytime
+--- Will need to possibly employ datefns for this.
+*/
