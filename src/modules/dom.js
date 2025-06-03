@@ -5,16 +5,31 @@ export const dom = () => {
   // Grab Main Container
   const mainContainer = document.querySelector("#main-container");
 
-  const projects = projectManager.projArr;
-  const projectDropdown = document.querySelector('[data-todo-input="project"]');
+  const queryProjectDropdown = () => {
+    const projectDropdown = document.querySelector(
+      '[data-todo-input="project"]'
+    );
+    return projectDropdown;
+  };
 
-  projects.forEach((project) => {
+  const createDropdownOption = (lastArrayItem) => {
     const option = document.createElement("option");
-    option.innerText = project.name;
-    option.dataset.projectId = project.id;
+    option.innerText = lastArrayItem.name;
+    option.dataset.projectId = lastArrayItem.id;
 
+    return option;
+  };
+
+  const addProjToDropdown = () => {
+    const projectArr = projectManager.projArr;
+    const lastArrItem = projectArr[projectArr.length - 1];
+
+    console.log(projectArr);
+    const projectDropdown = queryProjectDropdown();
+
+    const option = createDropdownOption(lastArrItem);
     projectDropdown.appendChild(option);
-  });
+  };
 
   // Grab New Todo and New Project Button via data-attributes
   const sectionHeaderBtns = document.querySelectorAll("[data-add-button]");
@@ -60,6 +75,7 @@ export const dom = () => {
       } else if (event.target.dataset.submit === "submit-project") {
         event.preventDefault();
         submitProject();
+        addProjToDropdown();
         closeProjectModal();
       }
     })
@@ -130,6 +146,9 @@ export const dom = () => {
   // Pass in Project Name to h2
 
   // Create Todo Divs
+
+  // Adds Default Project (none) to Dropdown
+  addProjToDropdown();
 };
 
 dom();
