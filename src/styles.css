@@ -152,6 +152,19 @@ dialog:open {
   justify-content: space-evenly;
 }
 
+.main-left .project-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.project-div .project-button,
+.project-div .delete-button {
+  height: 1rem;
+  width: 3rem;
+}
+
 /* Right Side */
 .main-right {
   background-color: indianred;
