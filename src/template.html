@@ -19,7 +19,7 @@
           <button>Anytime</button>
           <dialog data-modal="todo">
             <h2>Add Todo</h2>
-            <form action="./index.js" method="get" data-form="todo">
+            <form action="./index.js" method="get" data-form="todos">
               <div>
                 <label for="title">Title:</label>
                 <input type="text" id="title" data-todo-input="title" value />
@@ -96,12 +96,12 @@
           <h1>Todo List by Sam's Dev Lab</h1>
           <h2>Can place a toggle for light/dark mode</h2>
         </div>
-        <div id="body">
-          <h2>
+        <div id="main-display" data-display="main">
+          <h2 data-display="project-header">
             Populate Here with Project/Category (i.e. All
             Tasks/Today/Upcoming/Anytime)
           </h2>
-          <div id="test-div-body">
+          <div id="todo-display" data-display="todo-list">
             This will be the area where all of the tasks will populate. Each
             task will need a div
           </div>
