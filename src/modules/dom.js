@@ -5,31 +5,31 @@ export const dom = () => {
   // Grab Main Container
   const mainContainer = document.querySelector("#main-container");
 
-  const queryProjectDropdown = () => {
-    const projectDropdown = document.querySelector(
-      '[data-todo-input="project"]'
-    );
-    return projectDropdown;
-  };
+  // const queryProjectDropdown = () => {
+  //   const projectDropdown = document.querySelector(
+  //     '[data-todo-input="project"]'
+  //   );
+  //   return projectDropdown;
+  // };
 
-  const createDropdownOption = (lastArrayItem) => {
-    const option = document.createElement("option");
-    option.innerText = lastArrayItem.name;
-    option.dataset.projectId = lastArrayItem.id;
+  // const createDropdownOption = (lastArrayItem) => {
+  //   const option = document.createElement("option");
+  //   option.innerText = lastArrayItem.name;
+  //   option.dataset.projectId = lastArrayItem.id;
 
-    return option;
-  };
+  //   return option;
+  // };
 
-  const addProjToDropdown = () => {
-    const projectArr = projectManager.projArr;
-    const lastArrItem = projectArr[projectArr.length - 1];
+  // const addProjToDropdown = () => {
+  //   const projectArr = projectManager.projArr;
+  //   const lastArrItem = projectArr[projectArr.length - 1];
 
-    console.log(projectArr);
-    const projectDropdown = queryProjectDropdown();
+  //   console.log(projectArr);
+  //   const projectDropdown = queryProjectDropdown();
 
-    const option = createDropdownOption(lastArrItem);
-    projectDropdown.appendChild(option);
-  };
+  //   const option = createDropdownOption(lastArrItem);
+  //   projectDropdown.appendChild(option);
+  // };
 
   // Grab New Todo and New Project Button via data-attributes
   const sectionHeaderBtns = document.querySelectorAll("[data-add-button]");
@@ -71,11 +71,13 @@ export const dom = () => {
       if (event.target.dataset.submit === "submit-todo") {
         event.preventDefault();
         submitTodo();
+        resetTodoForm();
         closeTodoModal();
       } else if (event.target.dataset.submit === "submit-project") {
         event.preventDefault();
         submitProject();
         addProjToDropdown();
+        resetProjForm();
         closeProjectModal();
       }
     })
@@ -98,6 +100,17 @@ export const dom = () => {
     projectManager.addTodo(todoInputsObj);
   };
 
+  // Reset the Todo Form After Submission
+  const queryTodoForm = () => {
+    const form = document.querySelector("[data-form = todo]");
+    return form;
+  };
+
+  const resetTodoForm = () => {
+    const todoForm = queryTodoForm();
+    todoForm.reset();
+  };
+
   // Grab Project Form Input Values and Pass into addProject to Create New:
   const queryProjectInputs = () => {
     const projNodeList = document.querySelectorAll("[data-project-input]");
@@ -111,6 +124,42 @@ export const dom = () => {
   const submitProject = () => {
     const projInputValues = queryProjectInputs();
     projectManager.addProject(projInputValues);
+  };
+
+  const queryProjectDropdown = () => {
+    const projectDropdown = document.querySelector(
+      '[data-todo-input="project"]'
+    );
+    return projectDropdown;
+  };
+
+  const createDropdownOption = (lastArrayItem) => {
+    const option = document.createElement("option");
+    option.innerText = lastArrayItem.name;
+    option.dataset.projectId = lastArrayItem.id;
+
+    return option;
+  };
+
+  const addProjToDropdown = () => {
+    const projectArr = projectManager.projArr;
+    const lastArrItem = projectArr[projectArr.length - 1];
+
+    const projectDropdown = queryProjectDropdown();
+
+    const option = createDropdownOption(lastArrItem);
+    projectDropdown.appendChild(option);
+  };
+
+  // Reset the Project Form After Submission:
+  const queryProjForm = () => {
+    const form = document.querySelector("[data-form = project]");
+    return form;
+  };
+
+  const resetProjForm = () => {
+    const projForm = queryProjForm();
+    projForm.reset();
   };
 
   // Add Listeners to Cancel Buttons
