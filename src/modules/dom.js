@@ -50,7 +50,7 @@ export const dom = () => {
       if (event.target.dataset.submit === "submit-todo") {
         event.preventDefault();
         submitTodo();
-        resetTodoForm();
+        // resetTodoForm();
         closeTodoModal();
       } else if (event.target.dataset.submit === "submit-project") {
         event.preventDefault();
@@ -58,7 +58,7 @@ export const dom = () => {
         addProjToDropdown();
         resetProjForm();
         closeProjectModal();
-        addProjButtonToDom();
+        addProjToProjectsSection();
       }
     })
   );
@@ -86,10 +86,10 @@ export const dom = () => {
     return form;
   };
 
-  const resetTodoForm = () => {
-    const todoForm = queryTodoForm();
-    todoForm.reset();
-  };
+  // const resetTodoForm = () => {
+  //   const todoForm = queryTodoForm();
+  //   todoForm.reset();
+  // };
 
   // Grab Project Form Input Values and Pass into addProject to Create New:
   const queryProjectInputs = () => {
@@ -192,13 +192,70 @@ export const dom = () => {
     return projDelButton;
   };
 
-  const addProjButtonToDom = () => {
+  // const queryProjHeader = () => {
+  //   const projHeader = document.querySelector(
+  //     "[data-display = 'project-header']"
+  //   );
+  //   return projHeader;
+  // };
+
+  // const queryTodoDisplay = () => {
+  //   const todoDisplay = document.querySelector(
+  //     "[data-display = 'todo-display']"
+  //   );
+  //   return todoDisplay;
+  // };
+
+  // const renderTodosToDisplay = (lastArrItem, todoDisplay) => {
+  //   const todoArr = lastArrItem.todoArr;
+  //   todoArr.forEach((todo) => {
+  //     const div = document.createElement("div");
+  //     div.classList.add("todo-div");
+
+  //     const header = document.createElement("h3");
+  //     header.innerText = todo.title;
+
+  //     const dueDate = document.createElement("h3");
+  //     dueDate.innerText = todo.dueDate;
+
+  //     div.appendChild(header);
+  //     div.appendChild(dueDate);
+  //     todoDisplay.appendChild(div);
+  //   });
+    // append all new divs to to todo display
+    // Will need to commit addProjToProjects Section... BIG commit lol
+  };
+
+  // const updateProjHeader = (lastArrItem) => {
+  //   const projHeader = queryProjHeader();
+  //   projHeader.innerText = "";
+  //   projHeader.innerText = lastArrItem.name;
+  // };
+
+  // const updateTodoList = (lastArrItem) => {
+  //   const todoDisplay = queryTodoDisplay();
+  //   todoDisplay.innerText = "";
+  //   renderTodosToDisplay(lastArrItem, todoDisplay);
+  // };
+
+  // const updateMainDisplay = (lastArrItem) => {
+  //   updateProjHeader(lastArrItem);
+  //   updateTodoList(lastArrItem);
+  // };
+
+  // const addEventListenerToProjBtn = (projectButton, lastArrItem) => {
+  //   projectButton.addEventListener("click", () =>
+  //     // displayProjectContents(lastArrItem)
+  //     updateMainDisplay(lastArrItem)
+  //   );
+  // };
+
+  const addProjToProjectsSection = () => {
     const projSection = queryProjectSection();
     const projArr = getProjArr();
     const lastArrItem = projArr[projArr.length - 1];
 
     /* 
-    Start here when you get done with lunch. 
      - Need to write event listeners for the projButton and projDeleteButton
      - The projDeleteButton will need access to the project's ID so it can delete the entire project
         without disrupting anything. This is a primary reason that the project ID was created.\
@@ -208,6 +265,8 @@ export const dom = () => {
     const projDiv = createProjDiv();
     const projButton = createProjButton(lastArrItem);
     const projDeleteButton = createProjDeleteButton();
+
+    addEventListenerToProjBtn(projButton, lastArrItem);
 
     projDiv.appendChild(projButton);
     projDiv.appendChild(projDeleteButton);
@@ -233,6 +292,7 @@ dom();
 /* 
 Current Plan of Attack: 
 - Work on Adding new Todo/Project Elements to the DOM
+- Need to look at why resetTodoForm() feature in todo modal isn't working (commented out for now)
 - After that, work on Filtering Todos by: All Tasks, Today, Upcoming, Anytime
 --- Will need to possibly employ datefns for this.
 */
