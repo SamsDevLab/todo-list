@@ -192,63 +192,163 @@ export const dom = () => {
     return projDelButton;
   };
 
-  // const queryProjHeader = () => {
-  //   const projHeader = document.querySelector(
-  //     "[data-display = 'project-header']"
-  //   );
-  //   return projHeader;
-  // };
-
-  // const queryTodoDisplay = () => {
-  //   const todoDisplay = document.querySelector(
-  //     "[data-display = 'todo-display']"
-  //   );
-  //   return todoDisplay;
-  // };
-
-  // const renderTodosToDisplay = (lastArrItem, todoDisplay) => {
-  //   const todoArr = lastArrItem.todoArr;
-  //   todoArr.forEach((todo) => {
-  //     const div = document.createElement("div");
-  //     div.classList.add("todo-div");
-
-  //     const header = document.createElement("h3");
-  //     header.innerText = todo.title;
-
-  //     const dueDate = document.createElement("h3");
-  //     dueDate.innerText = todo.dueDate;
-
-  //     div.appendChild(header);
-  //     div.appendChild(dueDate);
-  //     todoDisplay.appendChild(div);
-  //   });
-    // append all new divs to to todo display
-    // Will need to commit addProjToProjects Section... BIG commit lol
+  const queryProjHeader = () => {
+    const projHeader = document.querySelector(
+      "[data-display = 'project-header']"
+    );
+    return projHeader;
   };
 
-  // const updateProjHeader = (lastArrItem) => {
-  //   const projHeader = queryProjHeader();
-  //   projHeader.innerText = "";
-  //   projHeader.innerText = lastArrItem.name;
+  const queryTodoDisplay = () => {
+    const todoDisplay = document.querySelector(
+      "[data-display = 'todo-display']"
+    );
+    return todoDisplay;
+  };
+
+  const createTodoDiv = () => {
+    const div = document.createElement("div");
+    div.classList.add("todo-div");
+
+    return div;
+  };
+
+  const createTodoCheckbox = (todo) => {
+    const checkbox = document.createElement("input");
+
+    checkbox.type = "checkbox";
+    checkbox.value = todo.todoId;
+
+    return checkbox;
+  };
+
+  const createTitleAndDueDateDiv = (todo) => {
+    const div = document.createElement("div");
+    div.classList.add("title-and-due-date-div");
+
+    return div;
+  };
+
+  const createTitleElement = (todo) => {
+    const title = document.createElement("p");
+    title.innerText = todo.title;
+
+    return title;
+  };
+
+  const createDueDateElement = (todo) => {
+    const dueDate = document.createElement("p");
+    dueDate.innerText = todo.dueDate;
+
+    return dueDate;
+  };
+
+  const createEditAndDeleteDiv = () => {
+    const div = document.createElement("div");
+    div.classList.add("edit-and-delete-div");
+
+    return div;
+  };
+
+  const createEditButton = () => {
+    const button = document.createElement("button");
+    button.classList.add("edit-todo-button");
+    button.innerText = "Edit";
+
+    return button;
+  };
+
+  const createDeleteButton = () => {
+    const button = document.createElement("button");
+    button.classList.add("delete-todo-button");
+    button.innerText = "Delete";
+
+    return button;
+  };
+
+  // const createEditModal = (todo) => {
+  //   const modal = document.createElement("dialog");
+  //   modal.classList.add("edit-todo-modal");
+
+  //   const form = document.createElement("form");
+  //   form.classList.add("edit-todo-form");
+  //   form.method = "get";
+
+  //   const titleDiv = document.createElement("div");
+  //   titleDiv.classList.add("todo-edit-div");
+  //   const titleInput = document.createElement("input");
+  //   titleInput.classList.add("todo-edit-input");
+  //   titleInput.innerText = todo.title;
+
+  //   titleDiv.appendChild(titleInput);
+  //   form.appendChild(titleDiv);
+  //   modal.appendChild(form);
+
+  //   return modal;
   // };
 
-  // const updateTodoList = (lastArrItem) => {
-  //   const todoDisplay = queryTodoDisplay();
-  //   todoDisplay.innerText = "";
-  //   renderTodosToDisplay(lastArrItem, todoDisplay);
+  // const addDeleteButtonFunctionality = (button, todo) => {
+  //   button.addEventListener("click", () => console.log(todo.dueDate));
   // };
 
-  // const updateMainDisplay = (lastArrItem) => {
-  //   updateProjHeader(lastArrItem);
-  //   updateTodoList(lastArrItem);
-  // };
+  const renderTodosToDisplay = (lastArrItem, todoDisplay) => {
+    const todoArr = lastArrItem.todoArr;
+    todoArr.forEach((todo) => {
+      // Create todo div
+      const todoDiv = createTodoDiv();
 
-  // const addEventListenerToProjBtn = (projectButton, lastArrItem) => {
-  //   projectButton.addEventListener("click", () =>
-  //     // displayProjectContents(lastArrItem)
-  //     updateMainDisplay(lastArrItem)
-  //   );
-  // };
+      // Create todo checkbox
+      const todoCheckbox = createTodoCheckbox(todo);
+
+      // Create titleAndDate Div
+      const titleAndDueDateDiv = createTitleAndDueDateDiv(todo);
+      const title = createTitleElement(todo);
+      const dueDate = createDueDateElement(todo);
+      titleAndDueDateDiv.append(title, dueDate);
+
+      // Create editAndDelete Div
+      const editAndDeleteDiv = createEditAndDeleteDiv();
+
+      const editButton = createEditButton();
+      const deleteButton = createDeleteButton();
+
+      // const editModal = createEditModal(todo);
+      // editButton.addEventListener("click", () => editModal.show());
+
+      // addDeleteButtonFunctionality(deleteButton, todo);
+      editAndDeleteDiv.append(editButton, deleteButton);
+
+      todoDiv.appendChild(todoCheckbox);
+      todoDiv.appendChild(titleAndDueDateDiv);
+      todoDiv.appendChild(editAndDeleteDiv);
+      todoDisplay.appendChild(todoDiv);
+      // todoDisplay.appendChild(editModal);
+    });
+  };
+
+  const updateProjHeader = (lastArrItem) => {
+    const projHeader = queryProjHeader();
+    projHeader.innerText = "";
+    projHeader.innerText = lastArrItem.name;
+  };
+
+  const updateTodoList = (lastArrItem) => {
+    const todoDisplay = queryTodoDisplay();
+    todoDisplay.innerText = "";
+    renderTodosToDisplay(lastArrItem, todoDisplay);
+  };
+
+  const updateMainDisplay = (lastArrItem) => {
+    updateProjHeader(lastArrItem);
+    updateTodoList(lastArrItem);
+  };
+
+  const addEventListenerToProjBtn = (projectButton, lastArrItem) => {
+    projectButton.addEventListener("click", () =>
+      // displayProjectContents(lastArrItem)
+      updateMainDisplay(lastArrItem)
+    );
+  };
 
   const addProjToProjectsSection = () => {
     const projSection = queryProjectSection();
