@@ -266,34 +266,226 @@ export const dom = () => {
     return button;
   };
 
-  // const createEditModal = (todo) => {
-  //   const modal = document.createElement("dialog");
-  //   modal.classList.add("edit-todo-modal");
+  /*************************
+    Todo: Edit Form Section
+  **************************/
+  const createTodoEditForm = () => {
+    const form = document.createElement("form");
+    form.classList.add("edit-todo-form");
+    form.method = "get";
 
-  //   const form = document.createElement("form");
-  //   form.classList.add("edit-todo-form");
-  //   form.method = "get";
+    return form;
+  };
 
-  //   const titleDiv = document.createElement("div");
-  //   titleDiv.classList.add("todo-edit-div");
-  //   const titleInput = document.createElement("input");
-  //   titleInput.classList.add("todo-edit-input");
-  //   titleInput.innerText = todo.title;
+  const createTitleEditDiv = (todo) => {
+    const div = document.createElement("div");
+    div.classList.add("todo-edit-div");
 
-  //   titleDiv.appendChild(titleInput);
-  //   form.appendChild(titleDiv);
-  //   modal.appendChild(form);
+    const label = document.createElement("label");
+    label.setAttribute("for", "edit-title");
+    label.innerText = "Title:";
 
-  //   return modal;
-  // };
+    const input = document.createElement("input");
+    input.setAttribute("name", "edit-title");
+    input.setAttribute("id", "edit-title");
+    input.setAttribute("type", "text");
+    input.value = todo.title;
 
-  // const addDeleteButtonFunctionality = (button, todo) => {
-  //   button.addEventListener("click", () => console.log(todo.dueDate));
-  // };
+    div.append(label, input);
 
+    return div;
+  };
+
+  const createDescriptionEditDiv = (todo) => {
+    const div = document.createElement("div");
+    div.classList.add("todo-edit-div");
+
+    const label = document.createElement("label");
+    label.setAttribute("for", "edit-description");
+    label.innerText = "Description:";
+
+    const input = document.createElement("input");
+    input.setAttribute("name", "edit-description");
+    input.setAttribute("id", "edit-description");
+    input.setAttribute("type", "textarea");
+    input.value = todo.description;
+
+    div.append(label, input);
+
+    return div;
+  };
+
+  const createDueDateEditDiv = (todo) => {
+    const div = document.createElement("div");
+    div.classList.add("todo-edit-div");
+
+    const label = document.createElement("label");
+    label.setAttribute("for", "edit-due-date");
+    label.innerText = "Due Date:";
+
+    const input = document.createElement("input");
+    input.setAttribute("name", "edit-due-date");
+    input.setAttribute("id", "edit-due-date");
+    input.setAttribute("type", "date");
+    input.value = todo.dueDate;
+
+    div.append(label, input);
+
+    return div;
+  };
+
+  const createPriorityEditDiv = (todo) => {
+    const div = document.createElement("div");
+    div.classList.add("todo-edit-div");
+
+    const label = document.createElement("label");
+    label.setAttribute("for", "edit-priority");
+    label.innerText = "Priority:";
+
+    const select = document.createElement("select");
+    select.setAttribute("name", "edit-priority");
+    select.setAttribute("id", "edit-priority");
+
+    const optionLow = document.createElement("option");
+    optionLow.value = "low";
+    optionLow.innerText = "Low";
+
+    const optionMedium = document.createElement("option");
+    optionMedium.value = "medium";
+    optionMedium.innerText = "Medium";
+
+    const optionHigh = document.createElement("option");
+    optionHigh.value = "high";
+    optionHigh.innerText = "High";
+
+    select.append(optionLow, optionMedium, optionHigh);
+
+    if (todo.priority === optionLow.value) {
+      select.options[0].selected = true;
+    } else if (todo.priority === optionMedium.value) {
+      select.options[1].selected = true;
+    } else if (todo.priority === optionHigh.value) {
+      select.options[2].selected = true;
+    }
+
+    div.append(label, select);
+
+    return div;
+  };
+
+  const createProjectEditDiv = (todo) => {
+    const projArr = getProjArr();
+
+    const div = document.createElement("div");
+    div.classList.add("todo-edit-div");
+
+    const label = document.createElement("label");
+    label.setAttribute("for", "edit-project");
+    label.innerText = "Project:";
+
+    const select = document.createElement("select");
+    select.setAttribute("name", "edit-project");
+    select.setAttribute("id", "edit-project");
+    projArr.forEach((project) => {
+      console.log(project);
+      const option = document.createElement("option");
+      const lowercaseName =
+        project.name.charAt(0).toLowerCase() + project.name.slice(1);
+
+      option.value = lowercaseName;
+      option.innerText = project.name;
+      select.appendChild(option);
+    });
+
+    div.append(label, select);
+    return div;
+  };
+
+  const createNotesEditDiv = (todo) => {
+    const div = document.createElement("div");
+    div.classList.add("todo-edit-div");
+
+    const label = document.createElement("label");
+    label.setAttribute("for", "edit-notes");
+    label.innerText = "Notes:";
+
+    const textArea = document.createElement("textarea");
+    textArea.setAttribute("name", "edit-notes");
+    textArea.setAttribute("id", "edit-notes");
+    textArea.value = todo.notes;
+
+    div.append(label, textArea);
+
+    return div;
+  };
+
+  const createCancelButton = (modal) => {
+    const button = document.createElement("button");
+    button.classList.add("edit-todo-button");
+
+    button.innerText = "Cancel";
+
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      modal.close();
+    });
+
+    return button;
+  };
+
+  const createSaveButton = (todo) => {
+    const button = document.createElement("button");
+    button.classList.add("edit-todo-button");
+
+    // console.log(todo);
+
+    button.innerText = "Save";
+
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      console.log(todo);
+    });
+
+    return button;
+  };
+
+  const createTodoEditModal = (todo) => {
+    const modal = document.createElement("dialog");
+    modal.classList.add("edit-todo-modal");
+
+    const form = createTodoEditForm();
+    const titleDiv = createTitleEditDiv(todo);
+    const descriptionDiv = createDescriptionEditDiv(todo);
+    const dueDateDiv = createDueDateEditDiv(todo);
+    const priorityDiv = createPriorityEditDiv(todo);
+    const projectDiv = createProjectEditDiv(todo); // Should be able to adjust which todoArr this belongs to within localStorage
+    const notesDiv = createNotesEditDiv(todo);
+    const cancelButton = createCancelButton(modal);
+    const saveButton = createSaveButton(todo);
+
+    form.append(
+      titleDiv,
+      descriptionDiv,
+      dueDateDiv,
+      priorityDiv,
+      projectDiv,
+      notesDiv,
+      cancelButton,
+      saveButton
+    );
+
+    modal.appendChild(form);
+
+    return modal;
+  };
+
+  /*************************************
+    Todo: Render Todos to Display Section
+  ***************************************/
   const renderTodosToDisplay = (lastArrItem, todoDisplay) => {
     const todoArr = lastArrItem.todoArr;
     todoArr.forEach((todo) => {
+      // console.log(todo);
       // Create todo div
       const todoDiv = createTodoDiv();
 
@@ -312,8 +504,8 @@ export const dom = () => {
       const editButton = createEditButton();
       const deleteButton = createDeleteButton();
 
-      // const editModal = createEditModal(todo);
-      // editButton.addEventListener("click", () => editModal.show());
+      editButton.addEventListener("click", () => editModal.show());
+      const editModal = createTodoEditModal(todo);
 
       // addDeleteButtonFunctionality(deleteButton, todo);
       editAndDeleteDiv.append(editButton, deleteButton);
@@ -322,7 +514,7 @@ export const dom = () => {
       todoDiv.appendChild(titleAndDueDateDiv);
       todoDiv.appendChild(editAndDeleteDiv);
       todoDisplay.appendChild(todoDiv);
-      // todoDisplay.appendChild(editModal);
+      todoDisplay.appendChild(editModal);
     });
   };
 
