@@ -7,7 +7,7 @@ export const createTodo = function (
   notes,
   completionStatus
 ) {
-  const todoId = crypto.randomUUID();
+  const id = crypto.randomUUID();
   return {
     title,
     description,
@@ -16,6 +16,6 @@ export const createTodo = function (
     project,
     notes,
     completionStatus,
-    todoId,
+    id,
   };
 };
