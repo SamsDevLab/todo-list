@@ -471,7 +471,24 @@ export const dom = () => {
     return button;
   };
 
-  const createSaveButton = (todo) => {
+  const queryEditModalForm = (todo) => {
+    const nodeList = document.querySelectorAll("[data-edit-todo-form]");
+    const foundForm = Array.from(nodeList).find(
+      (node) => node.dataset.editTodoForm === todo.id
+    );
+    return foundForm;
+  };
+
+  const editFormValues = (foundForm, todo) => {
+    todo.title = foundForm.elements[0].value;
+    todo.description = foundForm.elements[1].value;
+    todo.dueDate = foundForm.elements[2].value;
+    todo.priority = foundForm.elements[3].value;
+    todo.project = foundForm.elements[4].value;
+    todo.notes = foundForm.elements[5].value;
+  };
+
+  const createSaveButton = (todo, lastProjInArr) => {
     const button = document.createElement("button");
     button.classList.add("edit-todo-button");
 
@@ -479,13 +496,15 @@ export const dom = () => {
 
     button.addEventListener("click", (event) => {
       event.preventDefault();
-      console.log(todo);
+      const foundForm = queryEditModalForm(todo);
+      editFormValues(foundForm, todo);
+      updateTodoList(lastProjInArr);
     });
 
     return button;
   };
 
-  const createTodoEditModal = (todo) => {
+  const createTodoEditModal = (todo, lastProjInArr) => {
     const modal = document.createElement("dialog");
     modal.classList.add("edit-todo-modal");
 
@@ -497,7 +516,7 @@ export const dom = () => {
     const projectDiv = createProjectEditDiv(todo); // Should be able to adjust which todoArr this belongs to within localStorage
     const notesDiv = createNotesEditDiv(todo);
     const cancelButton = createCancelButton(modal);
-    const saveButton = createSaveButton(todo);
+    const saveButton = createSaveButton(todo, lastProjInArr);
 
     form.append(
       titleDiv,
@@ -527,13 +546,6 @@ export const dom = () => {
     updateTodoList(lastProjInArr);
   };
 
-  // const queryEditModalForm = (todo) => {
-  //   const nodeList = document.querySelectorAll("[data-edit-todo-form]");
-  //   const foundForm = Array.from(nodeList).find(
-  //     (node) => node.dataset.editTodoForm === todo.id
-  //   );
-
-  // };
   /*************************************
     Todo: Render Todos to Display Section
   ***************************************/
@@ -558,12 +570,11 @@ export const dom = () => {
       const editButton = createEditButton();
       const deleteButton = createDeleteButton();
 
-      const editModal = createTodoEditModal(todo);
-      editButton.addEventListener("click", () => {
+      const editModal = createTodoEditModal(todo, lastProjInArr);
+      editButton.addEventListener("click", (event) => {
+        event.preventDefault();
         editModal.show();
-        // queryEditModalForm(todo);
       });
-      // const editModal = createTodoEditModal(todo);
 
       deleteButton.addEventListener("click", () =>
         deleteTodo(lastProjInArr, todoArr, todo)
