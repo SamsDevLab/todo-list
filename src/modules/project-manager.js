@@ -9,10 +9,9 @@ export const projManager = function () {
     const newProj = createProject(...projValues);
 
     projArr.push(newProj);
-    console.log(projArr);
   };
 
-  const defaultProject = ["(none)", ""];
+  const defaultProject = ["none", ""];
   addProject(defaultProject);
 
   // Grabs project's randomUUID
@@ -37,8 +36,6 @@ export const projManager = function () {
     return projId;
   };
 
-  // console.log(projArr);
-
   const addTodo = (todoInputs) => {
     const todoValues = extractTodoInputValues(todoInputs);
     const newTodo = createTodo(...todoValues);
@@ -47,8 +44,6 @@ export const projManager = function () {
 
     const targetProj = projArr.find((project) => project.id === projId);
     targetProj.todoArr.push(newTodo);
-
-    console.log(projArr);
   };
 
   // Change todo's title
