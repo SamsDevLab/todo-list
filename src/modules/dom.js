@@ -10,6 +10,13 @@ export const dom = () => {
     return projArr;
   };
 
+  const getLastProjInArray = () => {
+    const projArr = getProjArr();
+    const lastProjInArray = projArr[projArr.length - 1];
+
+    return lastProjInArray;
+  };
+
   // Grab New Todo and New Project Button via data-attributes
   const sectionHeaderBtns = document.querySelectorAll("[data-add-button]");
   sectionHeaderBtns.forEach((button) =>
@@ -91,6 +98,9 @@ export const dom = () => {
   //   todoForm.reset();
   // };
 
+  /**************************
+  Create New Project Section
+  ***************************/
   // Grab Project Form Input Values and Pass into addProject to Create New:
   const queryProjectInputs = () => {
     const projNodeList = document.querySelectorAll("[data-project-input]");
@@ -113,21 +123,20 @@ export const dom = () => {
     return projectDropdown;
   };
 
-  const createDropdownOption = (lastArrayItem) => {
+  const createDropdownOption = (lastProjInArray) => {
     const option = document.createElement("option");
-    option.innerText = lastArrayItem.name;
-    option.dataset.projectId = lastArrayItem.id;
+    option.innerText = lastProjInArray.name;
+    option.dataset.projectId = lastProjInArray.id;
 
     return option;
   };
 
   const addProjToDropdown = () => {
-    const projectArr = getProjArr();
-    const lastArrItem = projectArr[projectArr.length - 1];
+    const lastProjInArry = getLastProjInArray();
 
     const projectDropdown = queryProjectDropdown();
 
-    const option = createDropdownOption(lastArrItem);
+    const option = createDropdownOption(lastProjInArry);
     projectDropdown.appendChild(option);
   };
 
@@ -166,6 +175,9 @@ export const dom = () => {
     queryProject().modal.close();
   };
 
+  /*****************************************************
+  Project Section: Dynamically Construct Add/New Project
+  ******************************************************/
   const queryProjectSection = () => {
     const projSection = document.querySelector("[data-section = 'projects']");
     return projSection;
@@ -177,10 +189,10 @@ export const dom = () => {
     return projectDiv;
   };
 
-  const createProjButton = (lastArrayItem) => {
+  const createProjButton = (lastProjInArray) => {
     const button = document.createElement("button");
     button.classList.add("project-button");
-    button.innerText = lastArrayItem.name;
+    button.innerText = lastProjInArray.name;
 
     return button;
   };
@@ -199,6 +211,9 @@ export const dom = () => {
     return projHeader;
   };
 
+  /***********************************************************
+  Todo Section: Dynamically Construct Add/New Todo to Project
+  ***********************************************************/
   const queryTodoDisplay = () => {
     const todoDisplay = document.querySelector(
       "[data-display = 'todo-display']"
@@ -217,7 +232,7 @@ export const dom = () => {
     const checkbox = document.createElement("input");
 
     checkbox.type = "checkbox";
-    checkbox.value = todo.todoId;
+    checkbox.value = todo.id;
 
     return checkbox;
   };
@@ -387,7 +402,6 @@ export const dom = () => {
     select.setAttribute("name", "edit-project");
     select.setAttribute("id", "edit-project");
     projArr.forEach((project) => {
-      console.log(project);
       const option = document.createElement("option");
       const lowercaseName =
         project.name.charAt(0).toLowerCase() + project.name.slice(1);
@@ -437,8 +451,6 @@ export const dom = () => {
     const button = document.createElement("button");
     button.classList.add("edit-todo-button");
 
-    // console.log(todo);
-
     button.innerText = "Save";
 
     button.addEventListener("click", (event) => {
@@ -479,13 +491,20 @@ export const dom = () => {
     return modal;
   };
 
+  const deleteTodo = (todoArr, todo) => {
+    const index = todoArr.indexOf(todo);
+
+    if (index > -1) {
+      todoArr.splice(index, 1);
+    }
+  };
+
   /*************************************
     Todo: Render Todos to Display Section
   ***************************************/
-  const renderTodosToDisplay = (lastArrItem, todoDisplay) => {
-    const todoArr = lastArrItem.todoArr;
+  const renderTodosToDisplay = (lastProjInArray, todoDisplay) => {
+    const todoArr = lastProjInArray.todoArr;
     todoArr.forEach((todo) => {
-      // console.log(todo);
       // Create todo div
       const todoDiv = createTodoDiv();
 
@@ -498,7 +517,7 @@ export const dom = () => {
       const dueDate = createDueDateElement(todo);
       titleAndDueDateDiv.append(title, dueDate);
 
-      // Create editAndDelete Div
+      // Create editAndDelete Div in Todo
       const editAndDeleteDiv = createEditAndDeleteDiv();
 
       const editButton = createEditButton();
@@ -506,6 +525,9 @@ export const dom = () => {
 
       editButton.addEventListener("click", () => editModal.show());
       const editModal = createTodoEditModal(todo);
+
+      // Start here tomorrow:
+      deleteButton.addEventListener("click", () => deleteTodo(todoArr, todo));
 
       // addDeleteButtonFunctionality(deleteButton, todo);
       editAndDeleteDiv.append(editButton, deleteButton);
@@ -518,47 +540,45 @@ export const dom = () => {
     });
   };
 
-  const updateProjHeader = (lastArrItem) => {
+  const updateProjHeader = (lastProjInArray) => {
     const projHeader = queryProjHeader();
     projHeader.innerText = "";
-    projHeader.innerText = lastArrItem.name;
+    projHeader.innerText = lastProjInArray.name;
   };
 
-  const updateTodoList = (lastArrItem) => {
+  const updateTodoList = (lastProjInArray) => {
     const todoDisplay = queryTodoDisplay();
     todoDisplay.innerText = "";
-    renderTodosToDisplay(lastArrItem, todoDisplay);
+    renderTodosToDisplay(lastProjInArray, todoDisplay);
   };
 
-  const updateMainDisplay = (lastArrItem) => {
-    updateProjHeader(lastArrItem);
-    updateTodoList(lastArrItem);
+  const updateMainDisplay = (lastProjInArray) => {
+    updateProjHeader(lastProjInArray);
+    updateTodoList(lastProjInArray);
   };
 
-  const addEventListenerToProjBtn = (projectButton, lastArrItem) => {
+  const addEventListenerToProjBtn = (projectButton, lastProjInArray) => {
     projectButton.addEventListener("click", () =>
-      // displayProjectContents(lastArrItem)
-      updateMainDisplay(lastArrItem)
+      // displayProjectContents(lastProjInArray)
+      updateMainDisplay(lastProjInArray)
     );
   };
 
   const addProjToProjectsSection = () => {
     const projSection = queryProjectSection();
-    const projArr = getProjArr();
-    const lastArrItem = projArr[projArr.length - 1];
+    const lastProjInArray = getLastProjInArray();
 
     /* 
-     - Need to write event listeners for the projButton and projDeleteButton
      - The projDeleteButton will need access to the project's ID so it can delete the entire project
         without disrupting anything. This is a primary reason that the project ID was created.\
     - Emojis for the projects are on backburner for time being (may or may not include them in final draft)
     */
 
     const projDiv = createProjDiv();
-    const projButton = createProjButton(lastArrItem);
+    const projButton = createProjButton(lastProjInArray);
     const projDeleteButton = createProjDeleteButton();
 
-    addEventListenerToProjBtn(projButton, lastArrItem);
+    addEventListenerToProjBtn(projButton, lastProjInArray);
 
     projDiv.appendChild(projButton);
     projDiv.appendChild(projDeleteButton);
@@ -582,9 +602,17 @@ export const dom = () => {
 dom();
 
 /* 
-Current Plan of Attack: 
-- Work on Adding new Todo/Project Elements to the DOM
-- Need to look at why resetTodoForm() feature in todo modal isn't working (commented out for now)
-- After that, work on Filtering Todos by: All Tasks, Today, Upcoming, Anytime
---- Will need to possibly employ datefns for this.
+Punchlist:
+- Todos 'delete' button: Add functionality
+- Projects 'delete' button: Add functionality
+- queryTodoForm/resetTodoForm: Revisit and debug
+- 'none' default arr: Rename "none" to something more descriptive. This will feature all of the todos that don't live
+in a specific, created project - place them in todos section in the todos pane.
+- localStorage: Look into it and how you can go about implementing it in your storage.js file.
+--- localStorage should help with editing todos on the backend.
+----- May need to revisit some of your createTodoEdit functions once you implement storage.
+- datefns: Look at datfns and how you may be able to employ them (these functions should be handy for
+filtering by 'Today', 'Upcoming' and 'Anytime');
+- Emojis: How do you create an emoji selector and how can you pass emojis in for your projects?
+- Styling: Begin styling the project
 */
