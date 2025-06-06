@@ -10,11 +10,11 @@ export const dom = () => {
     return projArr;
   };
 
-  const getLastProjInArray = () => {
+  const getLastProjInArr = () => {
     const projArr = getProjArr();
-    const lastProjInArray = projArr[projArr.length - 1];
+    const lastProjInArr = projArr[projArr.length - 1];
 
-    return lastProjInArray;
+    return lastProjInArr;
   };
 
   // Grab New Todo and New Project Button via data-attributes
@@ -123,20 +123,20 @@ export const dom = () => {
     return projectDropdown;
   };
 
-  const createDropdownOption = (lastProjInArray) => {
+  const createDropdownOption = (lastProjInArr) => {
     const option = document.createElement("option");
-    option.innerText = lastProjInArray.name;
-    option.dataset.projectId = lastProjInArray.id;
+    option.innerText = lastProjInArr.name;
+    option.dataset.projectId = lastProjInArr.id;
 
     return option;
   };
 
   const addProjToDropdown = () => {
-    const lastProjInArry = getLastProjInArray();
+    const lastProjInArr = getLastProjInArr();
 
     const projectDropdown = queryProjectDropdown();
 
-    const option = createDropdownOption(lastProjInArry);
+    const option = createDropdownOption(lastProjInArr);
     projectDropdown.appendChild(option);
   };
 
@@ -189,10 +189,10 @@ export const dom = () => {
     return projectDiv;
   };
 
-  const createProjButton = (lastProjInArray) => {
+  const createProjButton = (lastProjInArr) => {
     const button = document.createElement("button");
     button.classList.add("project-button");
-    button.innerText = lastProjInArray.name;
+    button.innerText = lastProjInArr.name;
 
     return button;
   };
@@ -491,19 +491,21 @@ export const dom = () => {
     return modal;
   };
 
-  const deleteTodo = (todoArr, todo) => {
+  const deleteTodo = (lastProjInArr, todoArr, todo) => {
     const index = todoArr.indexOf(todo);
 
     if (index > -1) {
       todoArr.splice(index, 1);
     }
+
+    updateTodoList(lastProjInArr);
   };
 
   /*************************************
     Todo: Render Todos to Display Section
   ***************************************/
-  const renderTodosToDisplay = (lastProjInArray, todoDisplay) => {
-    const todoArr = lastProjInArray.todoArr;
+  const renderTodosToDisplay = (lastProjInArr, todoDisplay) => {
+    const todoArr = lastProjInArr.todoArr;
     todoArr.forEach((todo) => {
       // Create todo div
       const todoDiv = createTodoDiv();
@@ -526,8 +528,9 @@ export const dom = () => {
       editButton.addEventListener("click", () => editModal.show());
       const editModal = createTodoEditModal(todo);
 
-      // Start here tomorrow:
-      deleteButton.addEventListener("click", () => deleteTodo(todoArr, todo));
+      deleteButton.addEventListener("click", () =>
+        deleteTodo(lastProjInArr, todoArr, todo)
+      );
 
       // addDeleteButtonFunctionality(deleteButton, todo);
       editAndDeleteDiv.append(editButton, deleteButton);
@@ -540,33 +543,32 @@ export const dom = () => {
     });
   };
 
-  const updateProjHeader = (lastProjInArray) => {
+  const updateProjHeader = (lastProjInArr) => {
     const projHeader = queryProjHeader();
     projHeader.innerText = "";
-    projHeader.innerText = lastProjInArray.name;
+    projHeader.innerText = lastProjInArr.name;
   };
 
-  const updateTodoList = (lastProjInArray) => {
+  const updateTodoList = (lastProjInArr) => {
     const todoDisplay = queryTodoDisplay();
     todoDisplay.innerText = "";
-    renderTodosToDisplay(lastProjInArray, todoDisplay);
+    renderTodosToDisplay(lastProjInArr, todoDisplay);
   };
 
-  const updateMainDisplay = (lastProjInArray) => {
-    updateProjHeader(lastProjInArray);
-    updateTodoList(lastProjInArray);
+  const updateMainDisplay = (lastProjInArr) => {
+    updateProjHeader(lastProjInArr);
+    updateTodoList(lastProjInArr);
   };
 
-  const addEventListenerToProjBtn = (projectButton, lastProjInArray) => {
+  const addEventListenerToProjBtn = (projectButton, lastProjInArr) => {
     projectButton.addEventListener("click", () =>
-      // displayProjectContents(lastProjInArray)
-      updateMainDisplay(lastProjInArray)
+      updateMainDisplay(lastProjInArr)
     );
   };
 
   const addProjToProjectsSection = () => {
     const projSection = queryProjectSection();
-    const lastProjInArray = getLastProjInArray();
+    const lastProjInArr = getLastProjInArr();
 
     /* 
      - The projDeleteButton will need access to the project's ID so it can delete the entire project
@@ -575,10 +577,10 @@ export const dom = () => {
     */
 
     const projDiv = createProjDiv();
-    const projButton = createProjButton(lastProjInArray);
+    const projButton = createProjButton(lastProjInArr);
     const projDeleteButton = createProjDeleteButton();
 
-    addEventListenerToProjBtn(projButton, lastProjInArray);
+    addEventListenerToProjBtn(projButton, lastProjInArr);
 
     projDiv.appendChild(projButton);
     projDiv.appendChild(projDeleteButton);
