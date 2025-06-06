@@ -306,6 +306,10 @@ export const dom = () => {
     input.setAttribute("type", "text");
     input.value = todo.title;
 
+    input.addEventListener("input", (event) => {
+      input.value === event.target.value;
+    });
+
     div.append(label, input);
 
     return div;
@@ -325,6 +329,10 @@ export const dom = () => {
     input.setAttribute("type", "textarea");
     input.value = todo.description;
 
+    input.addEventListener("input", (event) => {
+      input.value === event.target.value;
+    });
+
     div.append(label, input);
 
     return div;
@@ -343,6 +351,10 @@ export const dom = () => {
     input.setAttribute("id", "edit-due-date");
     input.setAttribute("type", "date");
     input.value = todo.dueDate;
+
+    input.addEventListener("input", (event) => {
+      input.value === event.target.value;
+    });
 
     div.append(label, input);
 
@@ -383,6 +395,10 @@ export const dom = () => {
       select.options[2].selected = true;
     }
 
+    select.addEventListener("input", (event) => {
+      select.value === event.target.value;
+    });
+
     div.append(label, select);
 
     return div;
@@ -411,6 +427,10 @@ export const dom = () => {
       select.appendChild(option);
     });
 
+    select.addEventListener("input", (event) => {
+      select.value === event.target.value;
+    });
+
     div.append(label, select);
     return div;
   };
@@ -427,6 +447,10 @@ export const dom = () => {
     textArea.setAttribute("name", "edit-notes");
     textArea.setAttribute("id", "edit-notes");
     textArea.value = todo.notes;
+
+    textArea.addEventListener("input", (event) => {
+      textArea.value === event.target.value;
+    });
 
     div.append(label, textArea);
 
@@ -486,6 +510,8 @@ export const dom = () => {
       saveButton
     );
 
+    form.dataset.editTodoForm = todo.id;
+
     modal.appendChild(form);
 
     return modal;
@@ -501,6 +527,13 @@ export const dom = () => {
     updateTodoList(lastProjInArr);
   };
 
+  // const queryEditModalForm = (todo) => {
+  //   const nodeList = document.querySelectorAll("[data-edit-todo-form]");
+  //   const foundForm = Array.from(nodeList).find(
+  //     (node) => node.dataset.editTodoForm === todo.id
+  //   );
+
+  // };
   /*************************************
     Todo: Render Todos to Display Section
   ***************************************/
@@ -525,8 +558,12 @@ export const dom = () => {
       const editButton = createEditButton();
       const deleteButton = createDeleteButton();
 
-      editButton.addEventListener("click", () => editModal.show());
       const editModal = createTodoEditModal(todo);
+      editButton.addEventListener("click", () => {
+        editModal.show();
+        // queryEditModalForm(todo);
+      });
+      // const editModal = createTodoEditModal(todo);
 
       deleteButton.addEventListener("click", () =>
         deleteTodo(lastProjInArr, todoArr, todo)
@@ -605,9 +642,12 @@ dom();
 
 /* 
 Punchlist:
-- Todos 'delete' button: Add functionality
+- ✅ Todos 'delete' button: Add functionality
+- Todos Edit 'save' button: Add functionality
 - Projects 'delete' button: Add functionality
 - queryTodoForm/resetTodoForm: Revisit and debug
+- const createProjectEditDiv: Revisit and debug. "todo" parameter is grayed out. Select menu is not
+--- showing original choice persistence
 - 'none' default arr: Rename "none" to something more descriptive. This will feature all of the todos that don't live
 in a specific, created project - place them in todos section in the todos pane.
 - localStorage: Look into it and how you can go about implementing it in your storage.js file.
