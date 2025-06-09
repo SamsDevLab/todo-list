@@ -427,8 +427,18 @@ export const dom = () => {
       select.appendChild(option);
     });
 
+    const projValue = todo.project;
+
+    for (let i = 0; i < select.options.length; i++) {
+      if (select.options[i].innerText === projValue) {
+        select.options[i].selected = true;
+      }
+    }
+
     select.addEventListener("input", (event) => {
       select.value === event.target.value;
+
+      // console.log(todo);
     });
 
     div.append(label, select);
@@ -513,7 +523,7 @@ export const dom = () => {
     const descriptionDiv = createDescriptionEditDiv(todo);
     const dueDateDiv = createDueDateEditDiv(todo);
     const priorityDiv = createPriorityEditDiv(todo);
-    const projectDiv = createProjectEditDiv(todo); // Should be able to adjust which todoArr this belongs to within localStorage
+    const projectDiv = createProjectEditDiv(todo);
     const notesDiv = createNotesEditDiv(todo);
     const cancelButton = createCancelButton(modal);
     const saveButton = createSaveButton(todo, lastProjInArr);
@@ -654,7 +664,10 @@ dom();
 /* 
 Punchlist:
 - ✅ Todos 'delete' button: Add functionality
-- Todos Edit 'save' button: Add functionality
+- ✅ Todos Edit 'save' button: Add functionality
+- Todo Edit Button - Can't switch projects. Program functionality.
+--- Project choice persistence should appear when clicking on "edit" button
+--- Todo should completely shift to different project's todoArr upon choosing
 - Projects 'delete' button: Add functionality
 - queryTodoForm/resetTodoForm: Revisit and debug
 - const createProjectEditDiv: Revisit and debug. "todo" parameter is grayed out. Select menu is not
