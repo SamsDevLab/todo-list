@@ -64,10 +64,70 @@
                   data-todo-input="notes"
                 ></textarea>
               </div>
-              <button data-cancel="cancel-todo">Cancel</button>
-              <button data-submit="submit-todo">Submit</button>
+              <button data-cancel-button="cancel-todo">Cancel</button>
+              <button data-submit-button="submit-todo">Submit</button>
             </form>
           </dialog>
+          <!-- <dialog data-modal="edit-todo">
+            <h2>Edit Todo</h2>
+            <form action="./index.js" method="get" data-form="edit-todos">
+              <div>
+                <label for="edit-title">Title:</label>
+                <input
+                  type="text"
+                  id="edit-title"
+                  data-todo-input="edit-title"
+                  value
+                />
+              </div>
+              <div>
+                <label for="edit-description">Description:</label>
+                <input
+                  type="text"
+                  id="edit-description"
+                  data-todo-input="edit-description"
+                />
+              </div>
+              <div>
+                <label for="edit-due-date">Due Date:</label>
+                <input
+                  type="date"
+                  id="edit-due-date"
+                  data-todo-input="edit-due-date"
+                />
+              </div>
+              <div>
+                <label for="edit-priority">Priority:</label>
+                <select
+                  name="edit-priority"
+                  id="edit-priority"
+                  data-todo-input="edit-priority"
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+              <div>
+                <label for="edit-project">Project:</label>
+                <select
+                  name="edit-project"
+                  id="edit-project"
+                  data-todo-input="edit-project"
+                ></select>
+              </div>
+              <div>
+                <label for="edit-notes">Notes</label>
+                <textarea
+                  name="textarea"
+                  id="edit-notes"
+                  data-todo-input="edit-notes"
+                ></textarea>
+              </div>
+              <button data-cancel-edit-button="cancel-edit-todo">Cancel</button>
+              <button data-save-edit-button="save-edit-todo">Submit</button>
+            </form>
+          </dialog> -->
         </div>
         <div class="section-container" data-section="projects">
           <div class="section-header">
@@ -85,8 +145,8 @@
                 <label for="symbol">Project Symbol:</label>
                 <input type="text" id="symbol" data-project-input="symbol" />
               </div>
-              <button data-submit="submit-project">Submit</button>
-              <button data-cancel="cancel-project">Cancel</button>
+              <button data-submit-button="submit-project">Submit</button>
+              <button data-cancel-button="cancel-project">Cancel</button>
             </form>
           </dialog>
         </div>
