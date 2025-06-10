@@ -222,11 +222,7 @@ dialog:open {
   align-items: center;
 }
 
-.edit-todo-modal {
-  display: none;
-}
-
-.edit-todo-modal:open {
+#edit-todo-modal:open {
   background-color: darkorange;
   height: 50%;
   width: 50%;
