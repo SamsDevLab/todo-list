@@ -31,12 +31,12 @@ export const dom = () => {
 
   /////// Modals /////////
   const queryTodo = () => {
-    const modal = document.querySelector('[data-modal="todo"]');
+    const modal = document.querySelector('[data-modal="add-new-todo"]');
     return { modal };
   };
 
   const queryProject = () => {
-    const modal = document.querySelector('[data-modal="project"]');
+    const modal = document.querySelector('[data-modal="add-new-project"]');
     return { modal };
   };
 
@@ -489,6 +489,8 @@ export const dom = () => {
     return button;
   };
 
+  const queryEditModal = () => {};
+
   const queryEditModalForm = (todo) => {
     const nodeList = document.querySelectorAll("[data-edit-todo-form]");
     const foundForm = Array.from(nodeList).find(
@@ -537,9 +539,13 @@ export const dom = () => {
 
     button.addEventListener("click", (event) => {
       event.preventDefault();
+      // Need to query the edit modal to be able to close it when appropriate (I believe it's currently interrupting the functionality of the project dynamically refreshing after migrating a todo to another project). This is possibly going to require refactoring the edit todos to share one common edit modal - right now, each todo is creating its own form and modal
+      const editModal = queryEditModal();
       const foundForm = queryEditModalForm(todo);
       const updatedTodo = editFormValues(foundForm, todo);
       const todoId = updatedTodo.id;
+
+      console.log(foundForm);
 
       if (updatedTodo.project !== currentProj.name) {
         const projArr = getProjArr();
@@ -551,6 +557,7 @@ export const dom = () => {
           (project) => project.name === updatedTodo.project
         );
         newProj.todoArr.push(updatedTodo);
+        updateTodoList(currentProj);
         updateTodoList(newProj);
       }
     });
@@ -712,11 +719,12 @@ Punchlist:
 - Todo Edit Button - Can't switch projects. Program functionality.
 --- ✅ Project choice persistence should appear when clicking on "edit" button
 --- ✅ Todo should completely shift to different project's todoArr upon choosing different project and hitting save
---- Project should update immediately whether adding or moving a todo - when you add or move a 'todo', the todo doesn't render until you re-click the project button. If moving the todo, the todo
-will stay in its original project unless you click on the new project you added it to.
+--- ✅ Project should update immediately when adding a todo
+- Refactor todoEditModal - there should only be one todoEditModal which edits all todos. Right now each todo has its own modal! Fix this before tackling the bug right below
+- Project should update immediately when MOVING a todo. As of now, though the todo DOES move
+    to the new project, it lingers on the old project until you click away. Fix this!
+    As an aside I think this problem MAY have to do with my todoEdit modals. This is being handled in createSaveButton() function
 --- List of projects in todo edit dropdown should update automatically when a new project is added - As of now, this doesn't happen and you have to click away and click back to see the project populate in the todo edit's dropdown
-
-
 - Projects 'delete' button: Add functionality
 - queryTodoForm/resetTodoForm: Revisit and debug
 - const createProjectEditDiv: Revisit and debug. "todo" parameter is grayed out. Select menu is not
