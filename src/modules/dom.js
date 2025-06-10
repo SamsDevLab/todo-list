@@ -51,17 +51,18 @@ export const dom = () => {
   };
 
   // Add Listeners to Submit Buttons
-  const submitButtons = document.querySelectorAll("[data-submit]");
+  const submitButtons = document.querySelectorAll("[data-submit-button]");
+
   submitButtons.forEach((button) =>
     button.addEventListener("click", (event) => {
-      if (event.target.dataset.submit === "submit-todo") {
+      if (event.target.dataset.submitButton === "submit-todo") {
         event.preventDefault();
         const currentProjName = submitTodo();
         const currentProjObj = getProjObj(currentProjName);
         updateTodoList(currentProjObj);
         // resetTodoForm();
         closeTodoModal();
-      } else if (event.target.dataset.submit === "submit-project") {
+      } else if (event.target.dataset.submitButton === "submit-project") {
         event.preventDefault();
         submitProject();
         addProjToDropdown();
@@ -166,13 +167,13 @@ export const dom = () => {
   };
 
   // Add Listeners to Cancel Buttons
-  const cancelButtons = document.querySelectorAll("[data-cancel]");
+  const cancelButtons = document.querySelectorAll("[data-cancel-button]");
   cancelButtons.forEach((button) =>
     button.addEventListener("click", (event) => {
-      if (event.target.dataset.cancel === "cancel-todo") {
+      if (event.target.dataset.cancelButton === "cancel-todo") {
         event.preventDefault();
         closeTodoModal();
-      } else if (event.target.dataset.cancel === "cancel-project") {
+      } else if (event.target.dataset.cancelButton === "cancel-project") {
         event.preventDefault();
         closeProjectModal();
       }
