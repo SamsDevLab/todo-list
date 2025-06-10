@@ -56,8 +56,9 @@ export const dom = () => {
     button.addEventListener("click", (event) => {
       if (event.target.dataset.submit === "submit-todo") {
         event.preventDefault();
-        submitTodo();
-
+        const currentProjName = submitTodo();
+        const currentProjObj = getProjObj(currentProjName);
+        updateTodoList(currentProjObj);
         // resetTodoForm();
         closeTodoModal();
       } else if (event.target.dataset.submit === "submit-project") {
@@ -86,6 +87,18 @@ export const dom = () => {
   const submitTodo = () => {
     const todoInputsObj = queryTodoInputs();
     projectManager.addTodo(todoInputsObj);
+    const currentProjName = todoInputsObj.project.value;
+
+    return currentProjName;
+  };
+
+  const getProjObj = (currentProjName) => {
+    const projArr = getProjArr();
+    const foundProject = projArr.find(
+      (project) => project.name === currentProjName
+    );
+
+    return foundProject;
   };
 
   // Reset the Todo Form After Submission
@@ -540,14 +553,6 @@ export const dom = () => {
         newProj.todoArr.push(updatedTodo);
         updateTodoList(newProj);
       }
-
-      // Will need to start here tomorrow - test it again but so far it's pushing the project
-      // to the new array. Also need to look at the else statement in case a new project is not chosen. It will just need to update the todo in the current project
-      // Also look at abstracting away some of this logic under the event listener
-      // Also need to see how to get the todo list/project to update automagically without having to
-      // click the project button
-      // Bugs: --- Project should update immediately whether adding or moving a todo - when you add or move a 'todo', the todo doesn't render until you re-click the project button. If moving the todo, the todo will stay in its original project unless you click on the new project you added it to.
-      // --- List of projects in todo edit dropdown should update automatically when a new project is added - As of now, this doesn't happen and you have to click away and click back to see the project populate in the todo edit's dropdown
     });
 
     return button;
