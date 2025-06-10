@@ -10,11 +10,11 @@ export const dom = () => {
     return projArr;
   };
 
-  const getLastProjInArr = () => {
+  const getCurrentProj = () => {
     const projArr = getProjArr();
-    const lastProjInArr = projArr[projArr.length - 1];
+    const currentProj = projArr[projArr.length - 1];
 
-    return lastProjInArr;
+    return currentProj;
   };
 
   // Grab New Todo and New Project Button via data-attributes
@@ -57,6 +57,7 @@ export const dom = () => {
       if (event.target.dataset.submit === "submit-todo") {
         event.preventDefault();
         submitTodo();
+
         // resetTodoForm();
         closeTodoModal();
       } else if (event.target.dataset.submit === "submit-project") {
@@ -123,20 +124,20 @@ export const dom = () => {
     return projectDropdown;
   };
 
-  const createDropdownOption = (lastProjInArr) => {
+  const createDropdownOption = (currentProj) => {
     const option = document.createElement("option");
-    option.innerText = lastProjInArr.name;
-    option.dataset.projectId = lastProjInArr.id;
+    option.innerText = currentProj.name;
+    option.dataset.projectId = currentProj.id;
 
     return option;
   };
 
   const addProjToDropdown = () => {
-    const lastProjInArr = getLastProjInArr();
+    const currentProj = getCurrentProj();
 
     const projectDropdown = queryProjectDropdown();
 
-    const option = createDropdownOption(lastProjInArr);
+    const option = createDropdownOption(currentProj);
     projectDropdown.appendChild(option);
   };
 
@@ -189,10 +190,10 @@ export const dom = () => {
     return projectDiv;
   };
 
-  const createProjButton = (lastProjInArr) => {
+  const createProjButton = (currentProj) => {
     const button = document.createElement("button");
     button.classList.add("project-button");
-    button.innerText = lastProjInArr.name;
+    button.innerText = currentProj.name;
 
     return button;
   };
@@ -419,28 +420,22 @@ export const dom = () => {
     select.setAttribute("id", "edit-project");
     projArr.forEach((project) => {
       const option = document.createElement("option");
-      const lowercaseName =
-        project.name.charAt(0).toLowerCase() + project.name.slice(1);
 
-      option.value = lowercaseName;
+      option.value = project.name;
       option.innerText = project.name;
       select.appendChild(option);
     });
 
-    const projValue = todo.project;
-
     for (let i = 0; i < select.options.length; i++) {
-      if (select.options[i].innerText === projValue) {
+      if (select.options[i].value === todo.project) {
         select.options[i].selected = true;
       }
     }
 
     select.addEventListener("input", (event) => {
       select.value === event.target.value;
-
-      // console.log(todo);
     });
-
+    // console.log(todo);
     div.append(label, select);
     return div;
   };
@@ -496,25 +491,69 @@ export const dom = () => {
     todo.priority = foundForm.elements[3].value;
     todo.project = foundForm.elements[4].value;
     todo.notes = foundForm.elements[5].value;
+
+    return todo;
   };
 
-  const createSaveButton = (todo, lastProjInArr) => {
+  // First Draft (works but depends on currentProj to place in correct array (this should)
+  // actually be determined by the current select field
+  // const createSaveButton = (todo, currentProj) => {
+  //   const button = document.createElement("button");
+  //   button.classList.add("edit-todo-button");
+
+  //   button.innerText = "Save";
+
+  //   button.addEventListener("click", (event) => {
+  //     event.preventDefault();
+  //     const foundForm = queryEditModalForm(todo);
+  //     editFormValues(foundForm, todo);
+  //     updateTodoList(currentProj);
+  //   });
+
+  //   return button;
+  // };
+
+  // New Draft I'm experimenting with:
+  const createSaveButton = (todo, currentProj) => {
     const button = document.createElement("button");
     button.classList.add("edit-todo-button");
 
     button.innerText = "Save";
 
+    // console.log(currentProj.name);
+
     button.addEventListener("click", (event) => {
       event.preventDefault();
       const foundForm = queryEditModalForm(todo);
-      editFormValues(foundForm, todo);
-      updateTodoList(lastProjInArr);
+      const updatedTodo = editFormValues(foundForm, todo);
+      const todoId = updatedTodo.id;
+
+      if (updatedTodo.project !== currentProj.name) {
+        const projArr = getProjArr();
+        const updatedTodosCurrentIndex = currentProj.todoArr.findIndex(
+          (element) => element.id === todoId
+        );
+        currentProj.todoArr.splice(updatedTodosCurrentIndex, 1);
+        const newProj = projArr.find(
+          (project) => project.name === updatedTodo.project
+        );
+        newProj.todoArr.push(updatedTodo);
+        updateTodoList(newProj);
+      }
+
+      // Will need to start here tomorrow - test it again but so far it's pushing the project
+      // to the new array. Also need to look at the else statement in case a new project is not chosen. It will just need to update the todo in the current project
+      // Also look at abstracting away some of this logic under the event listener
+      // Also need to see how to get the todo list/project to update automagically without having to
+      // click the project button
+      // Bugs: --- Project should update immediately whether adding or moving a todo - when you add or move a 'todo', the todo doesn't render until you re-click the project button. If moving the todo, the todo will stay in its original project unless you click on the new project you added it to.
+      // --- List of projects in todo edit dropdown should update automatically when a new project is added - As of now, this doesn't happen and you have to click away and click back to see the project populate in the todo edit's dropdown
     });
 
     return button;
   };
 
-  const createTodoEditModal = (todo, lastProjInArr) => {
+  const createTodoEditModal = (todo, currentProj) => {
     const modal = document.createElement("dialog");
     modal.classList.add("edit-todo-modal");
 
@@ -526,7 +565,7 @@ export const dom = () => {
     const projectDiv = createProjectEditDiv(todo);
     const notesDiv = createNotesEditDiv(todo);
     const cancelButton = createCancelButton(modal);
-    const saveButton = createSaveButton(todo, lastProjInArr);
+    const saveButton = createSaveButton(todo, currentProj); //currentProj (passed this in on first draft)
 
     form.append(
       titleDiv,
@@ -546,21 +585,21 @@ export const dom = () => {
     return modal;
   };
 
-  const deleteTodo = (lastProjInArr, todoArr, todo) => {
+  const deleteTodo = (currentProj, todoArr, todo) => {
     const index = todoArr.indexOf(todo);
 
     if (index > -1) {
       todoArr.splice(index, 1);
     }
 
-    updateTodoList(lastProjInArr);
+    updateTodoList(currentProj);
   };
 
   /*************************************
     Todo: Render Todos to Display Section
   ***************************************/
-  const renderTodosToDisplay = (lastProjInArr, todoDisplay) => {
-    const todoArr = lastProjInArr.todoArr;
+  const renderTodosToDisplay = (currentProj, todoDisplay) => {
+    const todoArr = currentProj.todoArr;
     todoArr.forEach((todo) => {
       // Create todo div
       const todoDiv = createTodoDiv();
@@ -580,14 +619,14 @@ export const dom = () => {
       const editButton = createEditButton();
       const deleteButton = createDeleteButton();
 
-      const editModal = createTodoEditModal(todo, lastProjInArr);
+      const editModal = createTodoEditModal(todo, currentProj);
       editButton.addEventListener("click", (event) => {
         event.preventDefault();
         editModal.show();
       });
 
       deleteButton.addEventListener("click", () =>
-        deleteTodo(lastProjInArr, todoArr, todo)
+        deleteTodo(currentProj, todoArr, todo)
       );
 
       // addDeleteButtonFunctionality(deleteButton, todo);
@@ -601,32 +640,32 @@ export const dom = () => {
     });
   };
 
-  const updateProjHeader = (lastProjInArr) => {
+  const updateProjHeader = (currentProj) => {
     const projHeader = queryProjHeader();
     projHeader.innerText = "";
-    projHeader.innerText = lastProjInArr.name;
+    projHeader.innerText = currentProj.name;
   };
 
-  const updateTodoList = (lastProjInArr) => {
+  const updateTodoList = (currentProj) => {
     const todoDisplay = queryTodoDisplay();
     todoDisplay.innerText = "";
-    renderTodosToDisplay(lastProjInArr, todoDisplay);
+    renderTodosToDisplay(currentProj, todoDisplay);
   };
 
-  const updateMainDisplay = (lastProjInArr) => {
-    updateProjHeader(lastProjInArr);
-    updateTodoList(lastProjInArr);
+  const updateMainDisplay = (currentProj) => {
+    updateProjHeader(currentProj);
+    updateTodoList(currentProj);
   };
 
-  const addEventListenerToProjBtn = (projectButton, lastProjInArr) => {
+  const addEventListenerToProjBtn = (projectButton, currentProj) => {
     projectButton.addEventListener("click", () =>
-      updateMainDisplay(lastProjInArr)
+      updateMainDisplay(currentProj)
     );
   };
 
   const addProjToProjectsSection = () => {
     const projSection = queryProjectSection();
-    const lastProjInArr = getLastProjInArr();
+    const currentProj = getCurrentProj();
 
     /* 
      - The projDeleteButton will need access to the project's ID so it can delete the entire project
@@ -635,10 +674,10 @@ export const dom = () => {
     */
 
     const projDiv = createProjDiv();
-    const projButton = createProjButton(lastProjInArr);
+    const projButton = createProjButton(currentProj);
     const projDeleteButton = createProjDeleteButton();
 
-    addEventListenerToProjBtn(projButton, lastProjInArr);
+    addEventListenerToProjBtn(projButton, currentProj);
 
     projDiv.appendChild(projButton);
     projDiv.appendChild(projDeleteButton);
@@ -666,8 +705,13 @@ Punchlist:
 - ✅ Todos 'delete' button: Add functionality
 - ✅ Todos Edit 'save' button: Add functionality
 - Todo Edit Button - Can't switch projects. Program functionality.
---- Project choice persistence should appear when clicking on "edit" button
---- Todo should completely shift to different project's todoArr upon choosing
+--- ✅ Project choice persistence should appear when clicking on "edit" button
+--- ✅ Todo should completely shift to different project's todoArr upon choosing different project and hitting save
+--- Project should update immediately whether adding or moving a todo - when you add or move a 'todo', the todo doesn't render until you re-click the project button. If moving the todo, the todo
+will stay in its original project unless you click on the new project you added it to.
+--- List of projects in todo edit dropdown should update automatically when a new project is added - As of now, this doesn't happen and you have to click away and click back to see the project populate in the todo edit's dropdown
+
+
 - Projects 'delete' button: Add functionality
 - queryTodoForm/resetTodoForm: Revisit and debug
 - const createProjectEditDiv: Revisit and debug. "todo" parameter is grayed out. Select menu is not
