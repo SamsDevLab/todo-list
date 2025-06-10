@@ -297,219 +297,219 @@ export const dom = () => {
   };
 
   /*************************
-    Todo: Edit Form Section
+  Todo: Edit Form Section (Most of this section may be deleted after refactor) 
   **************************/
-  const createTodoEditForm = () => {
-    const form = document.createElement("form");
-    form.classList.add("edit-todo-form");
-    form.method = "get";
+  // const createTodoEditForm = () => {
+  //   const form = document.createElement("form");
+  //   form.classList.add("edit-todo-form");
+  //   form.method = "get";
 
-    return form;
-  };
+  //   return form;
+  // };
 
-  const createTitleEditDiv = (todo) => {
-    const div = document.createElement("div");
-    div.classList.add("todo-edit-div");
+  // const createTitleEditDiv = (todo) => {
+  //   const div = document.createElement("div");
+  //   div.classList.add("todo-edit-div");
 
-    const label = document.createElement("label");
-    label.setAttribute("for", "edit-title");
-    label.innerText = "Title:";
+  //   const label = document.createElement("label");
+  //   label.setAttribute("for", "edit-title");
+  //   label.innerText = "Title:";
 
-    const input = document.createElement("input");
-    input.setAttribute("name", "edit-title");
-    input.setAttribute("id", "edit-title");
-    input.setAttribute("type", "text");
-    input.value = todo.title;
+  //   const input = document.createElement("input");
+  //   input.setAttribute("name", "edit-title");
+  //   input.setAttribute("id", "edit-title");
+  //   input.setAttribute("type", "text");
+  //   input.value = todo.title;
 
-    input.addEventListener("input", (event) => {
-      input.value === event.target.value;
-    });
+  //   input.addEventListener("input", (event) => {
+  //     input.value === event.target.value;
+  //   });
 
-    div.append(label, input);
+  //   div.append(label, input);
 
-    return div;
-  };
+  //   return div;
+  // };
 
-  const createDescriptionEditDiv = (todo) => {
-    const div = document.createElement("div");
-    div.classList.add("todo-edit-div");
+  // const createDescriptionEditDiv = (todo) => {
+  //   const div = document.createElement("div");
+  //   div.classList.add("todo-edit-div");
 
-    const label = document.createElement("label");
-    label.setAttribute("for", "edit-description");
-    label.innerText = "Description:";
+  //   const label = document.createElement("label");
+  //   label.setAttribute("for", "edit-description");
+  //   label.innerText = "Description:";
 
-    const input = document.createElement("input");
-    input.setAttribute("name", "edit-description");
-    input.setAttribute("id", "edit-description");
-    input.setAttribute("type", "textarea");
-    input.value = todo.description;
+  //   const input = document.createElement("input");
+  //   input.setAttribute("name", "edit-description");
+  //   input.setAttribute("id", "edit-description");
+  //   input.setAttribute("type", "textarea");
+  //   input.value = todo.description;
 
-    input.addEventListener("input", (event) => {
-      input.value === event.target.value;
-    });
+  //   input.addEventListener("input", (event) => {
+  //     input.value === event.target.value;
+  //   });
 
-    div.append(label, input);
+  //   div.append(label, input);
 
-    return div;
-  };
+  //   return div;
+  // };
 
-  const createDueDateEditDiv = (todo) => {
-    const div = document.createElement("div");
-    div.classList.add("todo-edit-div");
+  // const createDueDateEditDiv = (todo) => {
+  //   const div = document.createElement("div");
+  //   div.classList.add("todo-edit-div");
 
-    const label = document.createElement("label");
-    label.setAttribute("for", "edit-due-date");
-    label.innerText = "Due Date:";
+  //   const label = document.createElement("label");
+  //   label.setAttribute("for", "edit-due-date");
+  //   label.innerText = "Due Date:";
 
-    const input = document.createElement("input");
-    input.setAttribute("name", "edit-due-date");
-    input.setAttribute("id", "edit-due-date");
-    input.setAttribute("type", "date");
-    input.value = todo.dueDate;
+  //   const input = document.createElement("input");
+  //   input.setAttribute("name", "edit-due-date");
+  //   input.setAttribute("id", "edit-due-date");
+  //   input.setAttribute("type", "date");
+  //   input.value = todo.dueDate;
 
-    input.addEventListener("input", (event) => {
-      input.value === event.target.value;
-    });
+  //   input.addEventListener("input", (event) => {
+  //     input.value === event.target.value;
+  //   });
 
-    div.append(label, input);
+  //   div.append(label, input);
 
-    return div;
-  };
+  //   return div;
+  // };
 
-  const createPriorityEditDiv = (todo) => {
-    const div = document.createElement("div");
-    div.classList.add("todo-edit-div");
+  // const createPriorityEditDiv = (todo) => {
+  //   const div = document.createElement("div");
+  //   div.classList.add("todo-edit-div");
 
-    const label = document.createElement("label");
-    label.setAttribute("for", "edit-priority");
-    label.innerText = "Priority:";
+  //   const label = document.createElement("label");
+  //   label.setAttribute("for", "edit-priority");
+  //   label.innerText = "Priority:";
 
-    const select = document.createElement("select");
-    select.setAttribute("name", "edit-priority");
-    select.setAttribute("id", "edit-priority");
+  //   const select = document.createElement("select");
+  //   select.setAttribute("name", "edit-priority");
+  //   select.setAttribute("id", "edit-priority");
 
-    const optionLow = document.createElement("option");
-    optionLow.value = "low";
-    optionLow.innerText = "Low";
+  //   const optionLow = document.createElement("option");
+  //   optionLow.value = "low";
+  //   optionLow.innerText = "Low";
 
-    const optionMedium = document.createElement("option");
-    optionMedium.value = "medium";
-    optionMedium.innerText = "Medium";
+  //   const optionMedium = document.createElement("option");
+  //   optionMedium.value = "medium";
+  //   optionMedium.innerText = "Medium";
 
-    const optionHigh = document.createElement("option");
-    optionHigh.value = "high";
-    optionHigh.innerText = "High";
+  //   const optionHigh = document.createElement("option");
+  //   optionHigh.value = "high";
+  //   optionHigh.innerText = "High";
 
-    select.append(optionLow, optionMedium, optionHigh);
+  //   select.append(optionLow, optionMedium, optionHigh);
 
-    if (todo.priority === optionLow.value) {
-      select.options[0].selected = true;
-    } else if (todo.priority === optionMedium.value) {
-      select.options[1].selected = true;
-    } else if (todo.priority === optionHigh.value) {
-      select.options[2].selected = true;
-    }
+  //   if (todo.priority === optionLow.value) {
+  //     select.options[0].selected = true;
+  //   } else if (todo.priority === optionMedium.value) {
+  //     select.options[1].selected = true;
+  //   } else if (todo.priority === optionHigh.value) {
+  //     select.options[2].selected = true;
+  //   }
 
-    select.addEventListener("input", (event) => {
-      select.value === event.target.value;
-    });
+  //   select.addEventListener("input", (event) => {
+  //     select.value === event.target.value;
+  //   });
 
-    div.append(label, select);
+  //   div.append(label, select);
 
-    return div;
-  };
+  //   return div;
+  // };
 
-  const createProjectEditDiv = (todo) => {
-    const projArr = getProjArr();
+  // const createProjectEditDiv = (todo) => {
+  //   const projArr = getProjArr();
 
-    const div = document.createElement("div");
-    div.classList.add("todo-edit-div");
+  //   const div = document.createElement("div");
+  //   div.classList.add("todo-edit-div");
 
-    const label = document.createElement("label");
-    label.setAttribute("for", "edit-project");
-    label.innerText = "Project:";
+  //   const label = document.createElement("label");
+  //   label.setAttribute("for", "edit-project");
+  //   label.innerText = "Project:";
 
-    const select = document.createElement("select");
-    select.setAttribute("name", "edit-project");
-    select.setAttribute("id", "edit-project");
-    projArr.forEach((project) => {
-      const option = document.createElement("option");
+  //   const select = document.createElement("select");
+  //   select.setAttribute("name", "edit-project");
+  //   select.setAttribute("id", "edit-project");
+  //   projArr.forEach((project) => {
+  //     const option = document.createElement("option");
 
-      option.value = project.name;
-      option.innerText = project.name;
-      select.appendChild(option);
-    });
+  //     option.value = project.name;
+  //     option.innerText = project.name;
+  //     select.appendChild(option);
+  //   });
 
-    for (let i = 0; i < select.options.length; i++) {
-      if (select.options[i].value === todo.project) {
-        select.options[i].selected = true;
-      }
-    }
+  //   for (let i = 0; i < select.options.length; i++) {
+  //     if (select.options[i].value === todo.project) {
+  //       select.options[i].selected = true;
+  //     }
+  //   }
 
-    select.addEventListener("input", (event) => {
-      select.value === event.target.value;
-    });
-    // console.log(todo);
-    div.append(label, select);
-    return div;
-  };
+  //   select.addEventListener("input", (event) => {
+  //     select.value === event.target.value;
+  //   });
+  //   // console.log(todo);
+  //   div.append(label, select);
+  //   return div;
+  // };
 
-  const createNotesEditDiv = (todo) => {
-    const div = document.createElement("div");
-    div.classList.add("todo-edit-div");
+  // const createNotesEditDiv = (todo) => {
+  //   const div = document.createElement("div");
+  //   div.classList.add("todo-edit-div");
 
-    const label = document.createElement("label");
-    label.setAttribute("for", "edit-notes");
-    label.innerText = "Notes:";
+  //   const label = document.createElement("label");
+  //   label.setAttribute("for", "edit-notes");
+  //   label.innerText = "Notes:";
 
-    const textArea = document.createElement("textarea");
-    textArea.setAttribute("name", "edit-notes");
-    textArea.setAttribute("id", "edit-notes");
-    textArea.value = todo.notes;
+  //   const textArea = document.createElement("textarea");
+  //   textArea.setAttribute("name", "edit-notes");
+  //   textArea.setAttribute("id", "edit-notes");
+  //   textArea.value = todo.notes;
 
-    textArea.addEventListener("input", (event) => {
-      textArea.value === event.target.value;
-    });
+  //   textArea.addEventListener("input", (event) => {
+  //     textArea.value === event.target.value;
+  //   });
 
-    div.append(label, textArea);
+  //   div.append(label, textArea);
 
-    return div;
-  };
+  //   return div;
+  // };
 
-  const createCancelButton = (modal) => {
-    const button = document.createElement("button");
-    button.classList.add("edit-todo-button");
+  // const createCancelButton = (modal) => {
+  //   const button = document.createElement("button");
+  //   button.classList.add("edit-todo-button");
 
-    button.innerText = "Cancel";
+  //   button.innerText = "Cancel";
 
-    button.addEventListener("click", (event) => {
-      event.preventDefault();
-      modal.close();
-    });
+  //   button.addEventListener("click", (event) => {
+  //     event.preventDefault();
+  //     modal.close();
+  //   });
 
-    return button;
-  };
+  //   return button;
+  // };
 
-  const queryEditModal = () => {};
+  // const queryEditModal = () => {};
 
-  const queryEditModalForm = (todo) => {
-    const nodeList = document.querySelectorAll("[data-edit-todo-form]");
-    const foundForm = Array.from(nodeList).find(
-      (node) => node.dataset.editTodoForm === todo.id
-    );
-    return foundForm;
-  };
+  // const queryEditModalForm = (todo) => {
+  //   const nodeList = document.querySelectorAll("[data-edit-todo-form]");
+  //   const foundForm = Array.from(nodeList).find(
+  //     (node) => node.dataset.editTodoForm === todo.id
+  //   );
+  //   return foundForm;
+  // };
 
-  const editFormValues = (foundForm, todo) => {
-    todo.title = foundForm.elements[0].value;
-    todo.description = foundForm.elements[1].value;
-    todo.dueDate = foundForm.elements[2].value;
-    todo.priority = foundForm.elements[3].value;
-    todo.project = foundForm.elements[4].value;
-    todo.notes = foundForm.elements[5].value;
+  // const editFormValues = (foundForm, todo) => {
+  //   todo.title = foundForm.elements[0].value;
+  //   todo.description = foundForm.elements[1].value;
+  //   todo.dueDate = foundForm.elements[2].value;
+  //   todo.priority = foundForm.elements[3].value;
+  //   todo.project = foundForm.elements[4].value;
+  //   todo.notes = foundForm.elements[5].value;
 
-    return todo;
-  };
+  //   return todo;
+  // };
 
   // First Draft (works but depends on currentProj to place in correct array (this should)
   // actually be determined by the current select field
@@ -530,73 +530,73 @@ export const dom = () => {
   // };
 
   // New Draft I'm experimenting with:
-  const createSaveButton = (todo, currentProj) => {
-    const button = document.createElement("button");
-    button.classList.add("edit-todo-button");
+  // const createSaveButton = (todo, currentProj) => {
+  //   const button = document.createElement("button");
+  //   button.classList.add("edit-todo-button");
 
-    button.innerText = "Save";
+  //   button.innerText = "Save";
 
-    // console.log(currentProj.name);
+  // console.log(currentProj.name);
 
-    button.addEventListener("click", (event) => {
-      event.preventDefault();
-      // Need to query the edit modal to be able to close it when appropriate (I believe it's currently interrupting the functionality of the project dynamically refreshing after migrating a todo to another project). This is possibly going to require refactoring the edit todos to share one common edit modal - right now, each todo is creating its own form and modal
-      const editModal = queryEditModal();
-      const foundForm = queryEditModalForm(todo);
-      const updatedTodo = editFormValues(foundForm, todo);
-      const todoId = updatedTodo.id;
+  //   button.addEventListener("click", (event) => {
+  //     event.preventDefault();
+  //     // Need to query the edit modal to be able to close it when appropriate (I believe it's currently interrupting the functionality of the project dynamically refreshing after migrating a todo to another project). This is possibly going to require refactoring the edit todos to share one common edit modal - right now, each todo is creating its own form and modal
+  //     const editModal = queryEditModal();
+  //     const foundForm = queryEditModalForm(todo);
+  //     const updatedTodo = editFormValues(foundForm, todo);
+  //     const todoId = updatedTodo.id;
 
-      console.log(foundForm);
+  //     console.log(foundForm);
 
-      if (updatedTodo.project !== currentProj.name) {
-        const projArr = getProjArr();
-        const updatedTodosCurrentIndex = currentProj.todoArr.findIndex(
-          (element) => element.id === todoId
-        );
-        currentProj.todoArr.splice(updatedTodosCurrentIndex, 1);
-        const newProj = projArr.find(
-          (project) => project.name === updatedTodo.project
-        );
-        newProj.todoArr.push(updatedTodo);
-        updateTodoList(currentProj);
-        updateTodoList(newProj);
-      }
-    });
+  //     if (updatedTodo.project !== currentProj.name) {
+  //       const projArr = getProjArr();
+  //       const updatedTodosCurrentIndex = currentProj.todoArr.findIndex(
+  //         (element) => element.id === todoId
+  //       );
+  //       currentProj.todoArr.splice(updatedTodosCurrentIndex, 1);
+  //       const newProj = projArr.find(
+  //         (project) => project.name === updatedTodo.project
+  //       );
+  //       newProj.todoArr.push(updatedTodo);
+  //       updateTodoList(currentProj);
+  //       updateTodoList(newProj);
+  //     }
+  //   });
 
-    return button;
-  };
+  //   return button;
+  // };
 
-  const createTodoEditModal = (todo, currentProj) => {
-    const modal = document.createElement("dialog");
-    modal.classList.add("edit-todo-modal");
+  // const createTodoEditModal = (todo, currentProj) => {
+  //   const modal = document.createElement("dialog");
+  //   modal.classList.add("edit-todo-modal");
 
-    const form = createTodoEditForm();
-    const titleDiv = createTitleEditDiv(todo);
-    const descriptionDiv = createDescriptionEditDiv(todo);
-    const dueDateDiv = createDueDateEditDiv(todo);
-    const priorityDiv = createPriorityEditDiv(todo);
-    const projectDiv = createProjectEditDiv(todo);
-    const notesDiv = createNotesEditDiv(todo);
-    const cancelButton = createCancelButton(modal);
-    const saveButton = createSaveButton(todo, currentProj); //currentProj (passed this in on first draft)
+  //   const form = createTodoEditForm();
+  //   const titleDiv = createTitleEditDiv(todo);
+  //   const descriptionDiv = createDescriptionEditDiv(todo);
+  //   const dueDateDiv = createDueDateEditDiv(todo);
+  //   const priorityDiv = createPriorityEditDiv(todo);
+  //   const projectDiv = createProjectEditDiv(todo);
+  //   const notesDiv = createNotesEditDiv(todo);
+  //   const cancelButton = createCancelButton(modal);
+  //   const saveButton = createSaveButton(todo, currentProj); //currentProj (passed this in on first draft)
 
-    form.append(
-      titleDiv,
-      descriptionDiv,
-      dueDateDiv,
-      priorityDiv,
-      projectDiv,
-      notesDiv,
-      cancelButton,
-      saveButton
-    );
+  //   form.append(
+  //     titleDiv,
+  //     descriptionDiv,
+  //     dueDateDiv,
+  //     priorityDiv,
+  //     projectDiv,
+  //     notesDiv,
+  //     cancelButton,
+  //     saveButton
+  //   );
 
-    form.dataset.editTodoForm = todo.id;
+  //   form.dataset.editTodoForm = todo.id;
 
-    modal.appendChild(form);
+  //   modal.appendChild(form);
 
-    return modal;
-  };
+  //   return modal;
+  // };
 
   const deleteTodo = (currentProj, todoArr, todo) => {
     const index = todoArr.indexOf(todo);
@@ -611,6 +611,12 @@ export const dom = () => {
   /*************************************
     Todo: Render Todos to Display Section
   ***************************************/
+  const queryTodoEditModal = () => {
+    const todoEditModal = document.querySelector("[data-modal = 'edit-todo']");
+
+    return todoEditModal;
+  };
+
   const renderTodosToDisplay = (currentProj, todoDisplay) => {
     const todoArr = currentProj.todoArr;
     todoArr.forEach((todo) => {
@@ -632,10 +638,12 @@ export const dom = () => {
       const editButton = createEditButton();
       const deleteButton = createDeleteButton();
 
-      const editModal = createTodoEditModal(todo, currentProj);
+      // Attemping to get rid of this in its entirety => const editModal = createTodoEditModal(todo, currentProj);
+
       editButton.addEventListener("click", (event) => {
         event.preventDefault();
-        editModal.show();
+        const todoEditModal = queryTodoEditModal();
+        todoEditModal.show();
       });
 
       deleteButton.addEventListener("click", () =>
@@ -649,7 +657,7 @@ export const dom = () => {
       todoDiv.appendChild(titleAndDueDateDiv);
       todoDiv.appendChild(editAndDeleteDiv);
       todoDisplay.appendChild(todoDiv);
-      todoDisplay.appendChild(editModal);
+      // todoDisplay.appendChild(editModal);
     });
   };
 
