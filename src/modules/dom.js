@@ -617,6 +617,103 @@ export const dom = () => {
     return todoEditModal;
   };
 
+  const queryTodoEditForm = () => {
+    const todoEditForm = document.querySelector("[data-form = 'edit-todo']");
+
+    return todoEditForm;
+  };
+
+  const queryTodoEditProjSelect = () => {
+    const todoEditProjSelect = document.querySelector(
+      "[data-todo-input = 'edit-project']"
+    );
+
+    return todoEditProjSelect;
+  };
+
+  const populateTodoEditProjSelect = (todoEditProjSelect) => {
+    const options = todoEditProjSelect.options;
+
+    for (let i = options.length - 1; i >= 0; i--) {
+      todoEditProjSelect.remove(i);
+    }
+
+    const projArr = getProjArr();
+
+    projArr.forEach((project) => {
+      const option = document.createElement("option");
+      option.value = project.name;
+      option.innerText = project.name;
+      todoEditProjSelect.appendChild(option);
+    });
+  };
+
+  const populateTodoEditFormWithValues = (todoEditForm, todo) => {
+    todoEditForm.elements[0].value = todo.title;
+    todoEditForm.elements[1].value = todo.description;
+    todoEditForm.elements[2].value = todo.dueDate;
+    todoEditForm.elements[3].value = todo.priority;
+    todoEditForm.elements[4].value = todo.project;
+    todoEditForm.elements[5].value = todo.notes;
+  };
+
+  const addInputListenersToEditTodo = (todoEditForm, todo) => {
+    for (let i = 0; i < todoEditForm.elements.length; i++) {
+      const element = todoEditForm.elements[i];
+
+      if (element.type !== "button") {
+        element.addEventListener("input", (event) => {
+          element.value = event.target.value;
+        });
+      }
+    }
+  };
+
+  const queryTodoEditCancelBtn = () => {
+    const todoEditCancelBtn = document.querySelector(
+      "[data-cancel-edit-button = 'cancel-edit-todo']"
+    );
+
+    return todoEditCancelBtn;
+  };
+
+  const addFunctionalityToCancelBtn = (todoEditCancelBtn, todoEditModal) => {
+    todoEditCancelBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      todoEditModal.close();
+    });
+  };
+
+  const queryTodoEditSaveBtn = () => {
+    const todoEditSaveBtn = document.querySelector(
+      "[data-save-edit-button = 'save-edit-todo']"
+    );
+
+    return todoEditSaveBtn;
+  };
+
+  // const addFunctionalityToSaveBtn = (
+  //   todoEditSaveBtn,
+  //   todoEditModal,
+  //   currentProj,
+  //   todo
+  // ) => {
+  //   todoEditSaveBtn.addEventListener("click", (event) => {
+  //     event.preventDefault();
+  //     const updatedTodoEditForm = queryTodoEditForm();
+
+  //     todo.title = updatedTodoEditForm.elements[0].value;
+  //     todo.description = updatedTodoEditForm.elements[1].value;
+  //     todo.dueDate = updatedTodoEditForm.elements[2].value;
+  //     todo.priority = updatedTodoEditForm.elements[3].value;
+  //     todo.project = updatedTodoEditForm.elements[4].value;
+  //     todo.notes = updatedTodoEditForm.elements[5].value;
+  //     // updateTodoList(currentProj);
+
+  //     todoEditModal.close();
+  //   });
+  // };
+
   const renderTodosToDisplay = (currentProj, todoDisplay) => {
     const todoArr = currentProj.todoArr;
     todoArr.forEach((todo) => {
@@ -643,6 +740,20 @@ export const dom = () => {
       editButton.addEventListener("click", (event) => {
         event.preventDefault();
         const todoEditModal = queryTodoEditModal();
+        const todoEditForm = queryTodoEditForm();
+        const todoEditProjSelect = queryTodoEditProjSelect();
+        populateTodoEditProjSelect(todoEditProjSelect);
+        populateTodoEditFormWithValues(todoEditForm, todo);
+        addInputListenersToEditTodo(todoEditForm, todo);
+        const todoEditCancelBtn = queryTodoEditCancelBtn();
+        addFunctionalityToCancelBtn(todoEditCancelBtn, todoEditModal);
+        const todoEditSaveBtn = queryTodoEditSaveBtn();
+        // addFunctionalityToSaveBtn(
+        //   todoEditSaveBtn,
+        //   todoEditModal,
+        //   currentProj,
+        //   todo
+        // );
         todoEditModal.show();
       });
 
