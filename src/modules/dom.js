@@ -296,308 +296,6 @@ export const dom = () => {
     return button;
   };
 
-  /*************************
-  Todo: Edit Form Section (Most of this section may be deleted after refactor) 
-  **************************/
-  // const createTodoEditForm = () => {
-  //   const form = document.createElement("form");
-  //   form.classList.add("edit-todo-form");
-  //   form.method = "get";
-
-  //   return form;
-  // };
-
-  // const createTitleEditDiv = (todo) => {
-  //   const div = document.createElement("div");
-  //   div.classList.add("todo-edit-div");
-
-  //   const label = document.createElement("label");
-  //   label.setAttribute("for", "edit-title");
-  //   label.innerText = "Title:";
-
-  //   const input = document.createElement("input");
-  //   input.setAttribute("name", "edit-title");
-  //   input.setAttribute("id", "edit-title");
-  //   input.setAttribute("type", "text");
-  //   input.value = todo.title;
-
-  //   input.addEventListener("input", (event) => {
-  //     input.value === event.target.value;
-  //   });
-
-  //   div.append(label, input);
-
-  //   return div;
-  // };
-
-  // const createDescriptionEditDiv = (todo) => {
-  //   const div = document.createElement("div");
-  //   div.classList.add("todo-edit-div");
-
-  //   const label = document.createElement("label");
-  //   label.setAttribute("for", "edit-description");
-  //   label.innerText = "Description:";
-
-  //   const input = document.createElement("input");
-  //   input.setAttribute("name", "edit-description");
-  //   input.setAttribute("id", "edit-description");
-  //   input.setAttribute("type", "textarea");
-  //   input.value = todo.description;
-
-  //   input.addEventListener("input", (event) => {
-  //     input.value === event.target.value;
-  //   });
-
-  //   div.append(label, input);
-
-  //   return div;
-  // };
-
-  // const createDueDateEditDiv = (todo) => {
-  //   const div = document.createElement("div");
-  //   div.classList.add("todo-edit-div");
-
-  //   const label = document.createElement("label");
-  //   label.setAttribute("for", "edit-due-date");
-  //   label.innerText = "Due Date:";
-
-  //   const input = document.createElement("input");
-  //   input.setAttribute("name", "edit-due-date");
-  //   input.setAttribute("id", "edit-due-date");
-  //   input.setAttribute("type", "date");
-  //   input.value = todo.dueDate;
-
-  //   input.addEventListener("input", (event) => {
-  //     input.value === event.target.value;
-  //   });
-
-  //   div.append(label, input);
-
-  //   return div;
-  // };
-
-  // const createPriorityEditDiv = (todo) => {
-  //   const div = document.createElement("div");
-  //   div.classList.add("todo-edit-div");
-
-  //   const label = document.createElement("label");
-  //   label.setAttribute("for", "edit-priority");
-  //   label.innerText = "Priority:";
-
-  //   const select = document.createElement("select");
-  //   select.setAttribute("name", "edit-priority");
-  //   select.setAttribute("id", "edit-priority");
-
-  //   const optionLow = document.createElement("option");
-  //   optionLow.value = "low";
-  //   optionLow.innerText = "Low";
-
-  //   const optionMedium = document.createElement("option");
-  //   optionMedium.value = "medium";
-  //   optionMedium.innerText = "Medium";
-
-  //   const optionHigh = document.createElement("option");
-  //   optionHigh.value = "high";
-  //   optionHigh.innerText = "High";
-
-  //   select.append(optionLow, optionMedium, optionHigh);
-
-  //   if (todo.priority === optionLow.value) {
-  //     select.options[0].selected = true;
-  //   } else if (todo.priority === optionMedium.value) {
-  //     select.options[1].selected = true;
-  //   } else if (todo.priority === optionHigh.value) {
-  //     select.options[2].selected = true;
-  //   }
-
-  //   select.addEventListener("input", (event) => {
-  //     select.value === event.target.value;
-  //   });
-
-  //   div.append(label, select);
-
-  //   return div;
-  // };
-
-  // const createProjectEditDiv = (todo) => {
-  //   const projArr = getProjArr();
-
-  //   const div = document.createElement("div");
-  //   div.classList.add("todo-edit-div");
-
-  //   const label = document.createElement("label");
-  //   label.setAttribute("for", "edit-project");
-  //   label.innerText = "Project:";
-
-  //   const select = document.createElement("select");
-  //   select.setAttribute("name", "edit-project");
-  //   select.setAttribute("id", "edit-project");
-  //   projArr.forEach((project) => {
-  //     const option = document.createElement("option");
-
-  //     option.value = project.name;
-  //     option.innerText = project.name;
-  //     select.appendChild(option);
-  //   });
-
-  //   for (let i = 0; i < select.options.length; i++) {
-  //     if (select.options[i].value === todo.project) {
-  //       select.options[i].selected = true;
-  //     }
-  //   }
-
-  //   select.addEventListener("input", (event) => {
-  //     select.value === event.target.value;
-  //   });
-  //   // console.log(todo);
-  //   div.append(label, select);
-  //   return div;
-  // };
-
-  // const createNotesEditDiv = (todo) => {
-  //   const div = document.createElement("div");
-  //   div.classList.add("todo-edit-div");
-
-  //   const label = document.createElement("label");
-  //   label.setAttribute("for", "edit-notes");
-  //   label.innerText = "Notes:";
-
-  //   const textArea = document.createElement("textarea");
-  //   textArea.setAttribute("name", "edit-notes");
-  //   textArea.setAttribute("id", "edit-notes");
-  //   textArea.value = todo.notes;
-
-  //   textArea.addEventListener("input", (event) => {
-  //     textArea.value === event.target.value;
-  //   });
-
-  //   div.append(label, textArea);
-
-  //   return div;
-  // };
-
-  // const createCancelButton = (modal) => {
-  //   const button = document.createElement("button");
-  //   button.classList.add("edit-todo-button");
-
-  //   button.innerText = "Cancel";
-
-  //   button.addEventListener("click", (event) => {
-  //     event.preventDefault();
-  //     modal.close();
-  //   });
-
-  //   return button;
-  // };
-
-  // const queryEditModal = () => {};
-
-  // const queryEditModalForm = (todo) => {
-  //   const nodeList = document.querySelectorAll("[data-edit-todo-form]");
-  //   const foundForm = Array.from(nodeList).find(
-  //     (node) => node.dataset.editTodoForm === todo.id
-  //   );
-  //   return foundForm;
-  // };
-
-  // const editFormValues = (foundForm, todo) => {
-  //   todo.title = foundForm.elements[0].value;
-  //   todo.description = foundForm.elements[1].value;
-  //   todo.dueDate = foundForm.elements[2].value;
-  //   todo.priority = foundForm.elements[3].value;
-  //   todo.project = foundForm.elements[4].value;
-  //   todo.notes = foundForm.elements[5].value;
-
-  //   return todo;
-  // };
-
-  // First Draft (works but depends on currentProj to place in correct array (this should)
-  // actually be determined by the current select field
-  // const createSaveButton = (todo, currentProj) => {
-  //   const button = document.createElement("button");
-  //   button.classList.add("edit-todo-button");
-
-  //   button.innerText = "Save";
-
-  //   button.addEventListener("click", (event) => {
-  //     event.preventDefault();
-  //     const foundForm = queryEditModalForm(todo);
-  //     editFormValues(foundForm, todo);
-  //     updateTodoList(currentProj);
-  //   });
-
-  //   return button;
-  // };
-
-  // New Draft I'm experimenting with:
-  // const createSaveButton = (todo, currentProj) => {
-  //   const button = document.createElement("button");
-  //   button.classList.add("edit-todo-button");
-
-  //   button.innerText = "Save";
-
-  // console.log(currentProj.name);
-
-  //   button.addEventListener("click", (event) => {
-  //     event.preventDefault();
-  //     // Need to query the edit modal to be able to close it when appropriate (I believe it's currently interrupting the functionality of the project dynamically refreshing after migrating a todo to another project). This is possibly going to require refactoring the edit todos to share one common edit modal - right now, each todo is creating its own form and modal
-  //     const editModal = queryEditModal();
-  //     const foundForm = queryEditModalForm(todo);
-  //     const updatedTodo = editFormValues(foundForm, todo);
-  //     const todoId = updatedTodo.id;
-
-  //     console.log(foundForm);
-
-  //     if (updatedTodo.project !== currentProj.name) {
-  //       const projArr = getProjArr();
-  //       const updatedTodosCurrentIndex = currentProj.todoArr.findIndex(
-  //         (element) => element.id === todoId
-  //       );
-  //       currentProj.todoArr.splice(updatedTodosCurrentIndex, 1);
-  //       const newProj = projArr.find(
-  //         (project) => project.name === updatedTodo.project
-  //       );
-  //       newProj.todoArr.push(updatedTodo);
-  //       updateTodoList(currentProj);
-  //       updateTodoList(newProj);
-  //     }
-  //   });
-
-  //   return button;
-  // };
-
-  // const createTodoEditModal = (todo, currentProj) => {
-  //   const modal = document.createElement("dialog");
-  //   modal.classList.add("edit-todo-modal");
-
-  //   const form = createTodoEditForm();
-  //   const titleDiv = createTitleEditDiv(todo);
-  //   const descriptionDiv = createDescriptionEditDiv(todo);
-  //   const dueDateDiv = createDueDateEditDiv(todo);
-  //   const priorityDiv = createPriorityEditDiv(todo);
-  //   const projectDiv = createProjectEditDiv(todo);
-  //   const notesDiv = createNotesEditDiv(todo);
-  //   const cancelButton = createCancelButton(modal);
-  //   const saveButton = createSaveButton(todo, currentProj); //currentProj (passed this in on first draft)
-
-  //   form.append(
-  //     titleDiv,
-  //     descriptionDiv,
-  //     dueDateDiv,
-  //     priorityDiv,
-  //     projectDiv,
-  //     notesDiv,
-  //     cancelButton,
-  //     saveButton
-  //   );
-
-  //   form.dataset.editTodoForm = todo.id;
-
-  //   modal.appendChild(form);
-
-  //   return modal;
-  // };
-
   const deleteTodo = (currentProj, todoArr, todo) => {
     const index = todoArr.indexOf(todo);
 
@@ -692,6 +390,27 @@ export const dom = () => {
     return todoEditSaveBtn;
   };
 
+  const updateEditedTodo = (updatedTodoEditForm, todo) => {
+    todo.title = updatedTodoEditForm.elements[0].value;
+    todo.description = updatedTodoEditForm.elements[1].value;
+    todo.dueDate = updatedTodoEditForm.elements[2].value;
+    todo.priority = updatedTodoEditForm.elements[3].value;
+    todo.project = updatedTodoEditForm.elements[4].value;
+    todo.notes = updatedTodoEditForm.elements[5].value;
+  };
+
+  const updateProj = (projArr, currentProj, todo) => {
+    const todoToRemove = currentProj.todoArr.findIndex(
+      (element) => element.id === todo.id
+    );
+    currentProj.todoArr.splice(todoToRemove, 1);
+
+    const updatedProject = projArr.find(
+      (project) => project.name === todo.project
+    );
+    updatedProject.todoArr.push(todo);
+  };
+
   // const addFunctionalityToSaveBtn = (
   //   todoEditSaveBtn,
   //   todoEditModal,
@@ -701,14 +420,19 @@ export const dom = () => {
   //   todoEditSaveBtn.addEventListener("click", (event) => {
   //     event.preventDefault();
   //     const updatedTodoEditForm = queryTodoEditForm();
+  //     updateEditedTodo(updatedTodoEditForm, todo);
+  //     const projArr = getProjArr();
 
-  //     todo.title = updatedTodoEditForm.elements[0].value;
-  //     todo.description = updatedTodoEditForm.elements[1].value;
-  //     todo.dueDate = updatedTodoEditForm.elements[2].value;
-  //     todo.priority = updatedTodoEditForm.elements[3].value;
-  //     todo.project = updatedTodoEditForm.elements[4].value;
-  //     todo.notes = updatedTodoEditForm.elements[5].value;
-  //     // updateTodoList(currentProj);
+  //     // Start here tomorrow - it's ALMOST working; however, when you move a todo to a new project it "double taps" and adds duplicates the todo in the new project. Need to debug this and should be good to go after that... I think!
+
+  //     // May need breakpoint at 794 todoDisplay.appendChild(todoDiv)
+
+  //     if (todo.project === currentProj.name) {
+  //       updateTodoList(currentProj);
+  //     } else if (todo.project !== currentProj.name) {
+  //       updateProj(projArr, currentProj, todo);
+  //       updateTodoList(currentProj);
+  //     }
 
   //     todoEditModal.close();
   //   });
@@ -840,11 +564,16 @@ Punchlist:
 --- ✅ Project choice persistence should appear when clicking on "edit" button
 --- ✅ Todo should completely shift to different project's todoArr upon choosing different project and hitting save
 --- ✅ Project should update immediately when adding a todo
-- Refactor todoEditModal - there should only be one todoEditModal which edits all todos. Right now each todo has its own modal! Fix this before tackling the bug right below
-- Project should update immediately when MOVING a todo. As of now, though the todo DOES move
-    to the new project, it lingers on the old project until you click away. Fix this!
-    As an aside I think this problem MAY have to do with my todoEdit modals. This is being handled in createSaveButton() function
---- List of projects in todo edit dropdown should update automatically when a new project is added - As of now, this doesn't happen and you have to click away and click back to see the project populate in the todo edit's dropdown
+- ✅ Refactor todoEditModal - there should only be one todoEditModal which edits all todos. Right now each todo has its own modal! Fix this before tackling the bug right below
+--- ✅ List of projects in todo edit dropdown should update automatically when a new project is added - As of now, this doesn't happen and you have to click away and click back to see the project populate in the todo edit's dropdown
+
+Currently Working On:
+- Debug the following when adding/editing todo (there are multiple bugs):
+ --- If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
+ --- If you add a bunch of todos to a project and migrate one to a different project, it takes that one you intended plus all of the other todos that come after it in the array (this may be the cause of incrememnting rather than decrementing in a for loop - not sure)
+ --- The migrated todo will then alter ALL of the other todos in the new project todo list to match its name. So you'll have multiple todos with a matching name
+ --- This will get me started... LMAOOO 😆
+ 
 - Projects 'delete' button: Add functionality
 - queryTodoForm/resetTodoForm: Revisit and debug
 - const createProjectEditDiv: Revisit and debug. "todo" parameter is grayed out. Select menu is not
