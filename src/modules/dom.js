@@ -306,8 +306,9 @@ export const dom = () => {
   };
 
   /*************************************
-    Todo: Render Todos to Display Section
+    Todo: Edit Todo Section
   ***************************************/
+
   const queryTodoEditModal = () => {
     const todoEditModal = document.querySelector("[data-modal = 'edit-todo']");
 
@@ -354,7 +355,8 @@ export const dom = () => {
     todoEditForm.elements[5].value = todo.notes;
   };
 
-  const addInputListenersToEditTodo = (todoEditForm, todo) => {
+  const addInputListenersToEditTodo = () => {
+    const todoEditForm = queryTodoEditForm();
     for (let i = 0; i < todoEditForm.elements.length; i++) {
       const element = todoEditForm.elements[i];
 
@@ -374,7 +376,10 @@ export const dom = () => {
     return todoEditCancelBtn;
   };
 
-  const addFunctionalityToCancelBtn = (todoEditCancelBtn, todoEditModal) => {
+  const addFunctionalityToTodoEditCancelBtn = () => {
+    const todoEditCancelBtn = queryTodoEditCancelBtn();
+    const todoEditModal = queryTodoEditModal();
+
     todoEditCancelBtn.addEventListener("click", (event) => {
       event.preventDefault();
       todoEditModal.close();
@@ -410,50 +415,56 @@ export const dom = () => {
       if (element.name === todo.name) {
         console.log(element);
       }
-      // element.name === todo.name;
     });
     currentProj.todoArr.splice(todoToRemove, 1);
-
-    // console.log(currentProj);
   };
 
-  /* 
-  Current Bugs with Save Button:
-- Debug the following when adding/editing todo (there are multiple bugs):
- --- If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
- --- If you add a bunch of todos to a project and migrate one to a different project, it takes the todo you intended plus all of the other todos that come after it in the array (this may be the cause of incrememnting rather than decrementing in a for loop - not sure)
- --- The migrated todo will then alter ALL of the other todos in the new project todo list to match its name. So you'll have multiple todos with a matching name
+  const currentTodoStorage = () => {
+    let currentTodo = {};
 
- */
+    const setCurrentTodo = (todo) => {
+      Object.assign(currentTodo, todo);
+    };
 
-  const addFunctionalityToSaveBtn = (
-    todoEditSaveBtn,
-    todoEditModal,
-    currentProj
-    //todo
-  ) => {
+    const getCurrentTodo = () => {
+      return currentTodo;
+    };
+
+    return { setCurrentTodo, getCurrentTodo };
+  };
+
+  const currentTodoRepo = currentTodoStorage();
+
+  const addFunctionalityToTodoEditSaveBtn = () => {
+    const todoEditModal = queryTodoEditModal();
+    const todoEditSaveBtn = queryTodoEditSaveBtn();
+
     todoEditSaveBtn.addEventListener("click", (event) => {
       event.preventDefault();
-      const updatedTodoEditForm = queryTodoEditForm();
-      console.log(event.target.value);
-      // console.log(todo);
+      const currentTodo = currentTodoRepo.getCurrentTodo();
+      console.log(currentTodo);
 
-      // Start here tomorrow - the way you set this up, it passes in a todo. This is not the way to go as the program gets confused on which todo is actually passing in. Looks like it passes all todos. This may need to be revisited on the big editButtonEvent Listener. The event listener maybe shouldn't be creating this function - single responsibility rule and all. It may be doing too much, thereby muddying the flow of this save button's event listener
+      // const updatedTodoEditForm = queryTodoEditForm();
+      // console.log(event.target.value);
+      // // console.log(todo);
 
-      updateEditedTodo(updatedTodoEditForm, todo);
-      const projArr = getProjArr();
+      // updateEditedTodo(updatedTodoEditForm, todo);
+      // const projArr = getProjArr();
 
-      if (todo.project === currentProj.name) {
-        updateTodoList(currentProj);
-      } else if (todo.project !== currentProj.name) {
-        updateProj(projArr, currentProj, todo);
-        updateTodoList(currentProj);
-      }
+      // if (todo.project === currentProj.name) {
+      //   updateTodoList(currentProj);
+      // } else if (todo.project !== currentProj.name) {
+      //   updateProj(projArr, currentProj, todo);
+      //   updateTodoList(currentProj);
+      // }
 
-      todoEditModal.close();
+      // todoEditModal.close();
     });
   };
 
+  /*************************************
+    Todo: Render Todos to Display Section
+  ***************************************/
   const renderTodosToDisplay = (currentProj, todoDisplay) => {
     const todoArr = currentProj.todoArr;
     todoArr.forEach((todo) => {
@@ -475,6 +486,7 @@ export const dom = () => {
       const editButton = createEditButton();
       const deleteButton = createDeleteButton();
 
+      // Add listener to todo's edit button
       editButton.addEventListener("click", (event) => {
         event.preventDefault();
         const todoEditModal = queryTodoEditModal();
@@ -482,18 +494,11 @@ export const dom = () => {
         const todoEditProjSelect = queryTodoEditProjSelect();
         populateTodoEditProjSelect(todoEditProjSelect);
         populateTodoEditFormWithValues(todoEditForm, todo);
-        addInputListenersToEditTodo(todoEditForm, todo);
-        const todoEditCancelBtn = queryTodoEditCancelBtn();
-        addFunctionalityToCancelBtn(todoEditCancelBtn, todoEditModal);
-        const todoEditSaveBtn = queryTodoEditSaveBtn();
-        addFunctionalityToSaveBtn(
-          todoEditSaveBtn,
-          todoEditModal,
-          currentProj
-          //todo
-        );
+        currentTodoRepo.setCurrentTodo(todo);
         todoEditModal.show();
       });
+
+      // ------------------------------------
 
       deleteButton.addEventListener("click", () =>
         deleteTodo(currentProj, todoArr, todo)
@@ -570,6 +575,9 @@ export const dom = () => {
 
   // Adds Default Project (none) to Dropdown
   addProjToDropdown();
+  addInputListenersToEditTodo();
+  addFunctionalityToTodoEditCancelBtn();
+  addFunctionalityToTodoEditSaveBtn();
 };
 
 dom();
