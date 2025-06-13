@@ -52,7 +52,6 @@ export const dom = () => {
 
   // Add Listeners to Submit Buttons
   const submitButtons = document.querySelectorAll("[data-submit-button]");
-
   submitButtons.forEach((button) =>
     button.addEventListener("click", (event) => {
       if (event.target.dataset.submitButton === "submit-todo") {
@@ -323,7 +322,7 @@ export const dom = () => {
 
   const queryTodoEditProjSelect = () => {
     const todoEditProjSelect = document.querySelector(
-      "[data-todo-input = 'edit-project']"
+      "[data-todo-edit-input = 'edit-project']"
     );
 
     return todoEditProjSelect;
@@ -392,7 +391,9 @@ export const dom = () => {
 
   const updateEditedTodo = (updatedTodoEditForm, todo) => {
     todo.title = updatedTodoEditForm.elements[0].value;
+    console.log(todo.title);
     todo.description = updatedTodoEditForm.elements[1].value;
+    console.log(todo.description);
     todo.dueDate = updatedTodoEditForm.elements[2].value;
     todo.priority = updatedTodoEditForm.elements[3].value;
     todo.project = updatedTodoEditForm.elements[4].value;
@@ -400,43 +401,58 @@ export const dom = () => {
   };
 
   const updateProj = (projArr, currentProj, todo) => {
-    const todoToRemove = currentProj.todoArr.findIndex(
-      (element) => element.id === todo.id
-    );
-    currentProj.todoArr.splice(todoToRemove, 1);
-
     const updatedProject = projArr.find(
       (project) => project.name === todo.project
     );
     updatedProject.todoArr.push(todo);
+    // console.log(currentProj.todoArr);
+    const todoToRemove = currentProj.todoArr.find((element) => {
+      if (element.name === todo.name) {
+        console.log(element);
+      }
+      // element.name === todo.name;
+    });
+    currentProj.todoArr.splice(todoToRemove, 1);
+
+    // console.log(currentProj);
   };
 
-  // const addFunctionalityToSaveBtn = (
-  //   todoEditSaveBtn,
-  //   todoEditModal,
-  //   currentProj,
-  //   todo
-  // ) => {
-  //   todoEditSaveBtn.addEventListener("click", (event) => {
-  //     event.preventDefault();
-  //     const updatedTodoEditForm = queryTodoEditForm();
-  //     updateEditedTodo(updatedTodoEditForm, todo);
-  //     const projArr = getProjArr();
+  /* 
+  Current Bugs with Save Button:
+- Debug the following when adding/editing todo (there are multiple bugs):
+ --- If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
+ --- If you add a bunch of todos to a project and migrate one to a different project, it takes the todo you intended plus all of the other todos that come after it in the array (this may be the cause of incrememnting rather than decrementing in a for loop - not sure)
+ --- The migrated todo will then alter ALL of the other todos in the new project todo list to match its name. So you'll have multiple todos with a matching name
 
-  //     // Start here tomorrow - it's ALMOST working; however, when you move a todo to a new project it "double taps" and adds duplicates the todo in the new project. Need to debug this and should be good to go after that... I think!
+ */
 
-  //     // May need breakpoint at 794 todoDisplay.appendChild(todoDiv)
+  const addFunctionalityToSaveBtn = (
+    todoEditSaveBtn,
+    todoEditModal,
+    currentProj
+    //todo
+  ) => {
+    todoEditSaveBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      const updatedTodoEditForm = queryTodoEditForm();
+      console.log(event.target.value);
+      // console.log(todo);
 
-  //     if (todo.project === currentProj.name) {
-  //       updateTodoList(currentProj);
-  //     } else if (todo.project !== currentProj.name) {
-  //       updateProj(projArr, currentProj, todo);
-  //       updateTodoList(currentProj);
-  //     }
+      // Start here tomorrow - the way you set this up, it passes in a todo. This is not the way to go as the program gets confused on which todo is actually passing in. Looks like it passes all todos. This may need to be revisited on the big editButtonEvent Listener. The event listener maybe shouldn't be creating this function - single responsibility rule and all. It may be doing too much, thereby muddying the flow of this save button's event listener
 
-  //     todoEditModal.close();
-  //   });
-  // };
+      updateEditedTodo(updatedTodoEditForm, todo);
+      const projArr = getProjArr();
+
+      if (todo.project === currentProj.name) {
+        updateTodoList(currentProj);
+      } else if (todo.project !== currentProj.name) {
+        updateProj(projArr, currentProj, todo);
+        updateTodoList(currentProj);
+      }
+
+      todoEditModal.close();
+    });
+  };
 
   const renderTodosToDisplay = (currentProj, todoDisplay) => {
     const todoArr = currentProj.todoArr;
@@ -459,8 +475,6 @@ export const dom = () => {
       const editButton = createEditButton();
       const deleteButton = createDeleteButton();
 
-      // Attemping to get rid of this in its entirety => const editModal = createTodoEditModal(todo, currentProj);
-
       editButton.addEventListener("click", (event) => {
         event.preventDefault();
         const todoEditModal = queryTodoEditModal();
@@ -472,12 +486,12 @@ export const dom = () => {
         const todoEditCancelBtn = queryTodoEditCancelBtn();
         addFunctionalityToCancelBtn(todoEditCancelBtn, todoEditModal);
         const todoEditSaveBtn = queryTodoEditSaveBtn();
-        // addFunctionalityToSaveBtn(
-        //   todoEditSaveBtn,
-        //   todoEditModal,
-        //   currentProj,
-        //   todo
-        // );
+        addFunctionalityToSaveBtn(
+          todoEditSaveBtn,
+          todoEditModal,
+          currentProj
+          //todo
+        );
         todoEditModal.show();
       });
 
@@ -504,7 +518,11 @@ export const dom = () => {
 
   const updateTodoList = (currentProj) => {
     const todoDisplay = queryTodoDisplay();
-    todoDisplay.innerText = "";
+
+    const childDivs = todoDisplay.querySelectorAll("div");
+    childDivs.forEach((div) => div.remove());
+
+    // console.log(todoDisplay);
     renderTodosToDisplay(currentProj, todoDisplay);
   };
 
@@ -572,7 +590,7 @@ Currently Working On:
  --- If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
  --- If you add a bunch of todos to a project and migrate one to a different project, it takes that one you intended plus all of the other todos that come after it in the array (this may be the cause of incrememnting rather than decrementing in a for loop - not sure)
  --- The migrated todo will then alter ALL of the other todos in the new project todo list to match its name. So you'll have multiple todos with a matching name
- --- This will get me started... LMAOOO 😆
+
  
 - Projects 'delete' button: Add functionality
 - queryTodoForm/resetTodoForm: Revisit and debug
