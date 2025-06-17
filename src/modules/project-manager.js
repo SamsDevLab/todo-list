@@ -37,10 +37,10 @@ export const projManager = function () {
   };
 
   const addTodo = (todoInputs) => {
-    const todoValues = extractTodoInputValues(todoInputs);
-    const newTodo = createTodo(...todoValues);
-
     const projId = grabSelectedProjId(todoInputs);
+    const todoValues = extractTodoInputValues(todoInputs);
+
+    const newTodo = createTodo(projId, ...todoValues);
 
     const targetProj = projArr.find((project) => project.id === projId);
     targetProj.todoArr.push(newTodo);
