@@ -50,27 +50,9 @@ export const dom = () => {
     queryProject().modal.showModal();
   };
 
-  // Add Listeners to Submit Buttons
-  const submitButtons = document.querySelectorAll("[data-submit-button]");
-  submitButtons.forEach((button) =>
-    button.addEventListener("click", (event) => {
-      if (event.target.dataset.submitButton === "submit-todo") {
-        event.preventDefault();
-        const currentProjName = submitTodo();
-        const currentProjObj = getProjObj(currentProjName);
-        updateTodoList(currentProjObj);
-        // resetTodoForm();
-        closeTodoModal();
-      } else if (event.target.dataset.submitButton === "submit-project") {
-        event.preventDefault();
-        submitProject();
-        addProjToDropdown();
-        resetProjForm();
-        closeProjectModal();
-        addProjToProjectsSection();
-      }
-    })
-  );
+  /**************************
+    Create New Todo Section
+  ***************************/
 
   // Grab Todo Form Input Values and Pass to addTodo to create a new Todo
   const queryTodoInputs = () => {
@@ -112,10 +94,37 @@ export const dom = () => {
   //   todoForm.reset();
   // };
 
-  /**************************
-  Create New Project Section
-  ***************************/
-  // Grab Project Form Input Values and Pass into addProject to Create New:
+  // Close Todo modal
+  const closeTodoModal = () => {
+    queryTodo().modal.close();
+  };
+
+  // Add Listener to Submit Todo Button:
+  const submitTodoButton = document.querySelector(
+    "[data-submit-button = 'submit-todo']"
+  );
+  submitTodoButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    const currentProjName = submitTodo();
+    const currentProjObj = getProjObj(currentProjName);
+    updateTodoList(currentProjObj);
+    // resetTodoForm();
+    closeTodoModal();
+  });
+
+  // Add Listener for Cancel Todo Button
+  const todoCancelButton = document.querySelector(
+    "[data-cancel-button = 'cancel-todo']"
+  );
+
+  todoCancelButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    closeTodoModal();
+  });
+
+  /****************************
+    Create New Project Section
+  *****************************/
   const queryProjectInputs = () => {
     const projNodeList = document.querySelectorAll("[data-project-input]");
     const projValues = [];
@@ -165,29 +174,34 @@ export const dom = () => {
     projForm.reset();
   };
 
-  // Add Listeners to Cancel Buttons
-  const cancelButtons = document.querySelectorAll("[data-cancel-button]");
-  cancelButtons.forEach((button) =>
-    button.addEventListener("click", (event) => {
-      if (event.target.dataset.cancelButton === "cancel-todo") {
-        event.preventDefault();
-        closeTodoModal();
-      } else if (event.target.dataset.cancelButton === "cancel-project") {
-        event.preventDefault();
-        closeProjectModal();
-      }
-    })
-  );
-
-  // Close Todo modal
-  const closeTodoModal = () => {
-    queryTodo().modal.close();
-  };
-
   // Close Project Modal
   const closeProjectModal = () => {
     queryProject().modal.close();
   };
+
+  // Add Event Listener to Submit Project Button
+  const submitProjButton = document.querySelector(
+    "[data-submit-button = 'submit-project']"
+  );
+
+  submitProjButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    submitProject();
+    addProjToDropdown();
+    resetProjForm();
+    closeProjectModal();
+    addProjToProjectsSection();
+  });
+
+  // Add Event Listener to Project Cancel Button
+  const projCancelButton = document.querySelector(
+    "[data-cancel-button = 'cancel-project']"
+  );
+
+  projCancelButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    closeProjectModal();
+  });
 
   /*****************************************************
   Project Section: Dynamically Construct Add/New Project
