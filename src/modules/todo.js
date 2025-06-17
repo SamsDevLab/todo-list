@@ -1,4 +1,5 @@
 export const createTodo = function (
+  projId,
   title,
   description,
   dueDate,
@@ -16,6 +17,7 @@ export const createTodo = function (
     project,
     notes,
     completionStatus,
+    projId,
     id,
   };
 };
