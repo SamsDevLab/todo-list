@@ -295,16 +295,6 @@ export const dom = () => {
     return button;
   };
 
-  const deleteTodo = (currentProj, todoArr, todo) => {
-    const index = todoArr.indexOf(todo);
-
-    if (index > -1) {
-      todoArr.splice(index, 1);
-    }
-
-    updateTodoList(currentProj);
-  };
-
   /*************************************
     Todo: Edit Todo Section
   ***************************************/
@@ -476,12 +466,29 @@ export const dom = () => {
   };
 
   /*************************************
+        Todo: Delete Todo Section
+  ***************************************/
+  const deleteTodo = (projArr, projId, todoId) => {
+    projArr.forEach((project) => {
+      if (project.id === projId) {
+        const todoToDelete = project.todoArr.findIndex(
+          (todo) => todo.id === todoId
+        );
+        project.todoArr.splice(todoToDelete, 1);
+        updateTodoList(project);
+      }
+    });
+  };
+
+  /*************************************
     Todo: Render Todos to Display Section
   ***************************************/
   const renderTodosToDisplay = (currentProj, todoDisplay) => {
+    const projId = currentProj.id;
     const todoArr = currentProj.todoArr;
     todoArr.forEach((todo) => {
       // Create todo div
+      const todoId = todo.id;
       const todoDiv = createTodoDiv();
 
       // Create todo checkbox
@@ -513,9 +520,12 @@ export const dom = () => {
 
       // ------------------------------------
 
-      deleteButton.addEventListener("click", () =>
-        deleteTodo(currentProj, todoArr, todo)
-      );
+      deleteButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        const projArr = getProjArr();
+        // deleteTodo(currentProj, todoArr, todo);
+        deleteTodo(projArr, projId, todoId);
+      });
 
       // addDeleteButtonFunctionality(deleteButton, todo);
       editAndDeleteDiv.append(editButton, deleteButton);
@@ -609,10 +619,10 @@ Punchlist:
 Currently Working On:
 - Debug the following when adding/editing todo (there are multiple bugs):
  --- If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
- --- If you add a bunch of todos to a project and migrate one to a different project, it takes that one you intended plus all of the other todos that come after it in the array (this may be the cause of incrememnting rather than decrementing in a for loop - not sure)
- --- The migrated todo will then alter ALL of the other todos in the new project todo list to match its name. So you'll have multiple todos with a matching name
+ --- ✅ If you add a bunch of todos to a project and migrate one to a different project, it takes that one you intended plus all of the other todos that come after it in the array (this may be the cause of incrememnting rather than decrementing in a for loop - not sure)
+ --- ✅ The migrated todo will then alter ALL of the other todos in the new project todo list to match its name. So you'll have multiple todos with a matching name
 
- 
+- Look into attaching a todo to it's project via the project's id
 - Projects 'delete' button: Add functionality
 - queryTodoForm/resetTodoForm: Revisit and debug
 - const createProjectEditDiv: Revisit and debug. "todo" parameter is grayed out. Select menu is not
