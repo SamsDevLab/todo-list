@@ -433,8 +433,6 @@ export const dom = () => {
   };
 
   const updateProj = (currentTodoId, projArr) => {
-    console.log(currentTodoId);
-
     projArr.forEach((project) =>
       project.todoArr.forEach((todo) => {
         if (todo.id === currentTodoId && todo.project !== project.name) {
@@ -618,11 +616,13 @@ Punchlist:
 
 Currently Working On:
 - Debug the following when adding/editing todo (there are multiple bugs):
+
+Start here tomorrow look into adding projectId to todo upon creation of todo - this may help solve issue below.
  --- If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
  --- ✅ If you add a bunch of todos to a project and migrate one to a different project, it takes that one you intended plus all of the other todos that come after it in the array (this may be the cause of incrememnting rather than decrementing in a for loop - not sure)
  --- ✅ The migrated todo will then alter ALL of the other todos in the new project todo list to match its name. So you'll have multiple todos with a matching name
 
-- Look into attaching a todo to it's project via the project's id
+
 - Projects 'delete' button: Add functionality
 - queryTodoForm/resetTodoForm: Revisit and debug
 - const createProjectEditDiv: Revisit and debug. "todo" parameter is grayed out. Select menu is not
