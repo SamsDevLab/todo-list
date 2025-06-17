@@ -394,46 +394,69 @@ export const dom = () => {
     return todoEditSaveBtn;
   };
 
-  const updateEditedTodo = (updatedTodoEditForm, todo) => {
-    todo.title = updatedTodoEditForm.elements[0].value;
-    console.log(todo.title);
-    todo.description = updatedTodoEditForm.elements[1].value;
-    console.log(todo.description);
-    todo.dueDate = updatedTodoEditForm.elements[2].value;
-    todo.priority = updatedTodoEditForm.elements[3].value;
-    todo.project = updatedTodoEditForm.elements[4].value;
-    todo.notes = updatedTodoEditForm.elements[5].value;
+  const updateEditedTodo = (updatedTodoEditForm, currentTodoId, projArr) => {
+    projArr.forEach((project) =>
+      project.todoArr.forEach((todo) => {
+        if (todo.id === currentTodoId) {
+          todo.title = updatedTodoEditForm.elements[0].value;
+          todo.description = updatedTodoEditForm.elements[1].value;
+          todo.dueDate = updatedTodoEditForm.elements[2].value;
+          todo.priority = updatedTodoEditForm.elements[3].value;
+          todo.project = updatedTodoEditForm.elements[4].value;
+          todo.notes = updatedTodoEditForm.elements[5].value;
+        }
+      })
+    );
   };
 
-  const updateProj = (projArr, currentProj, todo) => {
-    const updatedProject = projArr.find(
-      (project) => project.name === todo.project
+  const storeCurrentTodoId = () => {
+    let currentId;
+
+    const setCurrentTodoId = (todoId) => {
+      currentId = todoId;
+    };
+
+    const getCurrentTodoId = () => {
+      return currentId;
+    };
+
+    // console.log(currentId);
+
+    return { setCurrentTodoId, getCurrentTodoId };
+  };
+
+  const currentTodoIdStorage = storeCurrentTodoId();
+
+  const removeFromOldProj = (todoId, project) => {
+    const indexToRemove = project.todoArr.findIndex(
+      (todo) => todo.id === todoId
     );
-    updatedProject.todoArr.push(todo);
-    // console.log(currentProj.todoArr);
-    const todoToRemove = currentProj.todoArr.find((element) => {
-      if (element.name === todo.name) {
-        console.log(element);
+    project.todoArr.splice(indexToRemove, 1);
+  };
+
+  const moveToNewProj = (todo, projArr) => {
+    projArr.forEach((project) => {
+      if (todo.project === project.name) {
+        project.todoArr.push(todo);
       }
     });
-    currentProj.todoArr.splice(todoToRemove, 1);
   };
 
-  const currentTodoStorage = () => {
-    let currentTodo = {};
+  const updateProj = (currentTodoId, projArr) => {
+    console.log(currentTodoId);
 
-    const setCurrentTodo = (todo) => {
-      Object.assign(currentTodo, todo);
-    };
-
-    const getCurrentTodo = () => {
-      return currentTodo;
-    };
-
-    return { setCurrentTodo, getCurrentTodo };
+    projArr.forEach((project) =>
+      project.todoArr.forEach((todo) => {
+        if (todo.id === currentTodoId && todo.project !== project.name) {
+          removeFromOldProj(todo.id, project);
+          moveToNewProj(todo, projArr);
+          updateTodoList(project);
+        } else if (todo.id === currentTodoId && todo.project === project.name) {
+          updateTodoList(project);
+        }
+      })
+    );
   };
-
-  const currentTodoRepo = currentTodoStorage();
 
   const addFunctionalityToTodoEditSaveBtn = () => {
     const todoEditModal = queryTodoEditModal();
@@ -441,24 +464,14 @@ export const dom = () => {
 
     todoEditSaveBtn.addEventListener("click", (event) => {
       event.preventDefault();
-      const currentTodo = currentTodoRepo.getCurrentTodo();
-      console.log(currentTodo);
+      const projArr = getProjArr();
+      const currentTodoId = currentTodoIdStorage.getCurrentTodoId();
+      const updatedTodoEditForm = queryTodoEditForm();
 
-      // const updatedTodoEditForm = queryTodoEditForm();
-      // console.log(event.target.value);
-      // // console.log(todo);
+      updateEditedTodo(updatedTodoEditForm, currentTodoId, projArr);
+      updateProj(currentTodoId, projArr);
 
-      // updateEditedTodo(updatedTodoEditForm, todo);
-      // const projArr = getProjArr();
-
-      // if (todo.project === currentProj.name) {
-      //   updateTodoList(currentProj);
-      // } else if (todo.project !== currentProj.name) {
-      //   updateProj(projArr, currentProj, todo);
-      //   updateTodoList(currentProj);
-      // }
-
-      // todoEditModal.close();
+      todoEditModal.close();
     });
   };
 
@@ -494,7 +507,7 @@ export const dom = () => {
         const todoEditProjSelect = queryTodoEditProjSelect();
         populateTodoEditProjSelect(todoEditProjSelect);
         populateTodoEditFormWithValues(todoEditForm, todo);
-        currentTodoRepo.setCurrentTodo(todo);
+        currentTodoIdStorage.setCurrentTodoId(todo.id);
         todoEditModal.show();
       });
 
