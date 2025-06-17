@@ -445,45 +445,31 @@ export const dom = () => {
     todo.notes = updatedTodoEditForm.elements[5].value;
   };
 
-  const removeFromOldProj = (todoId, project) => {
+  const removeFromOldProj = (todo, project) => {
+    const todoId = todo.id;
     const indexToRemove = project.todoArr.findIndex(
       (todo) => todo.id === todoId
     );
+
     project.todoArr.splice(indexToRemove, 1);
   };
 
-  // First Draft:
   const moveToNewProj = (todo, projArr) => {
-    projArr.forEach((project) => {
-      if (todo.project === project.name) {
-        project.todoArr.push(todo);
-      }
-    });
+    const newProject = projArr.find((project) => project.id === todo.projId);
+    newProject.todoArr.push(todo);
   };
 
-  // Second Draft (not yet ready to use todo.projId - projId has to change before this move can happen)
-  // const moveToNewProj = (todo, projArr) => {
-  //   projArr.forEach((project) => {
-  //     if (todo.project === project.name) {
-  //       console.log(project);
-  //       console.log(todo);
-  //       project.todoArr.push(todo);
-  //     }
-  //   });
-  // };
+  const updateProj = (currentTodoId, currentTodoProjId, projArr) => {
+    const project = projArr.find((project) => project.id === currentTodoProjId);
+    const todo = project.todoArr.find((todo) => todo.id === currentTodoId);
 
-  const updateProj = (currentTodoId, projArr) => {
-    projArr.forEach((project) =>
-      project.todoArr.forEach((todo) => {
-        if (todo.id === currentTodoId && todo.project !== project.name) {
-          removeFromOldProj(todo.id, project);
-          moveToNewProj(todo, projArr);
-          updateTodoList(project);
-        } else if (todo.id === currentTodoId && todo.project === project.name) {
-          updateTodoList(project);
-        }
-      })
-    );
+    if (todo.projId !== project.id) {
+      removeFromOldProj(todo, project);
+      moveToNewProj(todo, projArr);
+      updateTodoList(project);
+    } else {
+      updateTodoList(project);
+    }
   };
 
   const addFunctionalityToTodoEditSaveBtn = () => {
@@ -503,8 +489,9 @@ export const dom = () => {
         currentTodoProjId,
         projArr
       );
-      // Will probably need to pass currentTodoProjId here:
-      // updateProj(currentTodoId, projArr);
+
+      // Start here after break - commit this and the helper functions
+      updateProj(currentTodoId, currentTodoProjId, projArr);
 
       todoEditModal.close();
     });
