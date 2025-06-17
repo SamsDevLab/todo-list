@@ -399,23 +399,35 @@ export const dom = () => {
     );
   };
 
-  const storeCurrentTodoId = () => {
-    let currentId;
+  const storeTodoIds = () => {
+    let currentTodoId;
+    let currentTodoProjId;
 
     const setCurrentTodoId = (todoId) => {
-      currentId = todoId;
+      currentTodoId = todoId;
+    };
+
+    const setCurrentTodoProjId = (projId) => {
+      currentTodoProjId = projId;
     };
 
     const getCurrentTodoId = () => {
-      return currentId;
+      return currentTodoId;
     };
 
-    // console.log(currentId);
+    const getCurrentTodoProjId = () => {
+      return currentTodoProjId;
+    };
 
-    return { setCurrentTodoId, getCurrentTodoId };
+    return {
+      setCurrentTodoId,
+      setCurrentTodoProjId,
+      getCurrentTodoId,
+      getCurrentTodoProjId,
+    };
   };
 
-  const currentTodoIdStorage = storeCurrentTodoId();
+  const storeCurrentTodoIds = storeTodoIds();
 
   const removeFromOldProj = (todoId, project) => {
     const indexToRemove = project.todoArr.findIndex(
@@ -424,6 +436,7 @@ export const dom = () => {
     project.todoArr.splice(indexToRemove, 1);
   };
 
+  // First Draft:
   const moveToNewProj = (todo, projArr) => {
     projArr.forEach((project) => {
       if (todo.project === project.name) {
@@ -431,6 +444,17 @@ export const dom = () => {
       }
     });
   };
+
+  // Second Draft (not yet ready to use todo.projId - projId has to change before this move can happen)
+  // const moveToNewProj = (todo, projArr) => {
+  //   projArr.forEach((project) => {
+  //     if (todo.project === project.name) {
+  //       console.log(project);
+  //       console.log(todo);
+  //       project.todoArr.push(todo);
+  //     }
+  //   });
+  // };
 
   const updateProj = (currentTodoId, projArr) => {
     projArr.forEach((project) =>
@@ -512,7 +536,8 @@ export const dom = () => {
         const todoEditProjSelect = queryTodoEditProjSelect();
         populateTodoEditProjSelect(todoEditProjSelect);
         populateTodoEditFormWithValues(todoEditForm, todo);
-        currentTodoIdStorage.setCurrentTodoId(todo.id);
+        storeCurrentTodoIds.setCurrentTodoId(todo.id);
+        storeCurrentTodoIds.setCurrentTodoProjId(todo.projId);
         todoEditModal.show();
       });
 
@@ -619,6 +644,7 @@ Currently Working On:
 
 Start here tomorrow look into adding projectId to todo upon creation of todo - this may help solve issue below.
  --- If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
+      --- Look into submit button listener, addTodo, etc.
  --- ✅ If you add a bunch of todos to a project and migrate one to a different project, it takes that one you intended plus all of the other todos that come after it in the array (this may be the cause of incrememnting rather than decrementing in a for loop - not sure)
  --- ✅ The migrated todo will then alter ALL of the other todos in the new project todo list to match its name. So you'll have multiple todos with a matching name
 
