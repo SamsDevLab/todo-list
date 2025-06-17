@@ -384,21 +384,6 @@ export const dom = () => {
     return todoEditSaveBtn;
   };
 
-  const updateEditedTodo = (updatedTodoEditForm, currentTodoId, projArr) => {
-    projArr.forEach((project) =>
-      project.todoArr.forEach((todo) => {
-        if (todo.id === currentTodoId) {
-          todo.title = updatedTodoEditForm.elements[0].value;
-          todo.description = updatedTodoEditForm.elements[1].value;
-          todo.dueDate = updatedTodoEditForm.elements[2].value;
-          todo.priority = updatedTodoEditForm.elements[3].value;
-          todo.project = updatedTodoEditForm.elements[4].value;
-          todo.notes = updatedTodoEditForm.elements[5].value;
-        }
-      })
-    );
-  };
-
   const storeTodoIds = () => {
     let currentTodoId;
     let currentTodoProjId;
@@ -428,6 +413,37 @@ export const dom = () => {
   };
 
   const storeCurrentTodoIds = storeTodoIds();
+
+  const updateEditedTodo = (
+    updatedTodoEditForm,
+    currentTodoId,
+    currentTodoProjId,
+    projArr
+  ) => {
+    const updatedProjectName = updatedTodoEditForm.elements[4].value;
+
+    const currentProject = projArr.find(
+      (project) => project.id === currentTodoProjId
+    );
+    const newProject = projArr.find(
+      (project) => project.name === updatedProjectName
+    );
+
+    const todo = currentProject.todoArr.find(
+      (todo) => todo.id === currentTodoId
+    );
+
+    if (currentProject.id !== newProject.id) {
+      todo.projId = newProject.id;
+    }
+
+    todo.title = updatedTodoEditForm.elements[0].value;
+    todo.description = updatedTodoEditForm.elements[1].value;
+    todo.dueDate = updatedTodoEditForm.elements[2].value;
+    todo.priority = updatedTodoEditForm.elements[3].value;
+    todo.project = updatedTodoEditForm.elements[4].value;
+    todo.notes = updatedTodoEditForm.elements[5].value;
+  };
 
   const removeFromOldProj = (todoId, project) => {
     const indexToRemove = project.todoArr.findIndex(
@@ -477,11 +493,18 @@ export const dom = () => {
     todoEditSaveBtn.addEventListener("click", (event) => {
       event.preventDefault();
       const projArr = getProjArr();
-      const currentTodoId = currentTodoIdStorage.getCurrentTodoId();
+      const currentTodoId = storeCurrentTodoIds.getCurrentTodoId();
+      const currentTodoProjId = storeCurrentTodoIds.getCurrentTodoProjId();
       const updatedTodoEditForm = queryTodoEditForm();
 
-      updateEditedTodo(updatedTodoEditForm, currentTodoId, projArr);
-      updateProj(currentTodoId, projArr);
+      updateEditedTodo(
+        updatedTodoEditForm,
+        currentTodoId,
+        currentTodoProjId,
+        projArr
+      );
+      // Will probably need to pass currentTodoProjId here:
+      // updateProj(currentTodoId, projArr);
 
       todoEditModal.close();
     });
@@ -642,7 +665,7 @@ Punchlist:
 Currently Working On:
 - Debug the following when adding/editing todo (there are multiple bugs):
 
-Start here tomorrow look into adding projectId to todo upon creation of todo - this may help solve issue below.
+
  --- If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
       --- Look into submit button listener, addTodo, etc.
  --- ✅ If you add a bunch of todos to a project and migrate one to a different project, it takes that one you intended plus all of the other todos that come after it in the array (this may be the cause of incrememnting rather than decrementing in a for loop - not sure)
