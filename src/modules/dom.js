@@ -230,7 +230,7 @@ export const dom = () => {
     return projDelButton;
   };
 
-  const queryProjHeader = () => {
+  const queryProjHeaderDisplay = () => {
     const projHeader = document.querySelector(
       "[data-display = 'project-header']"
     );
@@ -582,14 +582,21 @@ export const dom = () => {
   };
 
   const updateProjHeader = (currentProj) => {
-    const projHeader = queryProjHeader();
+    const projHeader = queryProjHeaderDisplay();
+    const projArr = getProjArr();
+    const foundProject = projArr.find(
+      (project) => project.id === currentProj.id
+    );
     projHeader.innerText = "";
-    projHeader.innerText = currentProj.name;
+    projHeader.innerText = foundProject.name;
   };
 
   const updateTodoList = (currentProj) => {
+    // const projHeader = queryProjHeaderDisplay();
     const todoDisplay = queryTodoDisplay();
 
+    // console.log(currentProj);
+    // console.log(projHeader);
     const childDivs = todoDisplay.querySelectorAll("div");
     childDivs.forEach((div) => div.remove());
 
@@ -628,17 +635,6 @@ export const dom = () => {
     projSection.appendChild(projDiv);
   };
 
-  ////// SideBar /////////
-  // Create Project Buttons in Sidebar
-
-  // Create Todo List in Sidebar (optional)
-
-  /////// Body ///////
-  // Pass in Project Name to h2
-
-  // Create Todo Divs
-
-  // Adds Default Project (none) to Dropdown
   addProjToDropdown();
   addInputListenersToEditTodo();
   addFunctionalityToTodoEditCancelBtn();
@@ -649,28 +645,16 @@ dom();
 
 /* 
 Punchlist:
-- ✅ Todos 'delete' button: Add functionality
-- ✅ Todos Edit 'save' button: Add functionality
-- Todo Edit Button - Can't switch projects. Program functionality.
---- ✅ Project choice persistence should appear when clicking on "edit" button
---- ✅ Todo should completely shift to different project's todoArr upon choosing different project and hitting save
---- ✅ Project should update immediately when adding a todo
-- ✅ Refactor todoEditModal - there should only be one todoEditModal which edits all todos. Right now each todo has its own modal! Fix this before tackling the bug right below
---- ✅ List of projects in todo edit dropdown should update automatically when a new project is added - As of now, this doesn't happen and you have to click away and click back to see the project populate in the todo edit's dropdown
 
 Currently Working On:
-- queryTodoForm/resetTodoForm: Revisit and debug
+
  --- If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
-      --- Look into submit button listener, addTodo, etc.
- --- ✅ If you add a bunch of todos to a project and migrate one to a different project, it takes that one you intended plus all of the other todos that come after it in the array (this may be the cause of incrememnting rather than decrementing in a for loop - not sure)
- --- ✅ The migrated todo will then alter ALL of the other todos in the new project todo list to match its name. So you'll have multiple todos with a matching name
+ --- Look into submit button listener, addTodo, etc.
+
 
 Pending:
 - Projects 'delete' button: Add functionality
-- const createProjectEditDiv: Revisit and debug. "todo" parameter is grayed out. Select menu is not
---- showing original choice persistence
-- 'none' default arr: Rename "none" to something more descriptive. This will feature all of the todos that don't live
-in a specific, created project - place them in todos section in the todos pane.
+- 'none' default arr: Rename "none" to something more descriptive. This will feature all of the todos that don't live in a specific, created project - place them in todos section in the todos pane.
 - localStorage: Look into it and how you can go about implementing it in your storage.js file.
 --- localStorage should help with editing todos on the backend.
 ----- May need to revisit some of your createTodoEdit functions once you implement storage.
@@ -678,4 +662,18 @@ in a specific, created project - place them in todos section in the todos pane.
 filtering by 'Today', 'Upcoming' and 'Anytime');
 - Emojis: How do you create an emoji selector and how can you pass emojis in for your projects?
 - Styling: Begin styling the project
+
+Completed:
+✅ Todos 'delete' button: Add functionality
+✅ Todos Edit 'save' button: Add functionality
+✅ Todo Edit Button - Can't switch projects. Program functionality.
+✅ Project choice persistence should appear when clicking on "edit" button
+✅ Todo should completely shift to different project's todoArr upon choosing different project and hitting save
+✅ Project should update immediately when adding a todo
+✅ Refactor todoEditModal - there should only be one todoEditModal which edits all todos. Right now each todo has its own modal! Fix this before tackling the bug right below
+ ✅ List of projects in todo edit dropdown should update automatically when a new project is added - As of now, this doesn't happen and you have to click away and click back to see the project populate in the todo edit's dropdown
+✅ queryTodoForm/resetTodoForm: Revisit and debug
+✅ If you add a bunch of todos to a project and migrate one to a different project, it takes that one you intended plus all of the other todos that come after it in the array (this may be the cause of incrememnting rather than decrementing in a for loop - not sure)
+✅ The migrated todo will then alter ALL of the other todos in the new project todo list to match its name. So you'll have multiple todos with a matching name
+
 */
