@@ -643,6 +643,7 @@ export const dom = () => {
     projSection.appendChild(projDiv);
   };
 
+  addProjToDropdown();
   addInputListenersToEditTodo();
   addFunctionalityToTodoEditCancelBtn();
   addFunctionalityToTodoEditSaveBtn();
