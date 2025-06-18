@@ -87,10 +87,10 @@ export const dom = () => {
     return form;
   };
 
-  // const resetTodoForm = () => {
-  //   const todoForm = queryTodoForm();
-  //   todoForm.reset();
-  // };
+  const resetTodoForm = () => {
+    const todoForm = queryTodoForm();
+    todoForm.reset();
+  };
 
   // Close Todo modal
   const closeTodoModal = () => {
@@ -106,7 +106,7 @@ export const dom = () => {
     const newTodo = submitTodo();
     const currentProjObj = getProjObj(newTodo);
     updateTodoList(currentProjObj);
-    // resetTodoForm();
+    resetTodoForm();
     closeTodoModal();
   });
 
@@ -567,7 +567,6 @@ export const dom = () => {
       deleteButton.addEventListener("click", (event) => {
         event.preventDefault();
         const projArr = getProjArr();
-        // deleteTodo(currentProj, todoArr, todo);
         deleteTodo(projArr, projId, todoId);
       });
 
@@ -594,7 +593,6 @@ export const dom = () => {
     const childDivs = todoDisplay.querySelectorAll("div");
     childDivs.forEach((div) => div.remove());
 
-    // console.log(todoDisplay);
     renderTodosToDisplay(currentProj, todoDisplay);
   };
 
@@ -661,17 +659,14 @@ Punchlist:
 --- ✅ List of projects in todo edit dropdown should update automatically when a new project is added - As of now, this doesn't happen and you have to click away and click back to see the project populate in the todo edit's dropdown
 
 Currently Working On:
-- Debug the following when adding/editing todo (there are multiple bugs):
-
-
+- queryTodoForm/resetTodoForm: Revisit and debug
  --- If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
       --- Look into submit button listener, addTodo, etc.
  --- ✅ If you add a bunch of todos to a project and migrate one to a different project, it takes that one you intended plus all of the other todos that come after it in the array (this may be the cause of incrememnting rather than decrementing in a for loop - not sure)
  --- ✅ The migrated todo will then alter ALL of the other todos in the new project todo list to match its name. So you'll have multiple todos with a matching name
 
-
+Pending:
 - Projects 'delete' button: Add functionality
-- queryTodoForm/resetTodoForm: Revisit and debug
 - const createProjectEditDiv: Revisit and debug. "todo" parameter is grayed out. Select menu is not
 --- showing original choice persistence
 - 'none' default arr: Rename "none" to something more descriptive. This will feature all of the todos that don't live
