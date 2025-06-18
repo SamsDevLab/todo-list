@@ -44,6 +44,8 @@ export const projManager = function () {
 
     const targetProj = projArr.find((project) => project.id === projId);
     targetProj.todoArr.push(newTodo);
+
+    return newTodo;
   };
 
   // Change todo's title
