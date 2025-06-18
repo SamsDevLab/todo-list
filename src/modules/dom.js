@@ -527,6 +527,7 @@ export const dom = () => {
     Todo: Render Todos to Display Section
   ***************************************/
   const renderTodosToDisplay = (currentProj, todoDisplay) => {
+    const projArr = getProjArr();
     const projId = currentProj.id;
     const todoArr = currentProj.todoArr;
     todoArr.forEach((todo) => {
@@ -566,7 +567,6 @@ export const dom = () => {
 
       deleteButton.addEventListener("click", (event) => {
         event.preventDefault();
-        const projArr = getProjArr();
         deleteTodo(projArr, projId, todoId);
       });
 
@@ -577,7 +577,6 @@ export const dom = () => {
       todoDiv.appendChild(titleAndDueDateDiv);
       todoDiv.appendChild(editAndDeleteDiv);
       todoDisplay.appendChild(todoDiv);
-      // todoDisplay.appendChild(editModal);
     });
   };
 
@@ -592,15 +591,21 @@ export const dom = () => {
   };
 
   const updateTodoList = (currentProj) => {
-    // const projHeader = queryProjHeaderDisplay();
-    const todoDisplay = queryTodoDisplay();
-
-    // console.log(currentProj);
-    // console.log(projHeader);
-    const childDivs = todoDisplay.querySelectorAll("div");
-    childDivs.forEach((div) => div.remove());
-
-    renderTodosToDisplay(currentProj, todoDisplay);
+    const projArr = getProjArr();
+    const projHeaderDisplay = queryProjHeaderDisplay();
+    const currentProjHeader = projHeaderDisplay.innerText;
+    const currentProjOnDisplay = projArr.find(
+      (project) => project.name === currentProjHeader
+    );
+    // Test after break
+    if (currentProj.id === currentProjOnDisplay.id) {
+      const todoDisplay = queryTodoDisplay();
+      const childDivs = todoDisplay.querySelectorAll("div");
+      childDivs.forEach((div) => div.remove());
+      renderTodosToDisplay(currentProj, todoDisplay);
+    } else if (currentProj.id !== currentProjOnDisplay.id) {
+      console.log("It's not equal!");
+    }
   };
 
   const updateMainDisplay = (currentProj) => {
