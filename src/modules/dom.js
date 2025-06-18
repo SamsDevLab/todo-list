@@ -597,14 +597,17 @@ export const dom = () => {
     const currentProjOnDisplay = projArr.find(
       (project) => project.name === currentProjHeader
     );
-    // Test after break
+    const allTodosProj = projArr.find(
+      (project) => project.name === "All Todos"
+    );
+
     if (currentProj.id === currentProjOnDisplay.id) {
       const todoDisplay = queryTodoDisplay();
       const childDivs = todoDisplay.querySelectorAll("div");
       childDivs.forEach((div) => div.remove());
       renderTodosToDisplay(currentProj, todoDisplay);
     } else if (currentProj.id !== currentProjOnDisplay.id) {
-      console.log("It's not equal!");
+      console.log("It's not equal");
     }
   };
 
@@ -640,7 +643,6 @@ export const dom = () => {
     projSection.appendChild(projDiv);
   };
 
-  addProjToDropdown();
   addInputListenersToEditTodo();
   addFunctionalityToTodoEditCancelBtn();
   addFunctionalityToTodoEditSaveBtn();
@@ -651,10 +653,13 @@ dom();
 /* 
 Punchlist:
 
-Currently Working On:
+-- Start here when you return from NOLA: 
 
- --- If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
- --- Look into submit button listener, addTodo, etc.
+Reread notes below and delete the all todos default project. This is going to be a filtered view NOT a project. Need to figure out how to filter it initially and display it in the todo display section. Will need to filter by date, probably, and show All Todos in the header.
+-- Also need to add a listener to 'All Tasks' button to bring up this filtered view - and change the name of the button to "All Todos"
+Currently Working On:
+ --- ✅ If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
+-- Need to rename 'All Tasks' button to 'All Todos' and program it to render todos by filtered date
 
 
 Pending:
