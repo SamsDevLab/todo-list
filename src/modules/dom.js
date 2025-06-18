@@ -68,17 +68,15 @@ export const dom = () => {
 
   const submitTodo = () => {
     const todoInputsObj = queryTodoInputs();
-    projectManager.addTodo(todoInputsObj);
-    const currentProjName = todoInputsObj.project.value;
+    const newTodo = projectManager.addTodo(todoInputsObj);
 
-    return currentProjName;
+    return newTodo;
   };
 
-  const getProjObj = (currentProjName) => {
+  const getProjObj = (newTodo) => {
+    const projId = newTodo.projId;
     const projArr = getProjArr();
-    const foundProject = projArr.find(
-      (project) => project.name === currentProjName
-    );
+    const foundProject = projArr.find((project) => project.id === projId);
 
     return foundProject;
   };
@@ -105,8 +103,8 @@ export const dom = () => {
   );
   submitTodoButton.addEventListener("click", (event) => {
     event.preventDefault();
-    const currentProjName = submitTodo();
-    const currentProjObj = getProjObj(currentProjName);
+    const newTodo = submitTodo();
+    const currentProjObj = getProjObj(newTodo);
     updateTodoList(currentProjObj);
     // resetTodoForm();
     closeTodoModal();
@@ -504,7 +502,6 @@ export const dom = () => {
         projArr
       );
 
-      // Start here after break - commit this and the helper functions
       updateProj(currentTodoId, currentTodoProjId, projArr);
 
       todoEditModal.close();
