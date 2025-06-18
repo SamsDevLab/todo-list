@@ -11,9 +11,6 @@ export const projManager = function () {
     projArr.push(newProj);
   };
 
-  const defaultProject = ["none", ""];
-  addProject(defaultProject);
-
   // Grabs project's randomUUID
   const getProjId = function (element) {
     const id = projArr[element].id;
