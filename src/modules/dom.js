@@ -17,6 +17,36 @@ export const dom = () => {
     return currentProj;
   };
 
+  /********************************
+    "Filter Todos By Date" Section
+  *********************************/
+
+  const filterAllTodos = (event) => {};
+
+  const filterTodayTodos = () => {};
+
+  const filterUpcomingTodos = () => {};
+
+  const filterAnytimeTodos = () => {};
+
+  // Grab Todo Filter Buttons via data-attributes
+  // Start here after lunch - I may just need to push the event into updateMainDisplay then filter the todos from there. I think I'm prematurely filtering them right now
+  const todoFilterBtns = document.querySelectorAll("[data-filter-button]");
+  todoFilterBtns.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (event.target.dataset.filterButton === "all") {
+        filterAllTodos(event);
+      } else if (event.target.dataset.filterButton === "today") {
+        filterTodayTodos();
+      } else if (event.target.dataset.filterButton === "upcoming") {
+        filterUpcomingTodos();
+      } else if (event.target.dataset.filterButton === "anytime") {
+        filterAnytimeTodos();
+      }
+    });
+  });
+
   // Grab New Todo and New Project Button via data-attributes
   const sectionHeaderBtns = document.querySelectorAll("[data-add-button]");
   sectionHeaderBtns.forEach((button) =>
@@ -51,7 +81,7 @@ export const dom = () => {
   };
 
   /**************************
-    Create New Todo Section
+    "Create New Todo" Section
   ***************************/
 
   // Grab Todo Form Input Values and Pass to addTodo to create a new Todo
@@ -120,9 +150,9 @@ export const dom = () => {
     closeTodoModal();
   });
 
-  /****************************
-    Create New Project Section
-  *****************************/
+  /******************************
+    "Create New Project" Section
+  *******************************/
   const queryProjectInputs = () => {
     const projNodeList = document.querySelectorAll("[data-project-input]");
     const projValues = [];
@@ -524,6 +554,10 @@ export const dom = () => {
   };
 
   /*************************************
+        Todo: Filter Todo Section
+  ***************************************/
+
+  /*************************************
     Todo: Render Todos to Display Section
   ***************************************/
   const renderTodosToDisplay = (currentProj, todoDisplay) => {
@@ -582,6 +616,7 @@ export const dom = () => {
 
   const updateProjHeader = (currentProj) => {
     const projHeader = queryProjHeaderDisplay();
+
     const projArr = getProjArr();
     const foundProject = projArr.find(
       (project) => project.id === currentProj.id
@@ -591,14 +626,15 @@ export const dom = () => {
   };
 
   const updateTodoList = (currentProj) => {
+    // This is working in general (for individual projects). However, I need to begin adding functionality to the filter buttons (All Todos, etc). May have to refactor updateProjHeader as well since it's passing in the current proj - it doesn't account for the filtered lists.
+
     const projArr = getProjArr();
-    const projHeaderDisplay = queryProjHeaderDisplay();
-    const currentProjHeader = projHeaderDisplay.innerText;
-    const currentProjOnDisplay = projArr.find(
-      (project) => project.name === currentProjHeader
+    const projHeader = document.querySelector(
+      "[data-display = 'project-header']"
     );
-    const allTodosProj = projArr.find(
-      (project) => project.name === "All Todos"
+
+    const currentProjOnDisplay = projArr.find(
+      (project) => project.name === projHeader.innerText
     );
 
     if (currentProj.id === currentProjOnDisplay.id) {
@@ -606,8 +642,6 @@ export const dom = () => {
       const childDivs = todoDisplay.querySelectorAll("div");
       childDivs.forEach((div) => div.remove());
       renderTodosToDisplay(currentProj, todoDisplay);
-    } else if (currentProj.id !== currentProjOnDisplay.id) {
-      console.log("It's not equal");
     }
   };
 
@@ -654,9 +688,9 @@ dom();
 /* 
 Punchlist:
 
--- Start here when you return from NOLA: 
 
-Reread notes below and delete the all todos default project. This is going to be a filtered view NOT a project. Need to figure out how to filter it initially and display it in the todo display section. Will need to filter by date, probably, and show All Todos in the header.
+Reread notes below 
+ Need to figure out how to filter all todos initially and display it in the todo display section. Will need to filter by date, probably, and show All Todos in the header.
 -- Also need to add a listener to 'All Tasks' button to bring up this filtered view - and change the name of the button to "All Todos"
 Currently Working On:
  --- ✅ If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
