@@ -20,8 +20,12 @@ export const dom = () => {
   /********************************
     "Filter Todos By Date" Section
   *********************************/
+  const queryTodoFilterBtns = () => {
+    const todoFilterBtns = document.querySelectorAll("[data-filter-button]");
+    return todoFilterBtns;
+  };
 
-  const filterAllTodos = (event) => {};
+  const filterAllTodos = () => {};
 
   const filterTodayTodos = () => {};
 
@@ -31,19 +35,11 @@ export const dom = () => {
 
   // Grab Todo Filter Buttons via data-attributes
   // Start here after lunch - I may just need to push the event into updateMainDisplay then filter the todos from there. I think I'm prematurely filtering them right now
-  const todoFilterBtns = document.querySelectorAll("[data-filter-button]");
+  const todoFilterBtns = queryTodoFilterBtns();
   todoFilterBtns.forEach((button) => {
     button.addEventListener("click", (event) => {
       event.preventDefault();
-      if (event.target.dataset.filterButton === "all") {
-        filterAllTodos(event);
-      } else if (event.target.dataset.filterButton === "today") {
-        filterTodayTodos();
-      } else if (event.target.dataset.filterButton === "upcoming") {
-        filterUpcomingTodos();
-      } else if (event.target.dataset.filterButton === "anytime") {
-        filterAnytimeTodos();
-      }
+      updateMainDisplay(event);
     });
   });
 
@@ -614,15 +610,15 @@ export const dom = () => {
     });
   };
 
-  const updateProjHeader = (currentProj) => {
+  const updateProjHeader = (input) => {
     const projHeader = queryProjHeaderDisplay();
-
-    const projArr = getProjArr();
-    const foundProject = projArr.find(
-      (project) => project.id === currentProj.id
-    );
     projHeader.innerText = "";
-    projHeader.innerText = foundProject.name;
+
+    if (input.type === "click") {
+      projHeader.innerText = input.target.innerText;
+    } else if (input.type !== "click") {
+      projHeader.innerText = input.name;
+    }
   };
 
   const updateTodoList = (currentProj) => {
@@ -645,9 +641,17 @@ export const dom = () => {
     }
   };
 
-  const updateMainDisplay = (currentProj) => {
-    updateProjHeader(currentProj);
-    updateTodoList(currentProj);
+  // First Draft
+  // const updateMainDisplay = (currentProj) => {
+  //   updateProjHeader(currentProj);
+  //   updateTodoList(currentProj);
+  // };
+
+  // Second Draft
+  const updateMainDisplay = (input) => {
+    // console.log(input);
+    updateProjHeader(input);
+    // updateTodoList(currentProj);
   };
 
   const addEventListenerToProjBtn = (projectButton, currentProj) => {
