@@ -36,22 +36,22 @@ export const dom = () => {
     return todoArr;
   };
 
-  // const filterTodayTodos = () => {
-  //   let todoArr = [];
-  //   const currentDate = new Date().toJSON().slice(0, 10);
+  const filterTodayTodos = () => {
+    let todoArr = [];
+    const currentDate = new Date().toJSON().slice(0, 10);
 
-  //   const projArr = getProjArr();
+    const projArr = getProjArr();
 
-  //   projArr.forEach((project) => {
-  //     project.todoArr.forEach((todo) => {
-  //       if (todo.dueDate === currentDate) {
-  //         todoArr.push(todo);
-  //       }
-  //     });
-  //   });
+    projArr.forEach((project) => {
+      project.todoArr.forEach((todo) => {
+        if (todo.dueDate === currentDate) {
+          todoArr.push(todo);
+        }
+      });
+    });
 
-  //   return todoArr;
-  // };
+    return todoArr;
+  };
 
   const filterUpcomingTodos = () => {
     console.log("filtering Upcoming Todos, Dankman!");
