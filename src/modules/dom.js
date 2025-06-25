@@ -26,16 +26,15 @@ export const dom = () => {
     return todoFilterBtns;
   };
 
-  // const filterAllTodos = () => {
-  //   // console.log("filtering All Todos, Captain BlYthe!");
-  //   let todoArr = [];
+  const filterAllTodos = () => {
+    let todoArr = [];
 
-  //   const projArr = getProjArr();
-  //   projArr.forEach((project) =>
-  //     project.todoArr.forEach((todo) => todoArr.push(todo))
-  //   );
-  //   return todoArr;
-  // };
+    const projArr = getProjArr();
+    projArr.forEach((project) =>
+      project.todoArr.forEach((todo) => todoArr.push(todo))
+    );
+    return todoArr;
+  };
 
   // const filterTodayTodos = () => {
   //   let todoArr = [];
