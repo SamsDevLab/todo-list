@@ -77,8 +77,18 @@ export const dom = () => {
     return todoArr;
   };
 
-  const filterAnytimeTodos = () => {
-    console.log("filtering Anytime Todos, Garfield!");
+  const filterNoDueDateTodos = () => {
+    const todoArr = [];
+    const projArr = getProjArr();
+
+    projArr.forEach((project) =>
+      project.todoArr.forEach((todo) => {
+        if (todo.dueDate === "");
+        todoArr.push(todo);
+      })
+    );
+
+    return todoArr;
   };
 
   // Grab Todo Filter Buttons via data-attributes
@@ -685,9 +695,9 @@ export const dom = () => {
       todoArr = filterUpcomingTodos();
     } else if (
       menuItem instanceof PointerEvent &&
-      menuItem.target.dataset.filterButton === "anytime"
+      menuItem.target.dataset.filterButton === "no-due-date"
     ) {
-      filterAnytimeTodos();
+      todoArr = filterNoDueDateTodos();
     } else {
       const projArr = getProjArr();
       const projId = menuItem.id;
