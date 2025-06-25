@@ -25,7 +25,9 @@ export const dom = () => {
     return todoFilterBtns;
   };
 
-  const filterAllTodos = () => {};
+  const filterAllTodos = () => {
+    console.log("filtering All Todos, Captain BlYthe!");
+  };
 
   const filterTodayTodos = () => {};
 
@@ -563,10 +565,21 @@ export const dom = () => {
   /*************************************
     Todo: Render Todos to Display Section
   ***************************************/
-  const renderTodosToDisplay = (currentProj, todoDisplay) => {
-    const projArr = getProjArr();
-    const projId = currentProj.id;
-    const todoArr = currentProj.todoArr;
+  const renderTodosToDisplay = (menuItem, todoDisplay) => {
+    let todoArr;
+
+    if (
+      menuItem.type === "click" &&
+      menuItem.target.dataset.filterButton === "all"
+    ) {
+      filterAllTodos();
+    }
+
+    console.log(todoArr);
+
+    // const projArr = getProjArr();
+    // const projId = menuItem.id;
+    // const todoArr = menuItem.todoArr;
     todoArr.forEach((todo) => {
       // Create todo div
       const todoId = todo.id;
@@ -617,14 +630,14 @@ export const dom = () => {
     });
   };
 
-  const updateMenuHeader = (input) => {
+  const updateMenuHeader = (menuItem) => {
     const menuHeader = queryMenuHeaderDisplay();
     menuHeader.innerText = "";
 
-    if (input.type === "click") {
-      menuHeader.innerText = input.target.innerText;
-    } else if (input.type !== "click") {
-      menuHeader.innerText = input.name;
+    if (menuItem.type === "click") {
+      menuHeader.innerText = menuItem.target.computedName;
+    } else if (menuItem.type !== "click") {
+      menuHeader.innerText = menuItem.name;
     }
   };
 
@@ -635,7 +648,7 @@ export const dom = () => {
 
     if (
       menuItem.type === "click" &&
-      menuItem.target.innerText === currentMenuHeader
+      menuItem.target.computedName === currentMenuHeader
     ) {
       renderTodosToDisplay(menuItem, todoDisplay);
     } else if (menuItem.name === currentMenuHeader) {
