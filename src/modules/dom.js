@@ -24,83 +24,6 @@ export const dom = () => {
     return currentDate;
   };
 
-  /********************************
-    "Filter Todos By Date" Section
-  *********************************/
-  const queryTodoFilterBtns = () => {
-    const todoFilterBtns = document.querySelectorAll("[data-filter-button]");
-    return todoFilterBtns;
-  };
-
-  const filterAllTodos = () => {
-    const todoArr = [];
-
-    const projArr = getProjArr();
-    projArr.forEach((project) =>
-      project.todoArr.forEach((todo) => todoArr.push(todo))
-    );
-    return todoArr;
-  };
-
-  const filterTodayTodos = () => {
-    const todoArr = [];
-    const currentDate = getCurrentDate();
-
-    const projArr = getProjArr();
-
-    projArr.forEach((project) => {
-      project.todoArr.forEach((todo) => {
-        if (todo.dueDate === currentDate) {
-          todoArr.push(todo);
-        }
-      });
-    });
-
-    return todoArr;
-  };
-
-  const filterUpcomingTodos = () => {
-    const todoArr = [];
-    const currentDate = getCurrentDate();
-
-    const projArr = getProjArr();
-
-    projArr.forEach((project) =>
-      project.todoArr.forEach((todo) => {
-        const result = isAfter(todo.dueDate, currentDate);
-        if (result === true) {
-          todoArr.push(todo);
-        }
-      })
-    );
-
-    return todoArr;
-  };
-
-  const filterNoDueDateTodos = () => {
-    const todoArr = [];
-    const projArr = getProjArr();
-
-    projArr.forEach((project) =>
-      project.todoArr.forEach((todo) => {
-        if (todo.dueDate === "");
-        todoArr.push(todo);
-      })
-    );
-
-    return todoArr;
-  };
-
-  // Grab Todo Filter Buttons via data-attributes
-
-  const todoFilterBtns = queryTodoFilterBtns();
-  todoFilterBtns.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      event.preventDefault();
-      updateMainDisplay(event);
-    });
-  });
-
   // Grab New Todo and New Project Button via data-attributes
   const sectionHeaderBtns = document.querySelectorAll("[data-add-button]");
   sectionHeaderBtns.forEach((button) =>
@@ -607,10 +530,6 @@ export const dom = () => {
     });
   };
 
-  /*************************************
-        Todo: Filter Todo Section
-  ***************************************/
-
   const clearTodoDisplay = () => {
     const todoDisplay = queryTodoDisplay();
     const childDivs = todoDisplay.querySelectorAll("div");
@@ -618,6 +537,7 @@ export const dom = () => {
 
     return todoDisplay;
   };
+
   /*************************************
     Todo: Render Todos to Display Section
   ***************************************/
@@ -672,9 +592,94 @@ export const dom = () => {
       todoDisplay.appendChild(todoDiv);
     });
   };
+  /********************************
+    "Filter Todos By Date" Section
+  *********************************/
+  const queryTodoFilterBtns = () => {
+    const todoFilterBtns = document.querySelectorAll("[data-filter-button]");
+    return todoFilterBtns;
+  };
+
+  const todoFilterBtns = queryTodoFilterBtns();
+  todoFilterBtns.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      updateMainDisplay(event);
+    });
+  });
+
+  const filterAllTodos = () => {
+    const todoArr = [];
+
+    const projArr = getProjArr();
+    projArr.forEach((project) =>
+      project.todoArr.forEach((todo) => todoArr.push(todo))
+    );
+    return todoArr;
+  };
+
+  const filterTodayTodos = () => {
+    const todoArr = [];
+    const currentDate = getCurrentDate();
+
+    const projArr = getProjArr();
+
+    projArr.forEach((project) => {
+      project.todoArr.forEach((todo) => {
+        if (todo.dueDate === currentDate) {
+          todoArr.push(todo);
+        }
+      });
+    });
+
+    return todoArr;
+  };
+
+  const filterUpcomingTodos = () => {
+    const todoArr = [];
+    const currentDate = getCurrentDate();
+
+    const projArr = getProjArr();
+
+    projArr.forEach((project) =>
+      project.todoArr.forEach((todo) => {
+        const result = isAfter(todo.dueDate, currentDate);
+        if (result === true) {
+          todoArr.push(todo);
+        }
+      })
+    );
+
+    return todoArr;
+  };
+
+  const filterNoDueDateTodos = () => {
+    const todoArr = [];
+    const projArr = getProjArr();
+
+    projArr.forEach((project) =>
+      project.todoArr.forEach((todo) => {
+        if (todo.dueDate === "");
+        todoArr.push(todo);
+      })
+    );
+
+    return todoArr;
+  };
+
+  const getProjTodos = (menuItem) => {
+    const todoArr = [];
+    const projArr = getProjArr();
+    const projId = menuItem.id;
+
+    const foundProject = projArr.find((project) => project.id === projId);
+    foundProject.todoArr.forEach((todo) => todoArr.push(todo));
+
+    return todoArr;
+  };
+  // Grab Todo Filter Buttons via data-attributes
 
   const gatherTodoArr = (menuItem, todoDisplay) => {
-    // Start here after lunch - will need to refactor this massive function and abstract away into smaller helpers
     let todoArr;
 
     if (
@@ -699,62 +704,10 @@ export const dom = () => {
     ) {
       todoArr = filterNoDueDateTodos();
     } else {
-      const projArr = getProjArr();
-      const projId = menuItem.id;
-      const foundProject = projArr.find((project) => project.id === projId);
-      foundProject.todoArr.forEach((todo) => todoArr.push(todo));
+      todoArr = getProjTodos(menuItem);
     }
 
     createAndAppendTodos(todoArr, todoDisplay);
-
-    // todoArr.forEach((todo) => {
-    //   // Create todo div
-    //   const todoId = todo.id;
-    //   const todoDiv = createTodoDiv();
-
-    //   // Create todo checkbox
-    //   const todoCheckbox = createTodoCheckbox(todo);
-
-    //   // Create titleAndDate Div
-    //   const titleAndDueDateDiv = createTitleAndDueDateDiv(todo);
-    //   const title = createTitleElement(todo);
-    //   const dueDate = createDueDateElement(todo);
-    //   titleAndDueDateDiv.append(title, dueDate);
-
-    //   // Create editAndDelete Div in Todo
-    //   const editAndDeleteDiv = createEditAndDeleteDiv();
-
-    //   const editButton = createEditButton();
-    //   const deleteButton = createDeleteButton();
-
-    //   // Add listener to todo's edit button
-    //   editButton.addEventListener("click", (event) => {
-    //     event.preventDefault();
-    //     const todoEditModal = queryTodoEditModal();
-    //     const todoEditForm = queryTodoEditForm();
-    //     const todoEditProjSelect = queryTodoEditProjSelect();
-    //     populateTodoEditProjSelect(todoEditProjSelect);
-    //     populateTodoEditFormWithValues(todoEditForm, todo);
-    //     storeCurrentTodoIds.setCurrentTodoId(todo.id);
-    //     storeCurrentTodoIds.setCurrentTodoProjId(todo.projId);
-    //     todoEditModal.show();
-    //   });
-
-    //   // ------------------------------------
-
-    //   deleteButton.addEventListener("click", (event) => {
-    //     event.preventDefault();
-    //     deleteTodo(projArr, projId, todoId);
-    //   });
-
-    //   // addDeleteButtonFunctionality(deleteButton, todo);
-    //   editAndDeleteDiv.append(editButton, deleteButton);
-
-    //   todoDiv.appendChild(todoCheckbox);
-    //   todoDiv.appendChild(titleAndDueDateDiv);
-    //   todoDiv.appendChild(editAndDeleteDiv);
-    //   todoDisplay.appendChild(todoDiv);
-    // });
   };
 
   const updateMenuHeader = (menuItem) => {
