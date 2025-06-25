@@ -553,6 +553,13 @@ export const dom = () => {
         Todo: Filter Todo Section
   ***************************************/
 
+  const clearTodoDisplay = () => {
+    const todoDisplay = queryTodoDisplay();
+    const childDivs = todoDisplay.querySelectorAll("div");
+    childDivs.forEach((div) => div.remove());
+
+    return todoDisplay;
+  };
   /*************************************
     Todo: Render Todos to Display Section
   ***************************************/
@@ -621,64 +628,23 @@ export const dom = () => {
     }
   };
 
-  // First Draft:
   const updateTodoList = (menuItem) => {
-    // This is working in general (for individual projects). However, I need to begin adding functionality to the filter buttons (All Todos, etc). May have to refactor updateProjHeader as well since it's passing in the current proj - it doesn't account for the filtered lists.
-
-    const projArr = getProjArr();
-
     const menuHeader = document.querySelector("[data-display = 'menu-header']");
+    const currentMenuHeader = menuHeader.innerText;
+    const todoDisplay = clearTodoDisplay();
 
-    const currentProjOnDisplay = projArr.find(
-      (project) => project.name === menuHeader.innerText
-    );
-
-    if (menuItem.id === currentProjOnDisplay.id) {
-      const todoDisplay = queryTodoDisplay();
-      const childDivs = todoDisplay.querySelectorAll("div");
-      childDivs.forEach((div) => div.remove());
+    if (
+      menuItem.type === "click" &&
+      menuItem.target.innerText === currentMenuHeader
+    ) {
       renderTodosToDisplay(menuItem, todoDisplay);
+    } else if (menuItem.name === currentMenuHeader) {
+      renderTodosToDisplay(menuItem, todoDisplay);
+    } else {
+      return;
     }
   };
 
-  // Second Draft:
-  // const updateTodoList = (menuItem) => {
-  //   /*
-  //   - Check for current header in display
-  //   - If header is the same as the current input, go ahead and update the todo list with new todos.
-  //   - If the header doesn't match the current input, nothing should be updated as todos will then appear under an incorrect header
-  //   */
-
-  //   const projHeader = document.querySelector(
-  // "[data-display = 'project-header']" -- First Draft
-  // "[data-display = 'menu-header']" -- Second Draft
-  //   );
-
-  //   if (
-  //     input.type === "click" &&
-  //     projHeader.innerText === input.target.computedName
-  //   ) {
-  //     console.log("dankman");
-  //   } else if (input.type !== "click") {
-  //     const projArr = getProjArr();
-  //   }
-
-  //   console.log(input);
-
-  //   // const currentProjOnDisplay = projArr.find(
-  //   //   (project) => project.name === projHeader.innerText
-  //   // );
-
-  //   // if (input) console.log(projHeader);
-  // };
-
-  // First Draft
-  // const updateMainDisplay = (currentProj) => {
-  //   updateProjHeader(currentProj);
-  //   updateTodoList(currentProj);
-  // };
-
-  // Second Draft
   const updateMainDisplay = (menuItem) => {
     updateMenuHeader(menuItem);
     updateTodoList(menuItem);
@@ -722,21 +688,14 @@ dom();
 /* 
 Punchlist:
 
-Start here after dinner break (06/24) - Need to refactor the project-header data attribute in template.html to menu-header. This is more accurate now that the filter options also appear in that header.
--- This means there will need to be a lot of refactoring names within this dom.js module as well.
---- queryProjHeader will now be queryMenuHeader and all variables named projHeader will also have to reflect this change.
----- Once this has been tackled and committed, need to revisit the second draft of updateTodoList to get that working
-
-Reread notes below 
- Need to figure out how to filter all todos initially and display it in the todo display section. Will need to filter by date, probably, and show All Todos in the header.
--- Also need to add a listener to 'All Tasks' button to bring up this filtered view - and change the name of the button to "All Todos"
 
 Currently Working On:
- --- ✅ If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
--- Need to rename 'All Tasks' button to 'All Todos' and program it to render todos by filtered date
+- Revisit the second draft of updateTodoList to get that working
+- Add a listener to 'All Tasks' button to bring up this filtered view - and change the name of the button to "All Todos"
 
 
-Pending:
+Pending: 
+- Need to figure out how to filter all todos initially and display it in the todo display section. Will need to filter by date, probably, and show All Todos in the header.
 - Projects 'delete' button: Add functionality
 - 'none' default arr: Rename "none" to something more descriptive. This will feature all of the todos that don't live in a specific, created project - place them in todos section in the todos pane.
 - localStorage: Look into it and how you can go about implementing it in your storage.js file.
@@ -759,5 +718,6 @@ Completed:
 ✅ queryTodoForm/resetTodoForm: Revisit and debug
 ✅ If you add a bunch of todos to a project and migrate one to a different project, it takes that one you intended plus all of the other todos that come after it in the array (this may be the cause of incrememnting rather than decrementing in a for loop - not sure)
 ✅ The migrated todo will then alter ALL of the other todos in the new project todo list to match its name. So you'll have multiple todos with a matching name
-
+✅ Need to refactor the project-header data attribute in template.html to menu-header. This is more accurate now that the filter options also appear in that header. 
+✅ If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
 */
