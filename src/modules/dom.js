@@ -1,5 +1,5 @@
 import { projManager } from "/src/index.js";
-import { isToday, format } from "date-fns";
+import { format, isAfter } from "date-fns";
 const projectManager = projManager();
 
 export const dom = () => {
@@ -18,6 +18,12 @@ export const dom = () => {
     return currentProj;
   };
 
+  const getCurrentDate = () => {
+    const currentDate = new Date().toJSON().slice(0, 10);
+
+    return currentDate;
+  };
+
   /********************************
     "Filter Todos By Date" Section
   *********************************/
@@ -27,7 +33,7 @@ export const dom = () => {
   };
 
   const filterAllTodos = () => {
-    let todoArr = [];
+    const todoArr = [];
 
     const projArr = getProjArr();
     projArr.forEach((project) =>
@@ -37,8 +43,8 @@ export const dom = () => {
   };
 
   const filterTodayTodos = () => {
-    let todoArr = [];
-    const currentDate = new Date().toJSON().slice(0, 10);
+    const todoArr = [];
+    const currentDate = getCurrentDate();
 
     const projArr = getProjArr();
 
@@ -54,7 +60,21 @@ export const dom = () => {
   };
 
   const filterUpcomingTodos = () => {
-    console.log("filtering Upcoming Todos, Dankman!");
+    const todoArr = [];
+    const currentDate = getCurrentDate();
+
+    const projArr = getProjArr();
+
+    projArr.forEach((project) =>
+      project.todoArr.forEach((todo) => {
+        const result = isAfter(todo.dueDate, currentDate);
+        if (result === true) {
+          todoArr.push(todo);
+        }
+      })
+    );
+
+    return todoArr;
   };
 
   const filterAnytimeTodos = () => {
