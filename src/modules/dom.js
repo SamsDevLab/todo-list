@@ -1,4 +1,5 @@
 import { projManager } from "/src/index.js";
+import { isToday, format } from "date-fns";
 const projectManager = projManager();
 
 export const dom = () => {
@@ -25,15 +26,41 @@ export const dom = () => {
     return todoFilterBtns;
   };
 
-  const filterAllTodos = () => {
-    console.log("filtering All Todos, Captain BlYthe!");
+  // const filterAllTodos = () => {
+  //   // console.log("filtering All Todos, Captain BlYthe!");
+  //   let todoArr = [];
+
+  //   const projArr = getProjArr();
+  //   projArr.forEach((project) =>
+  //     project.todoArr.forEach((todo) => todoArr.push(todo))
+  //   );
+  //   return todoArr;
+  // };
+
+  // const filterTodayTodos = () => {
+  //   let todoArr = [];
+  //   const currentDate = new Date().toJSON().slice(0, 10);
+
+  //   const projArr = getProjArr();
+
+  //   projArr.forEach((project) => {
+  //     project.todoArr.forEach((todo) => {
+  //       if (todo.dueDate === currentDate) {
+  //         todoArr.push(todo);
+  //       }
+  //     });
+  //   });
+
+  //   return todoArr;
+  // };
+
+  const filterUpcomingTodos = () => {
+    console.log("filtering Upcoming Todos, Dankman!");
   };
 
-  const filterTodayTodos = () => {};
-
-  const filterUpcomingTodos = () => {};
-
-  const filterAnytimeTodos = () => {};
+  const filterAnytimeTodos = () => {
+    console.log("filtering Anytime Todos, Garfield!");
+  };
 
   // Grab Todo Filter Buttons via data-attributes
 
@@ -565,21 +592,8 @@ export const dom = () => {
   /*************************************
     Todo: Render Todos to Display Section
   ***************************************/
-  const renderTodosToDisplay = (menuItem, todoDisplay) => {
-    let todoArr;
-
-    if (
-      menuItem.type === "click" &&
-      menuItem.target.dataset.filterButton === "all"
-    ) {
-      filterAllTodos();
-    }
-
+  const createAndAppendTodos = (todoArr, todoDisplay) => {
     console.log(todoArr);
-
-    // const projArr = getProjArr();
-    // const projId = menuItem.id;
-    // const todoArr = menuItem.todoArr;
     todoArr.forEach((todo) => {
       // Create todo div
       const todoId = todo.id;
@@ -630,6 +644,90 @@ export const dom = () => {
     });
   };
 
+  const gatherTodoArr = (menuItem, todoDisplay) => {
+    // Start here after lunch - will need to refactor this massive function and abstract away into smaller helpers
+    let todoArr;
+
+    if (
+      menuItem instanceof PointerEvent &&
+      menuItem.target.dataset.filterButton === "all"
+    ) {
+      todoArr = filterAllTodos();
+      // createAndAppendTodos(todoArr, todoDisplay);
+    } else if (
+      menuItem instanceof PointerEvent &&
+      menuItem.target.dataset.filterButton === "today"
+    ) {
+      todoArr = filterTodayTodos();
+    } else if (
+      menuItem instanceof PointerEvent &&
+      menuItem.target.dataset.filterButton === "upcoming"
+    ) {
+      todoArr = filterUpcomingTodos();
+    } else if (
+      menuItem instanceof PointerEvent &&
+      menuItem.target.dataset.filterButton === "anytime"
+    ) {
+      filterAnytimeTodos();
+    } else {
+      const projArr = getProjArr();
+      const projId = menuItem.id;
+      const foundProject = projArr.find((project) => project.id === projId);
+      foundProject.todoArr.forEach((todo) => todoArr.push(todo));
+    }
+
+    createAndAppendTodos(todoArr, todoDisplay);
+
+    // todoArr.forEach((todo) => {
+    //   // Create todo div
+    //   const todoId = todo.id;
+    //   const todoDiv = createTodoDiv();
+
+    //   // Create todo checkbox
+    //   const todoCheckbox = createTodoCheckbox(todo);
+
+    //   // Create titleAndDate Div
+    //   const titleAndDueDateDiv = createTitleAndDueDateDiv(todo);
+    //   const title = createTitleElement(todo);
+    //   const dueDate = createDueDateElement(todo);
+    //   titleAndDueDateDiv.append(title, dueDate);
+
+    //   // Create editAndDelete Div in Todo
+    //   const editAndDeleteDiv = createEditAndDeleteDiv();
+
+    //   const editButton = createEditButton();
+    //   const deleteButton = createDeleteButton();
+
+    //   // Add listener to todo's edit button
+    //   editButton.addEventListener("click", (event) => {
+    //     event.preventDefault();
+    //     const todoEditModal = queryTodoEditModal();
+    //     const todoEditForm = queryTodoEditForm();
+    //     const todoEditProjSelect = queryTodoEditProjSelect();
+    //     populateTodoEditProjSelect(todoEditProjSelect);
+    //     populateTodoEditFormWithValues(todoEditForm, todo);
+    //     storeCurrentTodoIds.setCurrentTodoId(todo.id);
+    //     storeCurrentTodoIds.setCurrentTodoProjId(todo.projId);
+    //     todoEditModal.show();
+    //   });
+
+    //   // ------------------------------------
+
+    //   deleteButton.addEventListener("click", (event) => {
+    //     event.preventDefault();
+    //     deleteTodo(projArr, projId, todoId);
+    //   });
+
+    //   // addDeleteButtonFunctionality(deleteButton, todo);
+    //   editAndDeleteDiv.append(editButton, deleteButton);
+
+    //   todoDiv.appendChild(todoCheckbox);
+    //   todoDiv.appendChild(titleAndDueDateDiv);
+    //   todoDiv.appendChild(editAndDeleteDiv);
+    //   todoDisplay.appendChild(todoDiv);
+    // });
+  };
+
   const updateMenuHeader = (menuItem) => {
     const menuHeader = queryMenuHeaderDisplay();
     menuHeader.innerText = "";
@@ -646,13 +744,15 @@ export const dom = () => {
     const currentMenuHeader = menuHeader.innerText;
     const todoDisplay = clearTodoDisplay();
 
+    console.log(menuItem);
+
     if (
-      menuItem.type === "click" &&
-      menuItem.target.computedName === currentMenuHeader
+      menuItem instanceof PointerEvent &&
+      menuItem.target.innerText === currentMenuHeader
     ) {
-      renderTodosToDisplay(menuItem, todoDisplay);
+      gatherTodoArr(menuItem, todoDisplay);
     } else if (menuItem.name === currentMenuHeader) {
-      renderTodosToDisplay(menuItem, todoDisplay);
+      gatherTodoArr(menuItem, todoDisplay);
     } else {
       return;
     }
