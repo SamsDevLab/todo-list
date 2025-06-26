@@ -270,13 +270,6 @@ export const dom = () => {
     return checkbox;
   };
 
-  const createTitleAndDueDateDiv = (todo) => {
-    const div = document.createElement("div");
-    div.classList.add("title-and-due-date-div");
-
-    return div;
-  };
-
   const createTitleElement = (todo) => {
     const title = document.createElement("p");
     title.innerText = todo.title;
@@ -289,6 +282,17 @@ export const dom = () => {
     dueDate.innerText = todo.dueDate;
 
     return dueDate;
+  };
+
+  const createTitleAndDueDateDiv = (todo) => {
+    const div = document.createElement("div");
+    div.classList.add("title-and-due-date-div");
+
+    const title = createTitleElement(todo);
+    const dueDate = createDueDateElement(todo);
+    div.append(title, dueDate);
+
+    return div;
   };
 
   const createEditAndDeleteDiv = () => {
@@ -554,9 +558,6 @@ export const dom = () => {
 
       // Create titleAndDate Div
       const titleAndDueDateDiv = createTitleAndDueDateDiv(todo);
-      const title = createTitleElement(todo);
-      const dueDate = createDueDateElement(todo);
-      titleAndDueDateDiv.append(title, dueDate);
 
       // Create editAndDelete Div in Todo
       const editAndDeleteDiv = createEditAndDeleteDiv();
@@ -678,7 +679,6 @@ export const dom = () => {
 
     return todoArr;
   };
-  // Grab Todo Filter Buttons via data-attributes
 
   const gatherTodoArr = (menuItem) => {
     let todoArr;
@@ -783,11 +783,11 @@ Punchlist:
 
 Currently Working On:
 - Revisit the second draft of updateTodoList to get that working
-- Add a listener to 'All Tasks' button to bring up this filtered view - and change the name of the button to "All Todos"
+- Debug 'No Due Date' filter - it's still displaying todos that have dates
 
 
 Pending: 
-- Need to figure out how to filter all todos initially and display it in the todo display section. Will need to filter by date, probably, and show All Todos in the header.
+
 - Projects 'delete' button: Add functionality
 - 'none' default arr: Rename "none" to something more descriptive. This will feature all of the todos that don't live in a specific, created project - place them in todos section in the todos pane.
 - localStorage: Look into it and how you can go about implementing it in your storage.js file.
@@ -812,4 +812,5 @@ Completed:
 ✅ The migrated todo will then alter ALL of the other todos in the new project todo list to match its name. So you'll have multiple todos with a matching name
 ✅ Need to refactor the project-header data attribute in template.html to menu-header. This is more accurate now that the filter options also appear in that header. 
 ✅ If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
+✅ Need to figure out how to filter all todos initially and display it in the todo display section. Will need to filter by date, probably, and show All Todos in the header.
 */
