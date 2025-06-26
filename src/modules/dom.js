@@ -295,13 +295,6 @@ export const dom = () => {
     return div;
   };
 
-  const createEditAndDeleteDiv = () => {
-    const div = document.createElement("div");
-    div.classList.add("edit-and-delete-div");
-
-    return div;
-  };
-
   const createEditButton = () => {
     const button = document.createElement("button");
     button.classList.add("edit-todo-button");
@@ -316,6 +309,42 @@ export const dom = () => {
     button.innerText = "Delete";
 
     return button;
+  };
+
+  const addEventListenerToEditButton = (editButton, todo) => {
+    editButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      const todoEditModal = queryTodoEditModal();
+      const todoEditForm = queryTodoEditForm();
+      const todoEditProjSelect = queryTodoEditProjSelect();
+      populateTodoEditProjSelect(todoEditProjSelect);
+      populateTodoEditFormWithValues(todoEditForm, todo);
+      storeCurrentTodoIds.setCurrentTodoId(todo.id);
+      storeCurrentTodoIds.setCurrentTodoProjId(todo.projId);
+      todoEditModal.show();
+    });
+  };
+
+  const addEventListenerToDeleteButton = (deleteButton, todo) => {
+    deleteButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      deleteTodo(todo);
+    });
+  };
+
+  const createEditAndDeleteDiv = (todo) => {
+    const div = document.createElement("div");
+    div.classList.add("edit-and-delete-div");
+
+    const editButton = createEditButton();
+    const deleteButton = createDeleteButton();
+
+    addEventListenerToEditButton(editButton, todo);
+    addEventListenerToDeleteButton(deleteButton, todo);
+
+    div.append(editButton, deleteButton);
+
+    return div;
   };
 
   /*************************************
@@ -522,16 +551,38 @@ export const dom = () => {
   /*************************************
         Todo: Delete Todo Section
   ***************************************/
-  const deleteTodo = (projArr, projId, todoId) => {
-    projArr.forEach((project) => {
-      if (project.id === projId) {
-        const todoToDelete = project.todoArr.findIndex(
-          (todo) => todo.id === todoId
-        );
-        project.todoArr.splice(todoToDelete, 1);
-        updateTodoList(project);
+  const findProj = (currentTodo) => {
+    const projArr = getProjArr();
+    let foundProj = {};
+
+    projArr.find((project) => {
+      const foundTodo = project.todoArr.find(
+        (todo) => todo.id === currentTodo.id
+      );
+      if (foundTodo === currentTodo) {
+        Object.assign(foundProj, project);
       }
     });
+
+    return foundProj;
+  };
+
+  const findIndex = (foundProj, currentTodo) => {
+    const foundIndex = foundProj.todoArr.findIndex(
+      (todo) => todo.id === currentTodo.id
+    );
+
+    return foundIndex;
+  };
+
+  const deleteTodo = (currentTodo) => {
+    const foundProj = findProj(currentTodo);
+
+    const foundIndex = findIndex(foundProj, currentTodo);
+
+    foundProj.todoArr.splice(foundIndex, 1);
+
+    updateTodoList(foundProj);
   };
 
   const clearTodoDisplay = () => {
@@ -549,44 +600,13 @@ export const dom = () => {
     const todoDisplay = clearTodoDisplay();
 
     todoArr.forEach((todo) => {
-      // Create todo div
-      const todoId = todo.id;
       const todoDiv = createTodoDiv();
 
-      // Create todo checkbox
       const todoCheckbox = createTodoCheckbox(todo);
 
-      // Create titleAndDate Div
       const titleAndDueDateDiv = createTitleAndDueDateDiv(todo);
 
-      // Create editAndDelete Div in Todo
-      const editAndDeleteDiv = createEditAndDeleteDiv();
-
-      const editButton = createEditButton();
-      const deleteButton = createDeleteButton();
-
-      // Add listener to todo's edit button
-      editButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        const todoEditModal = queryTodoEditModal();
-        const todoEditForm = queryTodoEditForm();
-        const todoEditProjSelect = queryTodoEditProjSelect();
-        populateTodoEditProjSelect(todoEditProjSelect);
-        populateTodoEditFormWithValues(todoEditForm, todo);
-        storeCurrentTodoIds.setCurrentTodoId(todo.id);
-        storeCurrentTodoIds.setCurrentTodoProjId(todo.projId);
-        todoEditModal.show();
-      });
-
-      // ------------------------------------
-
-      deleteButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        deleteTodo(projArr, projId, todoId);
-      });
-
-      // addDeleteButtonFunctionality(deleteButton, todo);
-      editAndDeleteDiv.append(editButton, deleteButton);
+      const editAndDeleteDiv = createEditAndDeleteDiv(todo);
 
       todoDiv.appendChild(todoCheckbox);
       todoDiv.appendChild(titleAndDueDateDiv);
@@ -782,6 +802,7 @@ Punchlist:
 
 
 Currently Working On:
+Start tomorrow (06/26 at addEventListenerToDeleteButton)
 - Revisit the second draft of updateTodoList to get that working
 - Debug 'No Due Date' filter - it's still displaying todos that have dates
 
