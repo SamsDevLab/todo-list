@@ -614,6 +614,7 @@ export const dom = () => {
       todoDisplay.appendChild(todoDiv);
     });
   };
+
   /********************************
     Gather Todo Array Section
   *********************************/
@@ -681,8 +682,9 @@ export const dom = () => {
 
     projArr.forEach((project) =>
       project.todoArr.forEach((todo) => {
-        if (todo.dueDate === " ");
-        todoArr.push(todo);
+        if (todo.dueDate === "") {
+          todoArr.push(todo);
+        }
       })
     );
 
@@ -800,24 +802,25 @@ dom();
 /* 
 Punchlist:
 
-
 Currently Working On:
-Start tomorrow (06/26 at addEventListenerToDeleteButton)
-- Revisit the second draft of updateTodoList to get that working
-- Debug 'No Due Date' filter - it's still displaying todos that have dates
+// Start here after lunch:
+- Debug Filters in general - they aren't updating (refreshing the display in real time.
+- Maybe open the debugger and step through adding a todo in a Project Menu - there is a step there that is missing within the filter menus
 
+
+- Debug 'No Due Date' filter - it's still displaying todos that have dates
+- Arrange todos by date - not alphabetically
 
 Pending: 
 
-- Projects 'delete' button: Add functionality
-- 'none' default arr: Rename "none" to something more descriptive. This will feature all of the todos that don't live in a specific, created project - place them in todos section in the todos pane.
+- Projects 'delete' button: Add functionality and label to the button
+- Format dates in todo display. You want them to remain in YYYY-MM-DD while the data is transferred on the "backend". But this is not good for the UI. Format dates when they hit the UI
 - localStorage: Look into it and how you can go about implementing it in your storage.js file.
 --- localStorage should help with editing todos on the backend.
 ----- May need to revisit some of your createTodoEdit functions once you implement storage.
-- datefns: Look at datfns and how you may be able to employ them (these functions should be handy for
-filtering by 'Today', 'Upcoming' and 'Anytime');
 - Emojis: How do you create an emoji selector and how can you pass emojis in for your projects?
 - Styling: Begin styling the project
+- Light/Dark Mode - look into switching modes
 
 Completed:
 ✅ Todos 'delete' button: Add functionality
@@ -834,4 +837,7 @@ Completed:
 ✅ Need to refactor the project-header data attribute in template.html to menu-header. This is more accurate now that the filter options also appear in that header. 
 ✅ If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
 ✅ Need to figure out how to filter all todos initially and display it in the todo display section. Will need to filter by date, probably, and show All Todos in the header.
+✅ Revisit the second draft of updateTodoList to get that working
+✅ datefns: Look at datfns and how you may be able to employ them (these functions should be handy for filtering by 'Today', 'Upcoming' and 'Anytime');
+✅ 'none' default arr:  This will feature all of the todos that don't live in a specific, created project - place them in todos section in the todos pane.
 */
