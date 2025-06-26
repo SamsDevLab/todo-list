@@ -532,8 +532,8 @@ export const dom = () => {
 
   const clearTodoDisplay = () => {
     const todoDisplay = queryTodoDisplay();
-    const childDivs = todoDisplay.querySelectorAll("div");
-    childDivs.forEach((div) => div.remove());
+
+    todoDisplay.innerHTML = "";
 
     return todoDisplay;
   };
@@ -541,8 +541,9 @@ export const dom = () => {
   /*************************************
     Todo: Render Todos to Display Section
   ***************************************/
-  const createAndAppendTodos = (todoArr, todoDisplay) => {
-    console.log(todoArr);
+  const createAndAppendTodos = (todoArr) => {
+    const todoDisplay = clearTodoDisplay();
+
     todoArr.forEach((todo) => {
       // Create todo div
       const todoId = todo.id;
@@ -593,7 +594,7 @@ export const dom = () => {
     });
   };
   /********************************
-    "Filter Todos By Date" Section
+    Gather Todo Array Section
   *********************************/
   const queryTodoFilterBtns = () => {
     const todoFilterBtns = document.querySelectorAll("[data-filter-button]");
@@ -659,7 +660,7 @@ export const dom = () => {
 
     projArr.forEach((project) =>
       project.todoArr.forEach((todo) => {
-        if (todo.dueDate === "");
+        if (todo.dueDate === " ");
         todoArr.push(todo);
       })
     );
@@ -679,7 +680,7 @@ export const dom = () => {
   };
   // Grab Todo Filter Buttons via data-attributes
 
-  const gatherTodoArr = (menuItem, todoDisplay) => {
+  const gatherTodoArr = (menuItem) => {
     let todoArr;
 
     if (
@@ -687,7 +688,6 @@ export const dom = () => {
       menuItem.target.dataset.filterButton === "all"
     ) {
       todoArr = filterAllTodos();
-      // createAndAppendTodos(todoArr, todoDisplay);
     } else if (
       menuItem instanceof PointerEvent &&
       menuItem.target.dataset.filterButton === "today"
@@ -707,7 +707,7 @@ export const dom = () => {
       todoArr = getProjTodos(menuItem);
     }
 
-    createAndAppendTodos(todoArr, todoDisplay);
+    createAndAppendTodos(todoArr);
   };
 
   const updateMenuHeader = (menuItem) => {
@@ -724,17 +724,14 @@ export const dom = () => {
   const updateTodoList = (menuItem) => {
     const menuHeader = document.querySelector("[data-display = 'menu-header']");
     const currentMenuHeader = menuHeader.innerText;
-    const todoDisplay = clearTodoDisplay();
-
-    console.log(menuItem);
 
     if (
       menuItem instanceof PointerEvent &&
       menuItem.target.innerText === currentMenuHeader
     ) {
-      gatherTodoArr(menuItem, todoDisplay);
+      gatherTodoArr(menuItem);
     } else if (menuItem.name === currentMenuHeader) {
-      gatherTodoArr(menuItem, todoDisplay);
+      gatherTodoArr(menuItem);
     } else {
       return;
     }
