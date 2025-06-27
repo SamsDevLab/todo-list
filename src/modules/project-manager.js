@@ -31,7 +31,7 @@ export const projManager = function () {
 
   const grabSelectedProjId = (inputs) => {
     const selectedProj = inputs.project.selectedOptions;
-    const projId = selectedProj[0].dataset.projectId;
+    const projId = selectedProj[0].dataset.projectDropdown;
 
     return projId;
   };
