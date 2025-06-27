@@ -582,12 +582,14 @@ export const dom = () => {
 
   const deleteTodo = (currentTodo) => {
     const foundProj = findProj(currentTodo);
-
     const foundIndex = findIndex(foundProj, currentTodo);
-
     foundProj.todoArr.splice(foundIndex, 1);
-
-    updateTodoList(foundProj);
+    const filterObj = checkMenuHeaderForDataAttr();
+    if (filterObj !== undefined) {
+      passFilterToUpdateTodoList(filterObj);
+    } else {
+      updateTodoList(currentProjObj);
+    }
   };
 
   const clearTodoDisplay = () => {
@@ -606,11 +608,8 @@ export const dom = () => {
 
     todoArr.forEach((todo) => {
       const todoDiv = createTodoDiv();
-
       const todoCheckbox = createTodoCheckbox(todo);
-
       const titleAndDueDateDiv = createTitleAndDueDateDiv(todo);
-
       const editAndDeleteDiv = createEditAndDeleteDiv(todo);
 
       todoDiv.appendChild(todoCheckbox);
@@ -833,7 +832,13 @@ export const dom = () => {
       projArr.splice(foundProjIndex, 1);
 
       removeProjFromProjSection(currentProj);
-      checkAndClearProjFromDisplay(currentProj);
+
+      const filterObj = checkMenuHeaderForDataAttr();
+      if (filterObj !== undefined) {
+        passFilterToUpdateTodoList(filterObj);
+      } else {
+        checkAndClearProjFromDisplay(currentProj);
+      }
 
       // Think about how you're going to set default to "Today" filter if you delete a project while you still have it on display
       // setDefaultDisplay();
