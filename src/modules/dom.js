@@ -208,36 +208,6 @@ export const dom = () => {
     closeProjectModal();
   });
 
-  // /*****************************************************
-  // Project Section: Dynamically Construct Add/New Project
-  // ******************************************************/
-  // const queryProjectSection = () => {
-  //   const projSection = document.querySelector("[data-section = 'projects']");
-  //   return projSection;
-  // };
-
-  // const createProjDiv = () => {
-  //   const projectDiv = document.createElement("div");
-  //   projectDiv.classList.add("project-div");
-  //   return projectDiv;
-  // };
-
-  // const createProjButton = (currentProj) => {
-  //   const button = document.createElement("button");
-  //   button.classList.add("project-button");
-  //   button.innerText = currentProj.name;
-
-  //   return button;
-  // };
-
-  // const createProjDeleteButton = () => {
-  //   const projDelButton = document.createElement("button");
-  //   projDelButton.classList.add("delete-button");
-
-  //   return projDelButton;
-  // };
-
-  // const queryProjHeaderDisplay = () => {
   const queryMenuHeaderDisplay = () => {
     const menuHeader = document.querySelector("[data-display = 'menu-header']");
 
@@ -619,15 +589,26 @@ export const dom = () => {
     Gather Todo Array Section
   *********************************/
   const queryTodoFilterBtns = () => {
-    const todoFilterBtns = document.querySelectorAll("[data-filter-button]");
+    const todoFilterBtns = document.querySelectorAll("[data-filter]");
     return todoFilterBtns;
+  };
+
+  const extractDataAttr = (buttonElement) => {
+    const domStringMap = buttonElement.dataset;
+    const dataAttrArr = Object.keys(domStringMap);
+    const strValue = dataAttrArr[0];
+
+    return strValue;
   };
 
   const todoFilterBtns = queryTodoFilterBtns();
   todoFilterBtns.forEach((button) => {
     button.addEventListener("click", (event) => {
       event.preventDefault();
-      updateMainDisplay(event);
+      const buttonElement = event.target;
+      const dataAttr = extractDataAttr(buttonElement);
+
+      updateMainDisplay(buttonElement, dataAttr);
     });
   });
 
@@ -702,27 +683,21 @@ export const dom = () => {
     return todoArr;
   };
 
-  const gatherTodoArr = (menuItem) => {
+  const gatherTodoArr = (menuItem, dataAttr) => {
     let todoArr;
 
-    if (
-      menuItem instanceof PointerEvent &&
-      menuItem.target.dataset.filterButton === "all"
-    ) {
+    if (dataAttr === "filter" && menuItem.dataset.filter === "all") {
       todoArr = filterAllTodos();
-    } else if (
-      menuItem instanceof PointerEvent &&
-      menuItem.target.dataset.filterButton === "today"
-    ) {
+    } else if (dataAttr === "filter" && menuItem.dataset.filter === "today") {
       todoArr = filterTodayTodos();
     } else if (
-      menuItem instanceof PointerEvent &&
-      menuItem.target.dataset.filterButton === "upcoming"
+      dataAttr === "filter" &&
+      menuItem.dataset.filter === "upcoming"
     ) {
       todoArr = filterUpcomingTodos();
     } else if (
-      menuItem instanceof PointerEvent &&
-      menuItem.target.dataset.filterButton === "no-due-date"
+      dataAttr === "filter" &&
+      menuItem.dataset.filter === "no-due-date"
     ) {
       todoArr = filterNoDueDateTodos();
     } else {
@@ -732,26 +707,23 @@ export const dom = () => {
     createAndAppendTodos(todoArr);
   };
 
-  const updateMenuHeader = (menuItem) => {
+  const updateMenuHeader = (menuItem, dataAttr) => {
     const menuHeader = queryMenuHeaderDisplay();
     menuHeader.innerText = "";
 
-    if (menuItem.type === "click") {
-      menuHeader.innerText = menuItem.target.computedName;
-    } else if (menuItem.type !== "click") {
+    if (dataAttr === "filter") {
+      menuHeader.innerText = menuItem.innerText;
+    } else if (dataAttr !== "filter") {
       menuHeader.innerText = menuItem.name;
     }
   };
 
-  const updateTodoList = (menuItem) => {
+  const updateTodoList = (menuItem, dataAttr) => {
     const menuHeader = document.querySelector("[data-display = 'menu-header']");
     const currentMenuHeader = menuHeader.innerText;
 
-    if (
-      menuItem instanceof PointerEvent &&
-      menuItem.target.innerText === currentMenuHeader
-    ) {
-      gatherTodoArr(menuItem);
+    if (dataAttr === "filter" && menuItem.innerText === currentMenuHeader) {
+      gatherTodoArr(menuItem, dataAttr);
     } else if (menuItem.name === currentMenuHeader) {
       gatherTodoArr(menuItem);
     } else {
@@ -759,9 +731,9 @@ export const dom = () => {
     }
   };
 
-  const updateMainDisplay = (menuItem) => {
-    updateMenuHeader(menuItem);
-    updateTodoList(menuItem);
+  const updateMainDisplay = (menuItem, dataAttr) => {
+    updateMenuHeader(menuItem, dataAttr);
+    updateTodoList(menuItem, dataAttr);
   };
 
   /*****************************************************
@@ -807,6 +779,7 @@ export const dom = () => {
     if (menuHeaderDisplay.innerText === currentProj.name) {
       clearMenuHeader(menuHeaderDisplay);
       clearTodoDisplay();
+      // Need a function to also clear the todo menu as the old project is still showing up there
     }
   };
 
@@ -864,70 +837,6 @@ export const dom = () => {
     projSection.appendChild(projDiv);
   };
 
-  // First Draft:
-  // const createProjDiv = () => {
-  //   const projectDiv = document.createElement("div");
-  //   projectDiv.classList.add("project-div");
-  //   return projectDiv;
-  // };
-
-  // const createProjButton = (currentProj) => {
-  //   const button = document.createElement("button");
-  //   button.classList.add("project-button");
-  //   button.innerText = currentProj.name;
-
-  //   return button;
-  // };
-
-  // const createProjDeleteButton = () => {
-  //   const projDelButton = document.createElement("button");
-  //   projDelButton.classList.add("delete-button");
-
-  //   return projDelButton;
-  // };
-
-  // const addEventListenerToProjBtn = (projectButton, currentProj) => {
-  //   projectButton.addEventListener("click", () =>
-  //     updateMainDisplay(currentProj)
-  //   );
-  // };
-
-  // const addEventListenerToProjDeleteButton = (
-  //   projDeleteButton,
-  //   currentProj
-  // ) => {
-  //   const projArr = getProjArr();
-  //   console.log(projArr);
-  //   projDeleteButton.addEventListener("click", (event) => {
-  //     event.preventDefault();
-  //     const foundProjIndex = projArr.findIndex(
-  //       (project) => project.id === currentProj.id
-  //     );
-  //     projArr.splice(foundProjIndex, 1);
-  //     console.log(projArr);
-  //   });
-  // };
-
-  // const addProjToProjectsSection = () => {
-  //   const projSection = queryProjectSection();
-  //   const currentProj = getCurrentProj();
-
-  //   /*
-  //   - Emojis for the projects are on backburner for time being (may or may not include them in final draft)
-  //   */
-
-  //   const projDiv = createProjDiv();
-  //   const projButton = createProjButton(currentProj);
-  //   const projDeleteButton = createProjDeleteButton();
-
-  //   addEventListenerToProjBtn(projButton, currentProj);
-  //   addEventListenerToProjDeleteButton(projDeleteButton, currentProj);
-
-  //   projDiv.appendChild(projButton);
-  //   projDiv.appendChild(projDeleteButton);
-  //   projSection.appendChild(projDiv);
-  // };
-
   addProjToDropdown();
   addInputListenersToEditTodo();
   addFunctionalityToTodoEditCancelBtn();
@@ -941,6 +850,10 @@ Punchlist:
 
 Currently Working On:
 - Projects 'delete' button: Add functionality and label to the button
+- Need a function to also clear the todo menu as the old project is still showing up there
+- Need to handle todos in real time when a filter is being displayed - right now, they only add to project in real time if the project is being displayed
+- Need to set up a default view (Today) for when a project that is being displayed is deleted and for a default when the page loads
+
 
 Pending: 
 - Arrange todos by date - not alphabetically
