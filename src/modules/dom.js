@@ -208,34 +208,34 @@ export const dom = () => {
     closeProjectModal();
   });
 
-  /*****************************************************
-  Project Section: Dynamically Construct Add/New Project
-  ******************************************************/
-  const queryProjectSection = () => {
-    const projSection = document.querySelector("[data-section = 'projects']");
-    return projSection;
-  };
+  // /*****************************************************
+  // Project Section: Dynamically Construct Add/New Project
+  // ******************************************************/
+  // const queryProjectSection = () => {
+  //   const projSection = document.querySelector("[data-section = 'projects']");
+  //   return projSection;
+  // };
 
-  const createProjDiv = () => {
-    const projectDiv = document.createElement("div");
-    projectDiv.classList.add("project-div");
-    return projectDiv;
-  };
+  // const createProjDiv = () => {
+  //   const projectDiv = document.createElement("div");
+  //   projectDiv.classList.add("project-div");
+  //   return projectDiv;
+  // };
 
-  const createProjButton = (currentProj) => {
-    const button = document.createElement("button");
-    button.classList.add("project-button");
-    button.innerText = currentProj.name;
+  // const createProjButton = (currentProj) => {
+  //   const button = document.createElement("button");
+  //   button.classList.add("project-button");
+  //   button.innerText = currentProj.name;
 
-    return button;
-  };
+  //   return button;
+  // };
 
-  const createProjDeleteButton = () => {
-    const projDelButton = document.createElement("button");
-    projDelButton.classList.add("delete-button");
+  // const createProjDeleteButton = () => {
+  //   const projDelButton = document.createElement("button");
+  //   projDelButton.classList.add("delete-button");
 
-    return projDelButton;
-  };
+  //   return projDelButton;
+  // };
 
   // const queryProjHeaderDisplay = () => {
   const queryMenuHeaderDisplay = () => {
@@ -764,32 +764,169 @@ export const dom = () => {
     updateTodoList(menuItem);
   };
 
+  /*****************************************************
+  Project Section: Dynamically Construct Add/New Project
+  ******************************************************/
+  const queryProjSection = () => {
+    const projSection = document.querySelector("[data-section = 'projects']");
+    return projSection;
+  };
+
+  // Second Draft:
   const addEventListenerToProjBtn = (projectButton, currentProj) => {
     projectButton.addEventListener("click", () =>
       updateMainDisplay(currentProj)
     );
   };
 
+  const createProjButton = (currentProj) => {
+    const button = document.createElement("button");
+    button.classList.add("project-button");
+    button.innerText = currentProj.name;
+
+    addEventListenerToProjBtn(button, currentProj);
+
+    return button;
+  };
+
+  const removeProjFromProjSection = (currentProj) => {
+    const projDiv = document.querySelector(
+      `[data-project-div = "${currentProj.id}"]`
+    );
+    projDiv.remove();
+  };
+
+  const clearMenuHeader = (menuHeaderDisplay) => {
+    menuHeaderDisplay.innerHTML = "";
+  };
+
+  // clearTodoDisplay() is at line 588
+
+  const checkAndClearProjFromDisplay = (currentProj) => {
+    const menuHeaderDisplay = queryMenuHeaderDisplay();
+    if (menuHeaderDisplay.innerText === currentProj.name) {
+      clearMenuHeader(menuHeaderDisplay);
+      clearTodoDisplay();
+    }
+  };
+
+  const addEventListenerToProjDeleteButton = (
+    projDeleteButton,
+    currentProj
+  ) => {
+    const projArr = getProjArr();
+    console.log(projArr);
+
+    projDeleteButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      const foundProjIndex = projArr.findIndex(
+        (project) => project.id === currentProj.id
+      );
+      projArr.splice(foundProjIndex, 1);
+
+      removeProjFromProjSection(currentProj);
+      checkAndClearProjFromDisplay(currentProj);
+
+      // Start here tomorrow. Need to think about how you're going to set default to "Today" filter if you delete a project while you still have it on display
+      // setDefaultDisplay();
+    });
+  };
+
+  const createProjDelButton = (currentProj) => {
+    const projDelButton = document.createElement("button");
+    projDelButton.classList.add("delete-button");
+    projDelButton.innerText = "Delete";
+
+    addEventListenerToProjDeleteButton(projDelButton, currentProj);
+
+    return projDelButton;
+  };
+
+  const createProjDiv = (currentProj) => {
+    const projectDiv = document.createElement("div");
+    projectDiv.classList.add("project-div");
+    projectDiv.setAttribute("data-project-div", `${currentProj.id}`);
+
+    const projButton = createProjButton(currentProj);
+    const projDelButton = createProjDelButton(currentProj);
+
+    projectDiv.append(projButton, projDelButton);
+
+    return projectDiv;
+  };
+
   const addProjToProjectsSection = () => {
-    const projSection = queryProjectSection();
+    const projSection = queryProjSection();
     const currentProj = getCurrentProj();
 
-    /* 
-     - The projDeleteButton will need access to the project's ID so it can delete the entire project
-        without disrupting anything. This is a primary reason that the project ID was created.\
-    - Emojis for the projects are on backburner for time being (may or may not include them in final draft)
-    */
+    const projDiv = createProjDiv(currentProj);
 
-    const projDiv = createProjDiv();
-    const projButton = createProjButton(currentProj);
-    const projDeleteButton = createProjDeleteButton();
-
-    addEventListenerToProjBtn(projButton, currentProj);
-
-    projDiv.appendChild(projButton);
-    projDiv.appendChild(projDeleteButton);
     projSection.appendChild(projDiv);
   };
+
+  // First Draft:
+  // const createProjDiv = () => {
+  //   const projectDiv = document.createElement("div");
+  //   projectDiv.classList.add("project-div");
+  //   return projectDiv;
+  // };
+
+  // const createProjButton = (currentProj) => {
+  //   const button = document.createElement("button");
+  //   button.classList.add("project-button");
+  //   button.innerText = currentProj.name;
+
+  //   return button;
+  // };
+
+  // const createProjDeleteButton = () => {
+  //   const projDelButton = document.createElement("button");
+  //   projDelButton.classList.add("delete-button");
+
+  //   return projDelButton;
+  // };
+
+  // const addEventListenerToProjBtn = (projectButton, currentProj) => {
+  //   projectButton.addEventListener("click", () =>
+  //     updateMainDisplay(currentProj)
+  //   );
+  // };
+
+  // const addEventListenerToProjDeleteButton = (
+  //   projDeleteButton,
+  //   currentProj
+  // ) => {
+  //   const projArr = getProjArr();
+  //   console.log(projArr);
+  //   projDeleteButton.addEventListener("click", (event) => {
+  //     event.preventDefault();
+  //     const foundProjIndex = projArr.findIndex(
+  //       (project) => project.id === currentProj.id
+  //     );
+  //     projArr.splice(foundProjIndex, 1);
+  //     console.log(projArr);
+  //   });
+  // };
+
+  // const addProjToProjectsSection = () => {
+  //   const projSection = queryProjectSection();
+  //   const currentProj = getCurrentProj();
+
+  //   /*
+  //   - Emojis for the projects are on backburner for time being (may or may not include them in final draft)
+  //   */
+
+  //   const projDiv = createProjDiv();
+  //   const projButton = createProjButton(currentProj);
+  //   const projDeleteButton = createProjDeleteButton();
+
+  //   addEventListenerToProjBtn(projButton, currentProj);
+  //   addEventListenerToProjDeleteButton(projDeleteButton, currentProj);
+
+  //   projDiv.appendChild(projButton);
+  //   projDiv.appendChild(projDeleteButton);
+  //   projSection.appendChild(projDiv);
+  // };
 
   addProjToDropdown();
   addInputListenersToEditTodo();
@@ -803,17 +940,10 @@ dom();
 Punchlist:
 
 Currently Working On:
-// Start here after lunch:
-- Debug Filters in general - they aren't updating (refreshing the display in real time.
-- Maybe open the debugger and step through adding a todo in a Project Menu - there is a step there that is missing within the filter menus
-
-
-- Debug 'No Due Date' filter - it's still displaying todos that have dates
-- Arrange todos by date - not alphabetically
+- Projects 'delete' button: Add functionality and label to the button
 
 Pending: 
-
-- Projects 'delete' button: Add functionality and label to the button
+- Arrange todos by date - not alphabetically
 - Format dates in todo display. You want them to remain in YYYY-MM-DD while the data is transferred on the "backend". But this is not good for the UI. Format dates when they hit the UI
 - localStorage: Look into it and how you can go about implementing it in your storage.js file.
 --- localStorage should help with editing todos on the backend.
@@ -840,4 +970,6 @@ Completed:
 ✅ Revisit the second draft of updateTodoList to get that working
 ✅ datefns: Look at datfns and how you may be able to employ them (these functions should be handy for filtering by 'Today', 'Upcoming' and 'Anytime');
 ✅ 'none' default arr:  This will feature all of the todos that don't live in a specific, created project - place them in todos section in the todos pane.
+✅ Debug Filters in general - they aren't updating (refreshing the display in real time.
+
 */
