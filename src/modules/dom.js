@@ -189,7 +189,7 @@ export const dom = () => {
   const createDropdownOption = (currentProj) => {
     const option = document.createElement("option");
     option.innerText = currentProj.name;
-    option.dataset.projectId = currentProj.id;
+    option.dataset.projectDropdown = currentProj.id;
 
     return option;
   };
@@ -817,6 +817,13 @@ export const dom = () => {
     }
   };
 
+  const clearProjFromTodoDropdown = (currentProj) => {
+    const projToRemoveFromDropdown = document.querySelector(
+      `[data-project-dropdown = "${currentProj.id}"]`
+    );
+    projToRemoveFromDropdown.remove();
+  };
+
   const addEventListenerToProjDeleteButton = (
     projDeleteButton,
     currentProj
@@ -839,6 +846,8 @@ export const dom = () => {
       } else {
         checkAndClearProjFromDisplay(currentProj);
       }
+
+      clearProjFromTodoDropdown(currentProj);
 
       // Think about how you're going to set default to "Today" filter if you delete a project while you still have it on display
       // setDefaultDisplay();
@@ -889,9 +898,7 @@ dom();
 Punchlist:
 
 Currently Working On:
-- Projects 'delete' button: Add functionality and label to the button
 - Need a function to also clear the todo menu as the old project is still showing up there
-- Need to handle todos in real time when a filter is being displayed - right now, they only add to project in real time if the project is being displayed
 - Need to set up a default view (Today) for when a project that is being displayed is deleted and for a default when the page loads
 
 
@@ -924,5 +931,7 @@ Completed:
 ✅ datefns: Look at datfns and how you may be able to employ them (these functions should be handy for filtering by 'Today', 'Upcoming' and 'Anytime');
 ✅ 'none' default arr:  This will feature all of the todos that don't live in a specific, created project - place them in todos section in the todos pane.
 ✅ Debug Filters in general - they aren't updating (refreshing the display in real time.
+✅ Need to handle todos in real time when a filter is being displayed - right now, they only add to project in real time if the project is being displayed
+✅ Projects 'delete' button: Add functionality and label to the button
 
 */
