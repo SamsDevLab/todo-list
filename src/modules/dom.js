@@ -104,6 +104,35 @@ export const dom = () => {
     queryTodo().modal.close();
   };
 
+  const checkMenuHeaderForTodoFilter = (menuHeader) => {
+    const todoFilters = Array.from(document.querySelectorAll("[data-filter]"));
+    let todoFilter;
+
+    todoFilters.forEach((filter) => {
+      if (filter.innerText === menuHeader) {
+        todoFilter = filter;
+      }
+    });
+
+    return todoFilter;
+  };
+
+  const checkMenuHeaderForDataAttr = () => {
+    const menuHeader = queryMenuHeaderDisplay().innerText;
+    const buttonElement = checkMenuHeaderForTodoFilter(menuHeader);
+
+    if (buttonElement !== undefined) {
+      const dataAttr = extractDataAttr(buttonElement);
+      return { buttonElement, dataAttr };
+    } else return;
+  };
+
+  const passFilterToUpdateTodoList = (filterObj) => {
+    const buttonElement = filterObj.buttonElement;
+    const dataAttr = filterObj.dataAttr;
+    updateTodoList(buttonElement, dataAttr);
+  };
+
   // Add Listener to Submit Todo Button:
   const submitTodoButton = document.querySelector(
     "[data-submit-button = 'submit-todo']"
@@ -112,7 +141,13 @@ export const dom = () => {
     event.preventDefault();
     const newTodo = submitTodo();
     const currentProjObj = getProjObj(newTodo);
-    updateTodoList(currentProjObj);
+    const filterObj = checkMenuHeaderForDataAttr();
+    if (filterObj !== undefined) {
+      passFilterToUpdateTodoList(filterObj);
+    } else {
+      updateTodoList(currentProjObj);
+    }
+
     resetTodoForm();
     closeTodoModal();
   });
@@ -800,7 +835,7 @@ export const dom = () => {
       removeProjFromProjSection(currentProj);
       checkAndClearProjFromDisplay(currentProj);
 
-      // Start here tomorrow. Need to think about how you're going to set default to "Today" filter if you delete a project while you still have it on display
+      // Think about how you're going to set default to "Today" filter if you delete a project while you still have it on display
       // setDefaultDisplay();
     });
   };
