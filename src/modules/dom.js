@@ -1,5 +1,5 @@
 import { projManager } from "/src/index.js";
-import { format, isAfter } from "date-fns";
+import { format, formatISO, isAfter } from "date-fns";
 const projectManager = projManager();
 
 export const dom = () => {
@@ -19,7 +19,8 @@ export const dom = () => {
   };
 
   const getCurrentDate = () => {
-    const currentDate = new Date().toJSON().slice(0, 10);
+    // const currentDate = new Date().toJSON().slice(0, 10);
+    const currentDate = new Date().toISOString();
 
     return currentDate;
   };
@@ -29,7 +30,7 @@ export const dom = () => {
   sectionHeaderBtns.forEach((button) =>
     button.addEventListener("click", (event) => {
       if (event.target.dataset.addButton === "add-todo") {
-        openTodo();
+        openTodoModal();
       } else if (event.target.dataset.addButton === "add-project") {
         openProject();
       }
@@ -48,7 +49,7 @@ export const dom = () => {
   };
 
   // Open Todo Modal
-  const openTodo = () => {
+  const openTodoModal = () => {
     queryTodo().modal.showModal();
   };
 
@@ -61,21 +62,35 @@ export const dom = () => {
     "Create New Todo" Section
   ***************************/
 
+  const addTimestampToDate = (date) => {
+    const currentDateStr = date;
+    const dateObj = new Date(currentDateStr + "T00:00:00");
+    const dateObjInIsoFormat = formatISO(new Date(dateObj));
+
+    return dateObjInIsoFormat;
+  };
+
   // Grab Todo Form Input Values and Pass to addTodo to create a new Todo
   const queryTodoInputs = () => {
     const todoNodeList = document.querySelectorAll("[data-todo-input]");
-    let todoNodeInputsObj = {};
+    let todoNodeValuesObj = {};
 
     todoNodeList.forEach((node) => {
-      todoNodeInputsObj[node.id] = node;
+      todoNodeValuesObj[node.id] = node.value;
     });
 
-    return todoNodeInputsObj;
+    const dateObjInIsoFormat = addTimestampToDate(todoNodeValuesObj.date);
+    todoNodeValuesObj.date = dateObjInIsoFormat;
+
+    return todoNodeValuesObj;
   };
 
   const submitTodo = () => {
-    const todoInputsObj = queryTodoInputs();
-    const newTodo = projectManager.addTodo(todoInputsObj);
+    const todoObj = queryTodoInputs();
+
+    console.log(todoObj);
+
+    const newTodo = projectManager.addTodo(todoObj);
 
     return newTodo;
   };
@@ -284,7 +299,14 @@ export const dom = () => {
 
   const createDueDateElement = (todo) => {
     const dueDate = document.createElement("p");
-    dueDate.innerText = todo.dueDate;
+    const formattedDate = format(todo.dueDate, "PPP");
+
+    // Original (works but is not good UI formatting):
+    // const formattedDate = todo.dueDate;
+
+    dueDate.innerText = formattedDate;
+
+    // Start here Monday - this is just the starting point though - the date problem needs to be addressed when the dueDate is initially created. Before it's moving to project-manager, it is being distilled down to just MMMM-YY-DD. This may be the issue as it may require seconds, etc. to really nail down the time zone
 
     return dueDate;
   };
@@ -829,7 +851,6 @@ export const dom = () => {
     currentProj
   ) => {
     const projArr = getProjArr();
-    console.log(projArr);
 
     projDeleteButton.addEventListener("click", (event) => {
       event.preventDefault();
@@ -848,9 +869,7 @@ export const dom = () => {
       }
 
       clearProjFromTodoDropdown(currentProj);
-
-      // Think about how you're going to set default to "Today" filter if you delete a project while you still have it on display
-      // setDefaultDisplay();
+      setDefaultDisplay();
     });
   };
 
@@ -886,6 +905,15 @@ export const dom = () => {
     projSection.appendChild(projDiv);
   };
 
+  const setDefaultDisplay = () => {
+    const todayButtonElement = document.querySelector(
+      "[data-filter = 'today']"
+    );
+    const dataAttr = extractDataAttr(todayButtonElement);
+    updateMainDisplay(todayButtonElement, dataAttr);
+  };
+
+  setDefaultDisplay();
   addProjToDropdown();
   addInputListenersToEditTodo();
   addFunctionalityToTodoEditCancelBtn();
@@ -898,13 +926,12 @@ dom();
 Punchlist:
 
 Currently Working On:
-- Need a function to also clear the todo menu as the old project is still showing up there
-- Need to set up a default view (Today) for when a project that is being displayed is deleted and for a default when the page loads
+- Arrange todos by date - not alphabetically
+- Date is printing incorrectly in Today filter - it's saying that today's date is June 26th (it's actually June 27) - revisit on Monday (refer to createDueDateElement)
 
 
 Pending: 
-- Arrange todos by date - not alphabetically
-- Format dates in todo display. You want them to remain in YYYY-MM-DD while the data is transferred on the "backend". But this is not good for the UI. Format dates when they hit the UI
+- Enable functionality in todo checkboxes
 - localStorage: Look into it and how you can go about implementing it in your storage.js file.
 --- localStorage should help with editing todos on the backend.
 ----- May need to revisit some of your createTodoEdit functions once you implement storage.
@@ -933,5 +960,7 @@ Completed:
 ✅ Debug Filters in general - they aren't updating (refreshing the display in real time.
 ✅ Need to handle todos in real time when a filter is being displayed - right now, they only add to project in real time if the project is being displayed
 ✅ Projects 'delete' button: Add functionality and label to the button
-
+✅ Need a function to also clear the todo menu as the old project is still showing up there
+✅ Need to set up a default view (Today) for when a project that is being displayed is deleted and for a default when the page loads
+✅ Format dates in todo display. You want them to remain in YYYY-MM-DD while the data is transferred on the "backend". But this is not good for the UI. Format dates when they hit the UI
 */
