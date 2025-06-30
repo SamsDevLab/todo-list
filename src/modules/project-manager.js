@@ -20,27 +20,21 @@ export const projManager = function () {
     return id;
   };
 
-  const extractTodoInputValues = (inputs) => {
-    const valuesArr = [];
-    Object.values(inputs).forEach((input) => {
-      valuesArr.push(input.value);
-    });
+  const grabSelectedProjId = (todoObj) => {
+    const foundProject = projArr.find(
+      (project) => project.name === todoObj.project
+    );
 
-    return valuesArr;
-  };
-
-  const grabSelectedProjId = (inputs) => {
-    const selectedProj = inputs.project.selectedOptions;
-    const projId = selectedProj[0].dataset.projectDropdown;
+    const projId = foundProject.id;
 
     return projId;
   };
 
-  const addTodo = (todoInputs) => {
-    const projId = grabSelectedProjId(todoInputs);
-    const todoValues = extractTodoInputValues(todoInputs);
+  const addTodo = (todoObj) => {
+    const projId = grabSelectedProjId(todoObj);
+    const todoValuesArr = Object.values(todoObj);
 
-    const newTodo = createTodo(projId, ...todoValues);
+    const newTodo = createTodo(projId, ...todoValuesArr);
 
     const targetProj = projArr.find((project) => project.id === projId);
     targetProj.todoArr.push(newTodo);
