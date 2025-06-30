@@ -19,8 +19,8 @@ export const dom = () => {
   };
 
   const getCurrentDate = () => {
-    // const currentDate = new Date().toJSON().slice(0, 10);
-    const currentDate = new Date().toISOString();
+    const currentDateAndTime = new Date().toISOString();
+    const currentDate = currentDateAndTime.slice(0, 10);
 
     return currentDate;
   };
@@ -63,6 +63,7 @@ export const dom = () => {
   ***************************/
 
   const addTimestampToDate = (date) => {
+    // Start here after break - refactor new Date() and figure out how to match it to the current Date or better yet. Extract the day from the currentDate...
     const currentDateStr = date;
     const dateObj = new Date(currentDateStr + "T00:00:00");
     const dateObjInIsoFormat = formatISO(new Date(dateObj));
@@ -87,8 +88,6 @@ export const dom = () => {
 
   const submitTodo = () => {
     const todoObj = queryTodoInputs();
-
-    console.log(todoObj);
 
     const newTodo = projectManager.addTodo(todoObj);
 
@@ -299,14 +298,10 @@ export const dom = () => {
 
   const createDueDateElement = (todo) => {
     const dueDate = document.createElement("p");
+
     const formattedDate = format(todo.dueDate, "PPP");
 
-    // Original (works but is not good UI formatting):
-    // const formattedDate = todo.dueDate;
-
     dueDate.innerText = formattedDate;
-
-    // Start here Monday - this is just the starting point though - the date problem needs to be addressed when the dueDate is initially created. Before it's moving to project-manager, it is being distilled down to just MMMM-YY-DD. This may be the issue as it may require seconds, etc. to really nail down the time zone
 
     return dueDate;
   };
@@ -681,12 +676,12 @@ export const dom = () => {
   const filterTodayTodos = () => {
     const todoArr = [];
     const currentDate = getCurrentDate();
-
     const projArr = getProjArr();
 
     projArr.forEach((project) => {
       project.todoArr.forEach((todo) => {
-        if (todo.dueDate === currentDate) {
+        const todoDateOnly = todo.dueDate.slice(0, 10);
+        if (todoDateOnly === currentDate) {
           todoArr.push(todo);
         }
       });
@@ -703,7 +698,8 @@ export const dom = () => {
 
     projArr.forEach((project) =>
       project.todoArr.forEach((todo) => {
-        const result = isAfter(todo.dueDate, currentDate);
+        const todoDateOnly = todo.dueDate.slice(0, 10);
+        const result = isAfter(todoDateOnly, currentDate);
         if (result === true) {
           todoArr.push(todo);
         }
@@ -926,8 +922,8 @@ dom();
 Punchlist:
 
 Currently Working On:
+- Revisit filters now that date has been refactored
 - Arrange todos by date - not alphabetically
-- Date is printing incorrectly in Today filter - it's saying that today's date is June 26th (it's actually June 27) - revisit on Monday (refer to createDueDateElement)
 
 
 Pending: 
@@ -963,4 +959,5 @@ Completed:
 ✅ Need a function to also clear the todo menu as the old project is still showing up there
 ✅ Need to set up a default view (Today) for when a project that is being displayed is deleted and for a default when the page loads
 ✅ Format dates in todo display. You want them to remain in YYYY-MM-DD while the data is transferred on the "backend". But this is not good for the UI. Format dates when they hit the UI
+✅ Date is printing incorrectly in Today filter - it's saying that today's date is June 26th (it's actually June 27) - revisit on Monday (refer to createDueDateElement)
 */
