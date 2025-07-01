@@ -18,12 +18,25 @@ export const dom = () => {
     return currentProj;
   };
 
-  const getCurrentDate = () => {
+  const currentDateOrTime = () => {
     const currentDateAndTime = new Date().toISOString();
-    const currentDate = currentDateAndTime.slice(0, 10);
 
-    return currentDate;
+    const getCurrentDate = () => {
+      const currentDate = currentDateAndTime.slice(0, 10);
+
+      return currentDate;
+    };
+
+    const getCurrentTime = () => {
+      const currentTime = currentDateAndTime.slice(10);
+
+      return currentTime;
+    };
+
+    return { getCurrentDate, getCurrentTime };
   };
+
+  const getCurrentDateOrTime = currentDateOrTime();
 
   // Grab New Todo and New Project Button via data-attributes
   const sectionHeaderBtns = document.querySelectorAll("[data-add-button]");
@@ -62,14 +75,6 @@ export const dom = () => {
     "Create New Todo" Section
   ***************************/
 
-  const addTimestampToDate = (date) => {
-    const currentDateStr = date;
-    const dateObj = new Date(currentDateStr + "T00:00:00");
-    const dateObjInIsoFormat = formatISO(new Date(dateObj));
-
-    return dateObjInIsoFormat;
-  };
-
   // Grab Todo Form Input Values and Pass to addTodo to create a new Todo
   const queryTodoInputs = () => {
     const todoNodeList = document.querySelectorAll("[data-todo-input]");
@@ -78,9 +83,6 @@ export const dom = () => {
     todoNodeList.forEach((node) => {
       todoNodeValuesObj[node.id] = node.value;
     });
-
-    const dateObjInIsoFormat = addTimestampToDate(todoNodeValuesObj.date);
-    todoNodeValuesObj.date = dateObjInIsoFormat;
 
     return todoNodeValuesObj;
   };
@@ -323,13 +325,16 @@ export const dom = () => {
   };
 
   const createDueDateElement = (todo) => {
-    const dueDate = document.createElement("p");
+    const dueDateElement = document.createElement("p");
 
-    const formattedDate = format(todo.dueDate, "PPP");
+    const currentTime = getCurrentDateOrTime.getCurrentTime();
+    const timestampedTodo = todo.dueDate + currentTime;
 
-    dueDate.innerText = formattedDate;
+    const formattedDate = format(timestampedTodo, "PPP");
 
-    return dueDate;
+    dueDateElement.innerText = formattedDate;
+
+    return dueDateElement;
   };
 
   const createTitleAndDueDateDiv = (todo) => {
@@ -701,7 +706,8 @@ export const dom = () => {
 
   const filterTodayTodos = () => {
     const todoArr = [];
-    const currentDate = getCurrentDate();
+    const currentDate = getCurrentDateOrTime.getCurrentDate();
+
     const projArr = getProjArr();
 
     projArr.forEach((project) => {
@@ -718,7 +724,7 @@ export const dom = () => {
 
   const filterUpcomingTodos = () => {
     const todoArr = [];
-    const currentDate = getCurrentDate();
+    const currentDate = getCurrentDateOrTime.getCurrentDate();
 
     const projArr = getProjArr();
 
@@ -950,6 +956,14 @@ Punchlist:
 Currently Working On:
 - Arrange todos by date - not alphabetically revisit .sort()
 - Revisit adding dates (still has a bug where the current date and the next day can both be added to "Today" filter)
+
+Functions that I worked with to get the correct date (copy/paste to GPT for vibe check):
+- createDueDateElement
+- currentDateOrTime
+- filterTodayTodos
+- filterUpcomingTodos
+
+Removed "addTimestampToDate"
 
 Pending: 
 - localStorage: Look into it and how you can go about implementing it in your storage.js file.
