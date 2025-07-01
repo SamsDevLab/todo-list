@@ -63,7 +63,6 @@ export const dom = () => {
   ***************************/
 
   const addTimestampToDate = (date) => {
-    // Start here after break - refactor new Date() and figure out how to match it to the current Date or better yet. Extract the day from the currentDate...
     const currentDateStr = date;
     const dateObj = new Date(currentDateStr + "T00:00:00");
     const dateObjInIsoFormat = formatISO(new Date(dateObj));
@@ -273,18 +272,45 @@ export const dom = () => {
     return todoDisplay;
   };
 
-  const createTodoDiv = () => {
+  const createTodoDiv = (todo) => {
     const div = document.createElement("div");
     div.classList.add("todo-div");
+    div.dataset.todoDivId = `${todo.id}`;
 
     return div;
+  };
+
+  const markTodoComplete = (todo) => {
+    const todoDiv = document.querySelector(`[data-todo-div-id = '${todo.id}']`);
+    console.log(todoDiv);
+    if (!todoDiv.classList.contains("strikethrough")) {
+      todoDiv.classList.add("strikethrough");
+    } else if (todoDiv.classList.contains("strikethrough")) {
+      todoDiv.classList.remove("strikethrough");
+    }
+  };
+
+  const addEventListenerToCheckbox = (checkbox) => {
+    checkbox.addEventListener("change", (event) => {
+      event.preventDefault();
+      const projArr = getProjArr();
+      projArr.forEach((project) =>
+        project.todoArr.forEach((todo) => {
+          if (todo.id === checkbox.id) {
+            markTodoComplete(todo);
+          }
+        })
+      );
+    });
   };
 
   const createTodoCheckbox = (todo) => {
     const checkbox = document.createElement("input");
 
     checkbox.type = "checkbox";
-    checkbox.value = todo.id;
+    checkbox.id = todo.id;
+
+    addEventListenerToCheckbox(checkbox, todo);
 
     return checkbox;
   };
@@ -624,7 +650,7 @@ export const dom = () => {
     const todoDisplay = clearTodoDisplay();
 
     todoArr.forEach((todo) => {
-      const todoDiv = createTodoDiv();
+      const todoDiv = createTodoDiv(todo);
       const todoCheckbox = createTodoCheckbox(todo);
       const titleAndDueDateDiv = createTitleAndDueDateDiv(todo);
       const editAndDeleteDiv = createEditAndDeleteDiv(todo);
@@ -922,12 +948,10 @@ dom();
 Punchlist:
 
 Currently Working On:
-- Revisit filters now that date has been refactored
-- Arrange todos by date - not alphabetically
-
+- Arrange todos by date - not alphabetically revisit .sort()
+- Revisit adding dates (still has a bug where the current date and the next day can both be added to "Today" filter)
 
 Pending: 
-- Enable functionality in todo checkboxes
 - localStorage: Look into it and how you can go about implementing it in your storage.js file.
 --- localStorage should help with editing todos on the backend.
 ----- May need to revisit some of your createTodoEdit functions once you implement storage.
@@ -960,4 +984,6 @@ Completed:
 ✅ Need to set up a default view (Today) for when a project that is being displayed is deleted and for a default when the page loads
 ✅ Format dates in todo display. You want them to remain in YYYY-MM-DD while the data is transferred on the "backend". But this is not good for the UI. Format dates when they hit the UI
 ✅ Date is printing incorrectly in Today filter - it's saying that today's date is June 26th (it's actually June 27) - revisit on Monday (refer to createDueDateElement)
+✅ Revisit filters now that date has been refactored
+✅ Enable functionality in todo checkboxes (strikethrough divs)
 */
