@@ -227,3 +227,17 @@ dialog:open {
   height: 50%;
   width: 50%;
 }
+
+.strikethrough {
+  position: relative;
+}
+
+.strikethrough::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  top: 50%;
+  left: 0;
+  background: red;
+}
