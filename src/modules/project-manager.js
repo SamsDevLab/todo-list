@@ -1,5 +1,7 @@
 import { createProject } from "/src/index.js";
 import { createTodo } from "/src/index.js";
+import { editlocalStorage } from "/src/index.js";
+const editLocalStorage = editlocalStorage();
 
 export const projManager = function () {
   const projArr = [];
@@ -7,7 +9,7 @@ export const projManager = function () {
   // Creates project and adds it to projArr
   const addProject = (projValues) => {
     const newProj = createProject(...projValues);
-
+    editLocalStorage.saveToLocalStorage(newProj);
     projArr.push(newProj);
   };
 
@@ -38,6 +40,8 @@ export const projManager = function () {
 
     const targetProj = projArr.find((project) => project.id === projId);
     targetProj.todoArr.push(newTodo);
+
+    editLocalStorage.saveToLocalStorage(newTodo);
 
     return newTodo;
   };
