@@ -1,6 +1,9 @@
 import { projManager } from "/src/index.js";
 import { format, formatISO, isAfter } from "date-fns";
+import { localStorage } from "/src/index.js";
+
 const projectManager = projManager();
+const editLocalStorage = localStorage();
 
 export const dom = () => {
   // Grab Main Container
@@ -324,15 +327,24 @@ export const dom = () => {
     return title;
   };
 
-  const createDueDateElement = (todo) => {
-    const dueDateElement = document.createElement("p");
-
+  const formatTodoDate = (todo) => {
     const currentTime = getCurrentDateOrTime.getCurrentTime();
     const timestampedTodo = todo.dueDate + currentTime;
 
     const formattedDate = format(timestampedTodo, "PPP");
 
-    dueDateElement.innerText = formattedDate;
+    return formattedDate;
+  };
+
+  const createDueDateElement = (todo) => {
+    const dueDateElement = document.createElement("p");
+
+    if (todo.dueDate !== "") {
+      const formattedDate = formatTodoDate(todo);
+      dueDateElement.innerText = formattedDate;
+    } else if (todo.dueDate === "") {
+      dueDateElement.innerText = "No Due Date";
+    }
 
     return dueDateElement;
   };
@@ -954,21 +966,13 @@ dom();
 Punchlist:
 
 Currently Working On:
-- Arrange todos by date - not alphabetically revisit .sort()
-- Revisit adding dates (still has a bug where the current date and the next day can both be added to "Today" filter)
-
-Functions that I worked with to get the correct date (copy/paste to GPT for vibe check):
-- createDueDateElement
-- currentDateOrTime
-- filterTodayTodos
-- filterUpcomingTodos
-
-Removed "addTimestampToDate"
+- Debug 'All Todos' and 'No Due Date' filters
 
 Pending: 
 - localStorage: Look into it and how you can go about implementing it in your storage.js file.
 --- localStorage should help with editing todos on the backend.
 ----- May need to revisit some of your createTodoEdit functions once you implement storage.
+- Arrange todos by date - not alphabetically revisit .sort()
 - Emojis: How do you create an emoji selector and how can you pass emojis in for your projects?
 - Styling: Begin styling the project
 - Light/Dark Mode - look into switching modes
@@ -1000,4 +1004,5 @@ Completed:
 ✅ Date is printing incorrectly in Today filter - it's saying that today's date is June 26th (it's actually June 27) - revisit on Monday (refer to createDueDateElement)
 ✅ Revisit filters now that date has been refactored
 ✅ Enable functionality in todo checkboxes (strikethrough divs)
+✅ Revisit adding dates (still has a bug where the current date and the next day can both be added to "Today" filter)
 */
