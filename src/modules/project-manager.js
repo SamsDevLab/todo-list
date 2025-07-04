@@ -41,8 +41,11 @@ export const projManager = function () {
     projArr.push(newProj);
   };
 
-  const defaultProject = ["(none)", ""];
-  addProject(defaultProject);
+  const addDefaultProjToArray = () => {
+    const defaultProject = ["(none)", ""];
+    addProject(defaultProject);
+    console.log(projArr);
+  };
 
   // Grabs project's randomUUID
   const getProjId = function (element) {
@@ -108,7 +111,9 @@ export const projManager = function () {
   };
 
   routeLocalStorageData();
-
+  if (projArr.length === 0) {
+    addDefaultProjToArray();
+  }
   return {
     projArr,
     addProject,
