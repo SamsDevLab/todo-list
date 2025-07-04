@@ -530,13 +530,37 @@ export const dom = () => {
 
   const storeCurrentTodoIds = storeTodoIds();
 
+  const extractUpdatedTodoEditValues = (updatedTodoEditForm) => {
+    const todoEditValuesObj = {
+      title: updatedTodoEditForm.elements[0].value,
+      description: updatedTodoEditForm.elements[1].value,
+      dueDate: updatedTodoEditForm.elements[2].value,
+      priority: updatedTodoEditForm.elements[3].value,
+      project: updatedTodoEditForm.elements[4].value,
+      notes: updatedTodoEditForm.elements[5].value,
+    };
+
+    return todoEditValuesObj;
+  };
+
+  const updateTodoValues = (todo, todoEditValuesObj) => {
+    todo.title = todoEditValuesObj.title;
+    todo.description = todoEditValuesObj.description;
+    todo.dueDate = todoEditValuesObj.dueDate;
+    todo.priority = todoEditValuesObj.priority;
+    todo.project = todoEditValuesObj.project;
+    todo.notes = todoEditValuesObj.notes;
+
+    return todo;
+  };
+
   const updateEditedTodo = (
-    updatedTodoEditForm,
+    todoEditValuesObj,
     currentTodoId,
     currentTodoProjId,
     projArr
   ) => {
-    const updatedProjectName = updatedTodoEditForm.elements[4].value;
+    const updatedProjectName = todoEditValuesObj.project;
 
     const currentProject = projArr.find(
       (project) => project.id === currentTodoProjId
@@ -553,12 +577,16 @@ export const dom = () => {
       todo.projId = newProject.id;
     }
 
-    todo.title = updatedTodoEditForm.elements[0].value;
-    todo.description = updatedTodoEditForm.elements[1].value;
-    todo.dueDate = updatedTodoEditForm.elements[2].value;
-    todo.priority = updatedTodoEditForm.elements[3].value;
-    todo.project = updatedTodoEditForm.elements[4].value;
-    todo.notes = updatedTodoEditForm.elements[5].value;
+    const newTodo = updateTodoValues(todo, todoEditValuesObj);
+
+    return newTodo;
+  };
+
+  const updateLocalStorage = (editedTodo) => {
+    const parsedTodo = editLocalStorage.editTodoInLocalStorage(editedTodo);
+    const newParsedTodo = updateTodoValues(parsedTodo, editedTodo);
+
+    editLocalStorage.saveToLocalStorage(newParsedTodo);
   };
 
   const removeFromOldProj = (todo, project) => {
@@ -599,14 +627,19 @@ export const dom = () => {
       const currentTodoProjId = storeCurrentTodoIds.getCurrentTodoProjId();
       const updatedTodoEditForm = queryTodoEditForm();
 
-      updateEditedTodo(
-        updatedTodoEditForm,
+      const todoEditValuesObj =
+        extractUpdatedTodoEditValues(updatedTodoEditForm);
+
+      const editedTodo = updateEditedTodo(
+        todoEditValuesObj,
         currentTodoId,
         currentTodoProjId,
         projArr
       );
 
       updateProj(currentTodoId, currentTodoProjId, projArr);
+
+      updateLocalStorage(editedTodo);
 
       todoEditModal.close();
     });
@@ -977,8 +1010,9 @@ dom();
 Punchlist:
 
 Currently Working On:
-- Work on rendering the Projects/Todos from localStorage
+Start here after break:
 - Work on editing localStorage through the editTodo modal
+- Work on edit localStorage when a project is deleted - needs to take its localStorage todos with it
 
 Pending:
  - Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before. 
@@ -1017,4 +1051,5 @@ Completed:
 ✅ Revisit adding dates (still has a bug where the current date and the next day can both be added to "Today" filter)
 ✅ localStorage: Look into it and how you can go about implementing it in your storage.js file.
 ✅ Debug (none) project duplication in localStorage
+✅ Work on rendering the Projects/Todos from localStorage
 */
