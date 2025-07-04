@@ -5,11 +5,14 @@ export const editlocalStorage = function () {
     if (jsonString.includes("id") && jsonString.includes("projId")) {
       localStorage.setItem(`todo-${obj.id}`, jsonString);
     } else {
-      localStorage.setItem(`proj-${obj.id}`, jsonString);
+      localStorage.setItem(`proj-${obj.id}`, jsonString); //
     }
   };
-  const getFromLocalStorage = () => {
-    console.log("even danker");
+
+  const getLocalStorageObjs = () => {
+    const storageItems = { ...localStorage };
+
+    return storageItems;
   };
   const removeFromLocalStorage = () => {
     console.log("dankest by far");
@@ -19,7 +22,7 @@ export const editlocalStorage = function () {
   };
   return {
     saveToLocalStorage,
-    getFromLocalStorage,
+    getLocalStorageObjs,
     removeFromLocalStorage,
     clearLocalStorage,
   };
