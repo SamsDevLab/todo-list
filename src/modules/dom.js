@@ -1,9 +1,8 @@
 import { projManager } from "/src/index.js";
 import { format, formatISO, isAfter } from "date-fns";
-import { localStorage } from "/src/index.js";
-
+import { editlocalStorage } from "/src/index.js";
+const editLocalStorage = editlocalStorage();
 const projectManager = projManager();
-const editLocalStorage = localStorage();
 
 export const dom = () => {
   // Grab Main Container
@@ -868,8 +867,6 @@ export const dom = () => {
     menuHeaderDisplay.innerHTML = "";
   };
 
-  // clearTodoDisplay() is at line 588
-
   const checkAndClearProjFromDisplay = (currentProj) => {
     const menuHeaderDisplay = queryMenuHeaderDisplay();
     if (menuHeaderDisplay.innerText === currentProj.name) {
@@ -936,13 +933,26 @@ export const dom = () => {
     return projectDiv;
   };
 
-  const addProjToProjectsSection = () => {
+  const appendProjToDom = (currentProj) => {
     const projSection = queryProjSection();
+    const projDiv = createProjDiv(currentProj);
+    projSection.appendChild(projDiv);
+  };
+
+  const addProjToProjectsSection = () => {
     const currentProj = getCurrentProj();
 
-    const projDiv = createProjDiv(currentProj);
+    appendProjToDom(currentProj);
+  };
 
-    projSection.appendChild(projDiv);
+  const renderLocalStorageProjs = () => {
+    const projArr = getProjArr();
+    const noneProj = projArr.find((project) => project.name === "(none)");
+    projArr.forEach((project) => {
+      if (project.id !== noneProj.id) {
+        appendProjToDom(project);
+      }
+    });
   };
 
   const setDefaultDisplay = () => {
@@ -954,6 +964,7 @@ export const dom = () => {
   };
 
   setDefaultDisplay();
+  renderLocalStorageProjs();
   addProjToDropdown();
   addInputListenersToEditTodo();
   addFunctionalityToTodoEditCancelBtn();
@@ -966,12 +977,11 @@ dom();
 Punchlist:
 
 Currently Working On:
-- Debug 'All Todos' and 'No Due Date' filters
+- Work on rendering the Projects/Todos from localStorage
+- Work on editing localStorage through the editTodo modal
 
-Pending: 
-- localStorage: Look into it and how you can go about implementing it in your storage.js file.
---- localStorage should help with editing todos on the backend.
------ May need to revisit some of your createTodoEdit functions once you implement storage.
+Pending:
+ - Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before. 
 - Arrange todos by date - not alphabetically revisit .sort()
 - Emojis: How do you create an emoji selector and how can you pass emojis in for your projects?
 - Styling: Begin styling the project
@@ -1005,4 +1015,6 @@ Completed:
 ✅ Revisit filters now that date has been refactored
 ✅ Enable functionality in todo checkboxes (strikethrough divs)
 ✅ Revisit adding dates (still has a bug where the current date and the next day can both be added to "Today" filter)
+✅ localStorage: Look into it and how you can go about implementing it in your storage.js file.
+✅ Debug (none) project duplication in localStorage
 */
