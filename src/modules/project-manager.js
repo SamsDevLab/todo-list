@@ -6,10 +6,38 @@ const editLocalStorage = editlocalStorage();
 export const projManager = function () {
   const projArr = [];
 
+  const reconstructProjArr = (localStorageStrs) => {
+    for (const [key, value] of Object.entries(localStorageStrs)) {
+      if (key.startsWith("proj-")) {
+        const parsedProj = JSON.parse(value);
+        projArr.push(parsedProj);
+      }
+    }
+  };
+
+  const reconstructTodoArrs = (localStorageStrs) => {
+    for (const [key, value] of Object.entries(localStorageStrs)) {
+      if (key.startsWith("todo-")) {
+        const parsedTodo = JSON.parse(value);
+        const foundProj = projArr.find(
+          (project) => project.id === parsedTodo.projId
+        );
+        foundProj.todoArr.push(parsedTodo);
+      }
+    }
+  };
+
+  const routeLocalStorageData = () => {
+    const localStorageStrs = editLocalStorage.getLocalStorageObjs();
+    reconstructProjArr(localStorageStrs);
+    reconstructTodoArrs(localStorageStrs);
+  };
+
   // Creates project and adds it to projArr
   const addProject = (projValues) => {
     const newProj = createProject(...projValues);
     editLocalStorage.saveToLocalStorage(newProj);
+    // editLocalStorage.getLocalStorageObjs();
     projArr.push(newProj);
   };
 
@@ -78,6 +106,8 @@ export const projManager = function () {
     todo.priority = newPriority;
     console.log(todo);
   };
+
+  routeLocalStorageData();
 
   return {
     projArr,
