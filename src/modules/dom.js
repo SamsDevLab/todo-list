@@ -220,6 +220,15 @@ export const dom = () => {
     projectDropdown.appendChild(option);
   };
 
+  const addLocalStorageProjsToDropDown = () => {
+    const projectDropdown = queryProjectDropdown();
+    const projArr = getProjArr();
+    projArr.forEach((project) => {
+      const option = createDropdownOption(project);
+      projectDropdown.appendChild(option);
+    });
+  };
+
   // Reset the Project Form After Submission:
   const queryProjForm = () => {
     const form = document.querySelector("[data-form = project]");
@@ -375,7 +384,7 @@ export const dom = () => {
     return button;
   };
 
-  const addEventListenerToEditButton = (editButton, todo) => {
+  const addEventListenerToTodoEditButton = (editButton, todo) => {
     editButton.addEventListener("click", (event) => {
       event.preventDefault();
       const todoEditModal = queryTodoEditModal();
@@ -389,10 +398,15 @@ export const dom = () => {
     });
   };
 
-  const addEventListenerToDeleteButton = (deleteButton, todo) => {
+  const removeTodoFromLocalStorage = (todo) => {
+    editLocalStorage.removeFromLocalStorage(todo);
+  };
+
+  const addEventListenerToTodoDeleteButton = (deleteButton, todo) => {
     deleteButton.addEventListener("click", (event) => {
       event.preventDefault();
       deleteTodo(todo);
+      removeTodoFromLocalStorage(todo);
     });
   };
 
@@ -403,8 +417,8 @@ export const dom = () => {
     const editButton = createEditButton();
     const deleteButton = createDeleteButton();
 
-    addEventListenerToEditButton(editButton, todo);
-    addEventListenerToDeleteButton(deleteButton, todo);
+    addEventListenerToTodoEditButton(editButton, todo);
+    addEventListenerToTodoDeleteButton(deleteButton, todo);
 
     div.append(editButton, deleteButton);
 
@@ -674,13 +688,15 @@ export const dom = () => {
 
   const deleteTodo = (currentTodo) => {
     const foundProj = findProj(currentTodo);
+    console.log(foundProj);
+    console.log(currentTodo);
     const foundIndex = findIndex(foundProj, currentTodo);
     foundProj.todoArr.splice(foundIndex, 1);
     const filterObj = checkMenuHeaderForDataAttr();
     if (filterObj !== undefined) {
       passFilterToUpdateTodoList(filterObj);
     } else {
-      updateTodoList(currentProjObj);
+      updateTodoList(foundProj);
     }
   };
 
@@ -916,6 +932,10 @@ export const dom = () => {
     projToRemoveFromDropdown.remove();
   };
 
+  const removeProjFromLocalStorage = (currentProj) => {
+    editLocalStorage.removeFromLocalStorage(currentProj);
+  };
+
   const addEventListenerToProjDeleteButton = (
     projDeleteButton,
     currentProj
@@ -939,6 +959,9 @@ export const dom = () => {
       }
 
       clearProjFromTodoDropdown(currentProj);
+
+      removeProjFromLocalStorage(currentProj);
+
       setDefaultDisplay();
     });
   };
@@ -998,7 +1021,7 @@ export const dom = () => {
 
   setDefaultDisplay();
   renderLocalStorageProjs();
-  addProjToDropdown();
+  addLocalStorageProjsToDropDown();
   addInputListenersToEditTodo();
   addFunctionalityToTodoEditCancelBtn();
   addFunctionalityToTodoEditSaveBtn();
@@ -1010,16 +1033,23 @@ dom();
 Punchlist:
 
 Currently Working On:
-Start here after break:
-- Work on editing localStorage through the editTodo modal
+
+Revisit removeTodoFromLocalStorage after debugging deleteTodo
+
+Start here on Monday - reference storage.js removeFromLocalStorage() fn to get started
 - Work on edit localStorage when a project is deleted - needs to take its localStorage todos with it
 
-Pending:
- - Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before. 
+
+- Work on refreshing the todo immediately when it's edited. Right now, the original todo persists until you click away and click back (THIS ONLY APPLIES WHEN FILTERS ARE SHOWING. If the project is showing in the main container, the bug disappears)
+
+Pending: 
+- Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before. 
 - Arrange todos by date - not alphabetically revisit .sort()
 - Emojis: How do you create an emoji selector and how can you pass emojis in for your projects?
 - Styling: Begin styling the project
 - Light/Dark Mode - look into switching modes
+- Work on an edit option for Projects - being able to edit the name may be a good thing
+- localStorage projects are now showing in Dropdown menu but they aren't in a specific order. Maybe look into making them alphabetical if you have time
 
 Completed:
 ✅ Todos 'delete' button: Add functionality
@@ -1052,4 +1082,6 @@ Completed:
 ✅ localStorage: Look into it and how you can go about implementing it in your storage.js file.
 ✅ Debug (none) project duplication in localStorage
 ✅ Work on rendering the Projects/Todos from localStorage
+✅ Work on editing localStorage through the editTodo modal
+✅ Work on rendering localStorage Projects in the todo dropdown menu. As of now, they aren't showing up
 */
