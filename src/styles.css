@@ -105,11 +105,12 @@ select {
 /*****************************/
 
 /* 
-Color palette:
-#FFFBDE - Vanilla (creamy white)
-#91C8E4 - Sky Blue
-#749BC2 - Slightly Desaturated Blue
-#4682A9 - Moderate Blue
+Cream Circuit custom color palette:
+Left Sidebar: #F4F4F4 (light gray)
+Main Panel: #ffffff
+Text: #222222 or #2A2A2A (charcoal)
+Accents: #3A86FF (electric blue)
+Hover: #FFB347 (soft orange)
 
 */
 
@@ -128,7 +129,7 @@ Color palette:
 #main-container {
   height: 100vh;
   display: grid;
-  grid-template-columns: 0.4fr 1fr;
+  grid-template-columns: 0.25fr 1fr;
 }
 
 /* Modal */
@@ -148,82 +149,83 @@ dialog:open {
   padding: 1rem;
 }
 
-/* Left Side */
+/*****************************
+******** Left Pane **********
+******************************/
 .main-left {
-  background-color: #fffbde;
+  background-color: #f4f4f4;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5rem;
+  overflow: auto;
+  align-items: start;
+  padding-left: 1.5rem;
+  padding-top: 1.5rem;
 }
 
 .main-left .section-container {
-  background-color: #4682a9;
   font-size: 1.2rem;
   font-family: "OpenSans";
-  height: 20rem;
-  width: 17.5rem;
   display: flex;
   flex-direction: column;
-  padding: 2.5rem;
-  align-items: center;
-  gap: 1rem;
+  padding: 1.5rem;
+  align-items: start;
   border-radius: 0.5rem;
+  gap: 0.5rem;
 }
 
 .main-left .section-header {
   display: flex;
   gap: 0.5rem;
-  color: #fffbde;
+  color: #2a2a2a;
   font-size: 1.5rem;
   font-family: "Quicksand";
   margin-bottom: 0.5rem;
+}
+
+.section-header,
+.section-header-button,
+.todo-section-btn,
+.project-section-btn {
+  color: #2a2a2a;
 }
 
 .section-header-button,
 .todo-section-btn,
 .project-section-btn {
   background-color: transparent;
-  color: #fffbde;
   border: none;
 }
 
 button:hover {
-  background-color: #91c8e4;
+  background-color: #ffb347;
 }
 
 .section-header-button {
-  padding-left: 0.1rem;
-  padding-right: 0.1rem;
-  border-radius: 0.3rem;
+  font-size: 1.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-radius: 50%;
+  background-color: #3a86ff;
 }
 
 .todo-section-btn,
 .project-section-btn {
   border-radius: 0.2rem;
   padding: 0.3rem;
-  outline: 0.1rem solid #fffbde;
 }
 
-.project-container {
-  overflow: auto;
-}
-
-::-webkit-scrollbar {
-  display: none;
-}
-
-.main-left .project-div {
+*/ .main-left .project-div {
+  width: 75%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 1rem;
 }
 
-/* Right Side */
+/*****************************
+******** Right Pane **********
+******************************/
 .main-right {
-  background-color: #91c8e4;
+  background-color: #ffffff;
   display: grid;
   grid-template-rows: 0.1fr 1fr;
   gap: 1rem;
@@ -234,7 +236,6 @@ button:hover {
   grid-row: 1/2;
   display: flex;
   align-items: center;
-  background-color: #91c8e4;
 }
 
 .main-right .section-header {
@@ -256,7 +257,6 @@ button:hover {
 .main-right #todo-display {
   height: 100%;
   width: 100%;
-  background-color: #fffbde;
   display: flex;
   flex-direction: column;
   padding: 1rem;
