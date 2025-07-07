@@ -103,6 +103,28 @@ select {
 /*****************************/
 /****** Project Below ********/
 /*****************************/
+
+/* 
+Color palette:
+#FFFBDE - Vanilla (creamy white)
+#91C8E4 - Sky Blue
+#749BC2 - Slightly Desaturated Blue
+#4682A9 - Moderate Blue
+
+*/
+
+@font-face {
+  font-family: "Quicksand";
+  src: url("./fonts/Quicksand-SemiBold.woff") format("woff"),
+    url("./fonts/Quicksand-SemiBold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "OpenSans";
+  src: url("./fonts/OpenSansCondensed-Regular.woff") format("woff"),
+    url("./fonts/OpenSansCondensed-Regular.woff2") format("woff2");
+}
+
 #main-container {
   height: 100vh;
   display: grid;
@@ -128,7 +150,7 @@ dialog:open {
 
 /* Left Side */
 .main-left {
-  background-color: cornflowerblue;
+  background-color: #fffbde;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -137,19 +159,56 @@ dialog:open {
 }
 
 .main-left .section-container {
-  background-color: indianred;
-  height: 17.5rem;
-  width: 15rem;
+  background-color: #4682a9;
+  font-size: 1.2rem;
+  font-family: "OpenSans";
+  height: 20rem;
+  width: 17.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  padding: 2.5rem;
   align-items: center;
   gap: 1rem;
+  border-radius: 0.5rem;
 }
 
 .main-left .section-header {
   display: flex;
-  justify-content: space-evenly;
+  gap: 0.5rem;
+  color: #fffbde;
+  font-size: 1.5rem;
+  font-family: "Quicksand";
+  margin-bottom: 0.5rem;
+}
+
+.section-header-button,
+.todo-section-btn,
+.project-section-btn {
+  background-color: transparent;
+  color: #fffbde;
+  border: none;
+}
+
+button:hover {
+  background-color: #91c8e4;
+}
+
+.section-header-button {
+  padding-left: 0.1rem;
+  padding-right: 0.1rem;
+  border-radius: 0.3rem;
+}
+
+.todo-section-btn,
+.project-section-btn {
+  border-radius: 0.2rem;
+  padding: 0.3rem;
+  outline: 0.1rem solid #fffbde;
+}
+
+.project-container {
+  overflow: auto;
+  /* Start here when you return from break - first, make a commit of everything you've already done in template.html and here in CSS (adding classes to filter buttons, styling buttons, adding fonts, etc. Then, figure out the scrollbar situation and how you can hide the overflow in Projects container) */
 }
 
 .main-left .project-div {
@@ -159,15 +218,9 @@ dialog:open {
   gap: 1rem;
 }
 
-.project-div .project-button,
-.project-div .delete-button {
-  height: 1rem;
-  width: 3rem;
-}
-
 /* Right Side */
 .main-right {
-  background-color: indianred;
+  background-color: #91c8e4;
   display: grid;
   grid-template-rows: 0.1fr 1fr;
   gap: 1rem;
@@ -178,7 +231,7 @@ dialog:open {
   grid-row: 1/2;
   display: flex;
   align-items: center;
-  background-color: cornflowerblue;
+  background-color: #91c8e4;
 }
 
 .main-right .section-header {
@@ -200,7 +253,7 @@ dialog:open {
 .main-right #todo-display {
   height: 100%;
   width: 100%;
-  background-color: cornflowerblue;
+  background-color: #fffbde;
   display: flex;
   flex-direction: column;
   padding: 1rem;
