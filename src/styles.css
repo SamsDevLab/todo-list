@@ -208,7 +208,10 @@ button:hover {
 
 .project-container {
   overflow: auto;
-  /* Start here when you return from break - first, make a commit of everything you've already done in template.html and here in CSS (adding classes to filter buttons, styling buttons, adding fonts, etc. Then, figure out the scrollbar situation and how you can hide the overflow in Projects container) */
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 .main-left .project-div {
