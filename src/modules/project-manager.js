@@ -37,14 +37,12 @@ export const projManager = function () {
   const addProject = (projValues) => {
     const newProj = createProject(...projValues);
     editLocalStorage.saveToLocalStorage(newProj);
-    // editLocalStorage.getLocalStorageObjs();
     projArr.push(newProj);
   };
 
   const addDefaultProjToArray = () => {
     const defaultProject = ["(none)", ""];
     addProject(defaultProject);
-    console.log(projArr);
   };
 
   // Grabs project's randomUUID
@@ -113,6 +111,7 @@ export const projManager = function () {
   routeLocalStorageData();
   if (projArr.length === 0) {
     addDefaultProjToArray();
+    console.log(projArr);
   }
   return {
     projArr,
