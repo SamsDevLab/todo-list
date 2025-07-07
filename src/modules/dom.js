@@ -901,7 +901,7 @@ export const dom = () => {
 
   const createProjButton = (currentProj) => {
     const button = document.createElement("button");
-    button.classList.add("project-button");
+    button.classList.add("project-section-btn");
     button.innerText = currentProj.name;
 
     addEventListenerToProjBtn(button, currentProj);
@@ -972,7 +972,7 @@ export const dom = () => {
 
   const createProjDelButton = (currentProj) => {
     const projDelButton = document.createElement("button");
-    projDelButton.classList.add("delete-button");
+    projDelButton.classList.add("project-section-btn");
     projDelButton.innerText = "Delete";
 
     addEventListenerToProjDeleteButton(projDelButton, currentProj);
