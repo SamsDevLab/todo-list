@@ -624,10 +624,9 @@ export const dom = () => {
     if (todo.projId !== project.id) {
       removeFromOldProj(todo, project);
       moveToNewProj(todo, projArr);
-      updateTodoList(project);
-    } else {
-      updateTodoList(project);
     }
+
+    return project;
   };
 
   const addFunctionalityToTodoEditSaveBtn = () => {
@@ -651,7 +650,14 @@ export const dom = () => {
         projArr
       );
 
-      updateProj(currentTodoId, currentTodoProjId, projArr);
+      const currentProj = updateProj(currentTodoId, currentTodoProjId, projArr);
+      const filterObj = checkMenuHeaderForDataAttr();
+
+      if (filterObj !== undefined) {
+        passFilterToUpdateTodoList(filterObj);
+      } else {
+        updateTodoList(currentProj);
+      }
 
       updateLocalStorage(editedTodo);
 
@@ -688,8 +694,6 @@ export const dom = () => {
 
   const deleteTodo = (currentTodo) => {
     const foundProj = findProj(currentTodo);
-    console.log(foundProj);
-    console.log(currentTodo);
     const foundIndex = findIndex(foundProj, currentTodo);
     foundProj.todoArr.splice(foundIndex, 1);
     const filterObj = checkMenuHeaderForDataAttr();
@@ -1034,13 +1038,8 @@ Punchlist:
 
 Currently Working On:
 
-Revisit removeTodoFromLocalStorage after debugging deleteTodo
-
-Start here on Monday - reference storage.js removeFromLocalStorage() fn to get started
-- Work on edit localStorage when a project is deleted - needs to take its localStorage todos with it
 
 
-- Work on refreshing the todo immediately when it's edited. Right now, the original todo persists until you click away and click back (THIS ONLY APPLIES WHEN FILTERS ARE SHOWING. If the project is showing in the main container, the bug disappears)
 
 Pending: 
 - Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before. 
@@ -1084,4 +1083,8 @@ Completed:
 ✅ Work on rendering the Projects/Todos from localStorage
 ✅ Work on editing localStorage through the editTodo modal
 ✅ Work on rendering localStorage Projects in the todo dropdown menu. As of now, they aren't showing up
+✅ Revisit removeTodoFromLocalStorage after debugging deleteTodo
+✅ Work on edit localStorage when a project is deleted - needs to take its localStorage todos with it
+✅ Work on refreshing the todo immediately when it's edited. Right now, the original todo persists until you click away and click back (THIS ONLY APPLIES WHEN FILTERS ARE SHOWING. If the project is showing in the main container, the bug disappears)
+
 */
