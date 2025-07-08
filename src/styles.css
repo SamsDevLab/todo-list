@@ -366,12 +366,6 @@ Fonts
   align-items: center;
 }
 
-#edit-todo-modal:open {
-  background-color: darkorange;
-  height: 50%;
-  width: 50%;
-}
-
 .strikethrough {
   position: relative;
 }
