@@ -52,14 +52,6 @@
                 <input type="text" id="title" data-todo-input="title" value />
               </div>
               <div class="input-container">
-                <label for="description">Description:</label>
-                <input
-                  type="text"
-                  id="description"
-                  data-todo-input="description"
-                />
-              </div>
-              <div class="input-container">
                 <label for="date">Due Date:</label>
                 <input type="date" id="date" data-todo-input="date" />
               </div>
@@ -76,20 +68,20 @@
                 </select>
               </div>
               <div class="input-container">
+                <label for="notes">Details:</label>
+                <textarea
+                  name="textarea"
+                  id="notes"
+                  data-todo-input="notes"
+                ></textarea>
+              </div>
+              <div class="input-container">
                 <label for="project">Project:</label>
                 <select
                   name="project"
                   id="project"
                   data-todo-input="project"
                 ></select>
-              </div>
-              <div class="input-container">
-                <label for="notes">Notes:</label>
-                <textarea
-                  name="textarea"
-                  id="notes"
-                  data-todo-input="notes"
-                ></textarea>
               </div>
               <div class="modal-btn-container">
                 <button data-cancel-button="cancel-todo">Cancel</button>

@@ -1,22 +1,18 @@
 export const createTodo = function (
   projId,
   title,
-  description,
   dueDate,
   priority,
-  project,
-  notes,
-  completionStatus
+  details,
+  project
 ) {
   const id = crypto.randomUUID();
   return {
     title,
-    description,
     dueDate,
     priority,
+    details,
     project,
-    notes,
-    completionStatus,
     projId,
     id,
   };
