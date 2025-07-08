@@ -173,6 +173,12 @@ dialog:open {
   gap: 0.5rem;
 }
 
+.main-left .filter-container {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
 .main-left .section-header {
   display: flex;
   gap: 0.5rem;
