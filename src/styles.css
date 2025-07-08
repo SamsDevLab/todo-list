@@ -105,13 +105,15 @@ select {
 /*****************************/
 
 /* 
-Cream Circuit custom color palette:
 Left Sidebar: #F4F4F4 (light gray)
 Main Panel: #ffffff
-Text: #222222 or #2A2A2A (charcoal)
+Text: #222222 (charcoal)
 Accents: #3A86FF (electric blue)
 Hover: #FFB347 (soft orange)
 
+Fonts
+- "Quicksand"
+- "OpenSans"
 */
 
 @font-face {
@@ -139,6 +141,19 @@ h2 {
 /********************
 ****** Modals ******* 
 *********************/
+
+/* 
+Left Sidebar: #F4F4F4 (light gray)
+Main Panel: #ffffff
+Text: #222222 (charcoal)
+Accents: #3A86FF (electric blue)
+Hover: #FFB347 (soft orange)
+
+Fonts
+- "Quicksand"
+- "OpenSans"
+*/
+
 dialog {
   display: none;
 }
@@ -147,7 +162,7 @@ dialog:open {
   left: 37.5%;
   top: 12.5%;
   height: 67.5%;
-  width: 27.5%;
+  width: 25%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -163,32 +178,49 @@ dialog:open {
   gap: 0.3rem;
 }
 
-form input,
-form textarea {
+input,
+textarea {
   padding-left: 0.2rem;
 }
 
-form input:focus,
-form textarea:focus {
+input:focus,
+textarea:focus {
   outline-color: #3a86ff;
 }
 
-.form-btn-container {
+.modal-btn-container {
   display: flex;
   justify-content: center;
   gap: 0.2rem;
   margin-top: 0.4rem;
 }
 
-.form-btn-container > button {
+.modal-btn-container > button {
   background-color: #3a86ff;
   border-radius: 0.2rem;
   flex-basis: 50%;
 }
 
+#new-project-form {
+  height: 35%;
+  top: 20%;
+}
+
 /*****************************
 ******** Left Pane **********
 ******************************/
+
+/* 
+Left Sidebar: #F4F4F4 (light gray)
+Main Panel: #ffffff
+Text: #222222 (charcoal)
+Accents: #3A86FF (electric blue)
+Hover: #FFB347 (soft orange)
+
+Fonts
+- "Quicksand"
+- "OpenSans"
+*/
 .main-left {
   background-color: #f4f4f4;
   display: flex;
@@ -264,6 +296,19 @@ button:hover {
 /*****************************
 ******** Right Pane **********
 ******************************/
+
+/* 
+Left Sidebar: #F4F4F4 (light gray)
+Main Panel: #ffffff
+Text: #222222 (charcoal)
+Accents: #3A86FF (electric blue)
+Hover: #FFB347 (soft orange)
+
+Fonts
+- "Quicksand"
+- "OpenSans"
+*/
+
 .main-right {
   background-color: #ffffff;
   display: grid;
@@ -273,7 +318,8 @@ button:hover {
 }
 
 .main-right .section-header {
-  grid-row: 1/2;
+  background-color: #f4f4f4;
+  border-radius: 0.3rem;
   display: flex;
   align-items: center;
 }
@@ -284,44 +330,37 @@ button:hover {
 }
 
 .section-header h1 {
-  font-size: 1rem;
+  font-size: 2rem;
+  font-family: "Quicksand";
 }
 
 .main-right #main-display {
-  grid-row: 2/3;
   display: flex;
   flex-direction: column;
+  justify-self: center;
   gap: 1rem;
+  width: 90%;
 }
 
 .main-right #todo-display {
   height: 100%;
-  width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  gap: 1rem;
 }
 
 .main-right h2 {
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 
 .main-right .todo-div {
-  background-color: indianred;
+  border-bottom: 2px solid #f4f4f4;
   height: 10%;
   width: 100%;
-  padding: 1rem;
   display: flex;
   gap: 1rem;
   /* justify-content: space-evenly; */
   align-items: center;
-}
-
-#edit-todo-modal:open {
-  background-color: darkorange;
-  height: 50%;
-  width: 50%;
+  margin: 0;
 }
 
 .strikethrough {
@@ -332,8 +371,48 @@ button:hover {
   content: "";
   position: absolute;
   width: 100%;
-  height: 2px;
-  top: 50%;
-  left: 0;
+  height: 3px;
+  top: 45%;
   background: red;
+}
+
+/*********************
+***** Todo Divs ******
+*********************/
+
+input[type="checkbox"] {
+  appearance: none;
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  font: inherit;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #3a86ff;
+  box-shadow: inset 0 0 0 2px #ffffff;
+}
+
+.title-and-due-date-div {
+  display: flex;
+  gap: 1rem;
+  font-family: "OpenSans";
+  font-size: 1.15rem;
+}
+
+.edit-and-delete-div {
+  width: 17.5%;
+  display: flex;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.edit-todo-button,
+.delete-todo-button {
+  background-color: #3a86ff;
+  border-radius: 0.2rem;
+  flex-grow: 1;
+  height: 1.5rem;
 }

@@ -91,7 +91,7 @@
                   data-todo-input="notes"
                 ></textarea>
               </div>
-              <div class="form-btn-container">
+              <div class="modal-btn-container">
                 <button data-cancel-button="cancel-todo">Cancel</button>
                 <button data-submit-button="submit-todo">Submit</button>
               </div>
@@ -100,7 +100,7 @@
           <dialog id="edit-todo-modal" data-modal="edit-todo">
             <h2>Edit Todo</h2>
             <form action="./index.js" method="get" data-form="edit-todo">
-              <div>
+              <div class="input-container">
                 <label for="edit-title">Title:</label>
                 <input
                   type="text"
@@ -109,7 +109,7 @@
                   value
                 />
               </div>
-              <div>
+              <div class="input-container">
                 <label for="edit-description">Description:</label>
                 <input
                   type="text"
@@ -117,7 +117,7 @@
                   data-todo-edit-input="edit-description"
                 />
               </div>
-              <div>
+              <div class="input-container">
                 <label for="edit-due-date">Due Date:</label>
                 <input
                   type="date"
@@ -125,7 +125,7 @@
                   data-todo-edit-input="edit-due-date"
                 />
               </div>
-              <div>
+              <div class="input-container">
                 <label for="edit-priority">Priority:</label>
                 <select
                   name="edit-priority"
@@ -137,7 +137,7 @@
                   <option value="high">High</option>
                 </select>
               </div>
-              <div>
+              <div class="input-container">
                 <label for="edit-project">Project:</label>
                 <select
                   name="edit-project"
@@ -145,7 +145,7 @@
                   data-todo-edit-input="edit-project"
                 ></select>
               </div>
-              <div>
+              <div class="input-container">
                 <label for="edit-notes">Notes</label>
                 <textarea
                   name="textarea"
@@ -153,8 +153,10 @@
                   data-todo-edit-input="edit-notes"
                 ></textarea>
               </div>
+              <div class="modal-btn-container">
               <button data-cancel-edit-button="cancel-edit-todo">Cancel</button>
               <button data-save-edit-button="save-edit-todo">Save</button>
+            </div>
             </form>
           </dialog>
         </div>
@@ -163,18 +165,18 @@
             <button class="section-header-button" data-add-button="add-project">+</button>
             <h2>Add Project</h2>
           </div>
-          <dialog data-modal="add-new-project">
+          <dialog id="new-project-form" data-modal="add-new-project">
+            <h2>Add Project</h2>
             <form action="./index.js" method="get" data-form="project">
-              <h2>Add Project</h2>
-              <div>
+              <div class="input-container">
                 <label for="name">Project Name:</label>
                 <input type="text" id="name" data-project-input="name" />
               </div>
-              <div>
+              <div class="input-container">
                 <label for="symbol">Project Symbol:</label>
                 <input type="text" id="symbol" data-project-input="symbol" />
               </div>
-              <div class="form-btn-container">
+              <div class="modal-btn-container">
                 <button data-cancel-button="cancel-project">Cancel</button>
               <button data-submit-button="submit-project">Submit</button>
               </div>
@@ -184,13 +186,11 @@
       </div>
       <div class="main-div main-right">
         <div class="section-header">
-          <h1>Todo List by Sam's Dev Lab</h1>
-          <h2>Can place a toggle for light/dark mode</h2>
+          <h1>Todo List</h1>
+          <h2>Toggle light/dark</h2>
         </div>
         <div id="main-display" data-display="main">
           <h2 data-display="menu-header"></h2>
-            Populate Here with Project/Category (i.e. All
-            Tasks/Today/Upcoming/Anytime)
           </h2>
           <div id="todo-display" data-display="todo-display">
             This will be the area where all of the tasks will populate. Each
