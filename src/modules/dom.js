@@ -357,32 +357,29 @@ export const dom = () => {
     return dueDateElement;
   };
 
-  const createTitleAndDueDateDiv = (todo) => {
-    const div = document.createElement("div");
-    div.classList.add("title-and-due-date-div");
+  const createDetailsElement = (todo) => {
+    const detailsElement = document.createElement("p");
 
+    detailsElement.innerText = todo.details;
+
+    return detailsElement;
+  };
+
+  // Create Info Div
+  const createInfoDiv = (todo) => {
+    const div = document.createElement("div");
+    div.classList.add("info-div");
+
+    const todoCheckbox = createTodoCheckbox(todo);
     const title = createTitleElement(todo);
     const dueDate = createDueDateElement(todo);
-    div.append(title, dueDate);
+    const details = createDetailsElement(todo);
+    div.append(todoCheckbox, title, dueDate, details);
 
     return div;
   };
 
-  const createEditButton = () => {
-    const button = document.createElement("button");
-    button.classList.add("edit-todo-button");
-    button.innerText = "Edit";
-
-    return button;
-  };
-
-  const createDeleteButton = () => {
-    const button = document.createElement("button");
-    button.classList.add("delete-todo-button");
-    button.innerText = "Delete";
-
-    return button;
-  };
+  // **********************
 
   const addEventListenerToTodoEditButton = (editButton, todo) => {
     editButton.addEventListener("click", (event) => {
@@ -398,6 +395,16 @@ export const dom = () => {
     });
   };
 
+  const createEditButton = (todo) => {
+    const button = document.createElement("button");
+    button.classList.add("edit-todo-button");
+    button.innerText = "Edit";
+
+    addEventListenerToTodoEditButton(button, todo);
+
+    return button;
+  };
+
   const removeTodoFromLocalStorage = (todo) => {
     editLocalStorage.removeFromLocalStorage(todo);
   };
@@ -410,19 +417,42 @@ export const dom = () => {
     });
   };
 
-  const createEditAndDeleteDiv = (todo) => {
+  const createDeleteButton = (todo) => {
+    const button = document.createElement("button");
+    button.classList.add("delete-todo-button");
+    button.innerText = "Delete";
+
+    addEventListenerToTodoDeleteButton(button, todo);
+
+    return button;
+  };
+
+  // Create Actions Div
+  const createActionsDiv = (todo) => {
     const div = document.createElement("div");
-    div.classList.add("edit-and-delete-div");
+    div.classList.add("actions-div");
 
-    const editButton = createEditButton();
-    const deleteButton = createDeleteButton();
-
-    addEventListenerToTodoEditButton(editButton, todo);
-    addEventListenerToTodoDeleteButton(deleteButton, todo);
+    const editButton = createEditButton(todo);
+    const deleteButton = createDeleteButton(todo);
 
     div.append(editButton, deleteButton);
 
     return div;
+  };
+
+  const createAndAppendTodos = (todoArr) => {
+    const todoDisplay = clearTodoDisplay();
+
+    todoArr.forEach((todo) => {
+      const todoDiv = createTodoDiv(todo);
+
+      const infoDiv = createInfoDiv(todo);
+      const actionsDiv = createActionsDiv(todo);
+
+      todoDiv.append(infoDiv, actionsDiv);
+
+      todoDisplay.appendChild(todoDiv);
+    });
   };
 
   /*************************************
@@ -710,25 +740,6 @@ export const dom = () => {
     todoDisplay.innerHTML = "";
 
     return todoDisplay;
-  };
-
-  /*************************************
-    Todo: Render Todos to Display Section
-  ***************************************/
-  const createAndAppendTodos = (todoArr) => {
-    const todoDisplay = clearTodoDisplay();
-
-    todoArr.forEach((todo) => {
-      const todoDiv = createTodoDiv(todo);
-      const todoCheckbox = createTodoCheckbox(todo);
-      const titleAndDueDateDiv = createTitleAndDueDateDiv(todo);
-      const editAndDeleteDiv = createEditAndDeleteDiv(todo);
-
-      todoDiv.appendChild(todoCheckbox);
-      todoDiv.appendChild(titleAndDueDateDiv);
-      todoDiv.appendChild(editAndDeleteDiv);
-      todoDisplay.appendChild(todoDiv);
-    });
   };
 
   /********************************
