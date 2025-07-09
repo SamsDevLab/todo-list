@@ -388,6 +388,18 @@ Fonts
   align-items: center;
 }
 
+li {
+  display: inline-block;
+
+  list-style-type: none;
+}
+
+li:not(:last-child)::after {
+  content: "|";
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
 .green-block,
 .yellow-block,
 .red-block {
