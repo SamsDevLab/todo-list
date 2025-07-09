@@ -342,8 +342,15 @@ export const dom = () => {
     return checkbox;
   };
 
+  const createList = () => {
+    const list = document.createElement("ul");
+    list.classList.add("todo-list-items");
+
+    return list;
+  };
+
   const createTitleElement = (todo) => {
-    const title = document.createElement("p");
+    const title = document.createElement("li");
     title.innerText = todo.title;
 
     return title;
@@ -359,7 +366,7 @@ export const dom = () => {
   };
 
   const createDueDateElement = (todo) => {
-    const dueDateElement = document.createElement("p");
+    const dueDateElement = document.createElement("li");
 
     if (todo.dueDate !== "") {
       const formattedDate = formatTodoDate(todo);
@@ -372,7 +379,7 @@ export const dom = () => {
   };
 
   const createPriorityElement = (todo) => {
-    const priority = document.createElement("p");
+    const priority = document.createElement("li");
 
     if (todo.priority === "low") {
       priority.innerText = "Low";
@@ -386,7 +393,7 @@ export const dom = () => {
   };
 
   const createDetailsElement = (todo) => {
-    const detailsElement = document.createElement("p");
+    const detailsElement = document.createElement("li");
 
     detailsElement.innerText = todo.details;
 
@@ -400,18 +407,13 @@ export const dom = () => {
 
     const priorityColorBlock = createPriorityColorBlock(todo);
     const todoCheckbox = createTodoCheckbox(todo);
+    const list = createList();
     const title = createTitleElement(todo);
     const dueDate = createDueDateElement(todo);
     const priority = createPriorityElement(todo);
     const details = createDetailsElement(todo);
-    div.append(
-      priorityColorBlock,
-      todoCheckbox,
-      title,
-      dueDate,
-      priority,
-      details
-    );
+    list.append(title, dueDate, priority, details);
+    div.append(priorityColorBlock, todoCheckbox, list);
 
     return div;
   };
