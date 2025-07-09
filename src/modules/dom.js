@@ -809,9 +809,9 @@ export const dom = () => {
   /********************************
     Gather Todo Array Section
   *********************************/
-  const queryTodoFilterBtns = () => {
-    const todoFilterBtns = document.querySelectorAll("[data-filter]");
-    return todoFilterBtns;
+  const queryTodoFilterDivs = () => {
+    const todoFilterDivs = document.querySelectorAll("[data-filter]");
+    return todoFilterDivs;
   };
 
   const extractDataAttr = (buttonElement) => {
@@ -822,14 +822,19 @@ export const dom = () => {
     return strValue;
   };
 
-  const todoFilterBtns = queryTodoFilterBtns();
-  todoFilterBtns.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      event.preventDefault();
-      const buttonElement = event.target;
-      const dataAttr = extractDataAttr(buttonElement);
+  const todoFilterDivs = queryTodoFilterDivs();
 
-      updateMainDisplay(buttonElement, dataAttr);
+  todoFilterDivs.forEach((div) => {
+    div.addEventListener("click", (event) => {
+      if (event.target !== event.currentTarget) {
+        const divElement = event.currentTarget;
+        const dataAttr = extractDataAttr(divElement);
+        updateMainDisplay(divElement, dataAttr);
+      } else if (event.target === event.currentTarget) {
+        const divElement = event.target;
+        const dataAttr = extractDataAttr(divElement);
+        updateMainDisplay(divElement, dataAttr);
+      }
     });
   });
 
@@ -1051,8 +1056,6 @@ export const dom = () => {
     const imgElement = createImgElement();
     const completeImg = addDelImgToElement(imgElement);
     projDelButton.appendChild(completeImg);
-
-    // projDelButton.innerText = "Delete";
 
     addEventListenerToProjDeleteButton(projDelButton, currentProj);
 
