@@ -1048,7 +1048,11 @@ export const dom = () => {
   const createProjDelButton = (currentProj) => {
     const projDelButton = document.createElement("button");
     projDelButton.classList.add("project-section-btn");
-    projDelButton.innerText = "Delete";
+    const imgElement = createImgElement();
+    const completeImg = addDelImgToElement(imgElement);
+    projDelButton.appendChild(completeImg);
+
+    // projDelButton.innerText = "Delete";
 
     addEventListenerToProjDeleteButton(projDelButton, currentProj);
 
