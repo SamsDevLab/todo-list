@@ -435,17 +435,19 @@ input[type="checkbox"]:checked {
   box-shadow: inset 0 0 0 2px #ffffff;
 }
 
-.actions-div {
-  width: 17.5%;
+.action-div {
+  width: 10%;
   display: flex;
-  justify-content: center;
   gap: 0.2rem;
+  justify-content: center;
 }
 
 .edit-todo-button,
 .delete-todo-button {
+  display: flex;
+  justify-content: center;
   background-color: #3a86ff;
   border-radius: 0.2rem;
-  flex-grow: 1;
-  height: 1.5rem;
+  height: 2rem;
+  padding: 0.2rem;
 }
