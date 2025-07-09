@@ -1,6 +1,8 @@
 import { projManager } from "/src/index.js";
 import { format, formatISO, isAfter } from "date-fns";
 import { editlocalStorage } from "/src/index.js";
+import editPencil from "../imgs/edit-pencil.png";
+import trashCan from "../imgs/trashcan.png";
 const editLocalStorage = editlocalStorage();
 const projectManager = projManager();
 
@@ -420,6 +422,25 @@ export const dom = () => {
 
   // **********************
 
+  const createImgElement = () => {
+    const imgElement = document.createElement("img");
+    return imgElement;
+  };
+
+  const addEditImgToElement = (imgElement) => {
+    imgElement.src = editPencil;
+    imgElement.alt = "Pencil Icon";
+
+    return imgElement;
+  };
+
+  const addDelImgToElement = (imgElement) => {
+    imgElement.src = trashCan;
+    imgElement.alt = "Trashcan";
+
+    return imgElement;
+  };
+
   const addEventListenerToTodoEditButton = (editButton, todo) => {
     editButton.addEventListener("click", (event) => {
       event.preventDefault();
@@ -437,7 +458,9 @@ export const dom = () => {
   const createEditButton = (todo) => {
     const button = document.createElement("button");
     button.classList.add("edit-todo-button");
-    button.innerText = "Edit";
+    const imgElement = createImgElement();
+    const completeImg = addEditImgToElement(imgElement);
+    button.appendChild(completeImg);
 
     addEventListenerToTodoEditButton(button, todo);
 
@@ -459,7 +482,9 @@ export const dom = () => {
   const createDeleteButton = (todo) => {
     const button = document.createElement("button");
     button.classList.add("delete-todo-button");
-    button.innerText = "Delete";
+    const imgElement = createImgElement();
+    const completeImg = addDelImgToElement(imgElement);
+    button.appendChild(completeImg);
 
     addEventListenerToTodoDeleteButton(button, todo);
 
@@ -469,7 +494,7 @@ export const dom = () => {
   // Create Actions Div
   const createActionsDiv = (todo) => {
     const div = document.createElement("div");
-    div.classList.add("actions-div");
+    div.classList.add("action-div");
 
     const editButton = createEditButton(todo);
     const deleteButton = createDeleteButton(todo);
@@ -1086,8 +1111,9 @@ dom();
 /* 
 Punchlist:
 
-Currently Working On:
-
+Currently Working On: 
+- Styling: Begin styling the project
+- Add emojis/svgs before li items in todo divs
 
 
 
@@ -1095,7 +1121,6 @@ Pending:
 - Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before. 
 - Arrange todos by date - not alphabetically revisit .sort()
 - Emojis: How do you create an emoji selector and how can you pass emojis in for your projects?
-- Styling: Begin styling the project
 - Light/Dark Mode - look into switching modes
 - Work on an edit option for Projects - being able to edit the name may be a good thing
 - localStorage projects are now showing in Dropdown menu but they aren't in a specific order. Maybe look into making them alphabetical if you have time
