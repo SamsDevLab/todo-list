@@ -1,6 +1,8 @@
 import { projManager } from "/src/index.js";
 import { format, formatISO, isAfter } from "date-fns";
 import { editlocalStorage } from "/src/index.js";
+import editPencil from "../imgs/edit-pencil.png";
+import trashCan from "../imgs/trashcan.png";
 const editLocalStorage = editlocalStorage();
 const projectManager = projManager();
 
@@ -293,6 +295,20 @@ export const dom = () => {
     return div;
   };
 
+  const createPriorityColorBlock = (todo) => {
+    const colorBlock = document.createElement("span");
+
+    if (todo.priority === "low") {
+      colorBlock.classList = "green-block";
+    } else if (todo.priority === "medium") {
+      colorBlock.classList.add("yellow-block");
+    } else if (todo.priority === "high") {
+      colorBlock.classList.add("red-block");
+    }
+
+    return colorBlock;
+  };
+
   const markTodoComplete = (todo) => {
     const todoDiv = document.querySelector(`[data-todo-div-id = '${todo.id}']`);
     console.log(todoDiv);
@@ -328,8 +344,15 @@ export const dom = () => {
     return checkbox;
   };
 
+  const createList = () => {
+    const list = document.createElement("ul");
+    list.classList.add("todo-list-items");
+
+    return list;
+  };
+
   const createTitleElement = (todo) => {
-    const title = document.createElement("p");
+    const title = document.createElement("li");
     title.innerText = todo.title;
 
     return title;
@@ -345,7 +368,7 @@ export const dom = () => {
   };
 
   const createDueDateElement = (todo) => {
-    const dueDateElement = document.createElement("p");
+    const dueDateElement = document.createElement("li");
 
     if (todo.dueDate !== "") {
       const formattedDate = formatTodoDate(todo);
@@ -357,8 +380,22 @@ export const dom = () => {
     return dueDateElement;
   };
 
+  const createPriorityElement = (todo) => {
+    const priority = document.createElement("li");
+
+    if (todo.priority === "low") {
+      priority.innerText = "Low";
+    } else if (todo.priority === "medium") {
+      priority.innerText = "Medium";
+    } else if (todo.priority === "high") {
+      priority.innerText = "High";
+    }
+
+    return priority;
+  };
+
   const createDetailsElement = (todo) => {
-    const detailsElement = document.createElement("p");
+    const detailsElement = document.createElement("li");
 
     detailsElement.innerText = todo.details;
 
@@ -370,16 +407,39 @@ export const dom = () => {
     const div = document.createElement("div");
     div.classList.add("info-div");
 
+    const priorityColorBlock = createPriorityColorBlock(todo);
     const todoCheckbox = createTodoCheckbox(todo);
+    const list = createList();
     const title = createTitleElement(todo);
     const dueDate = createDueDateElement(todo);
+    const priority = createPriorityElement(todo);
     const details = createDetailsElement(todo);
-    div.append(todoCheckbox, title, dueDate, details);
+    list.append(title, dueDate, priority, details);
+    div.append(priorityColorBlock, todoCheckbox, list);
 
     return div;
   };
 
   // **********************
+
+  const createImgElement = () => {
+    const imgElement = document.createElement("img");
+    return imgElement;
+  };
+
+  const addEditImgToElement = (imgElement) => {
+    imgElement.src = editPencil;
+    imgElement.alt = "Pencil Icon";
+
+    return imgElement;
+  };
+
+  const addDelImgToElement = (imgElement) => {
+    imgElement.src = trashCan;
+    imgElement.alt = "Trashcan";
+
+    return imgElement;
+  };
 
   const addEventListenerToTodoEditButton = (editButton, todo) => {
     editButton.addEventListener("click", (event) => {
@@ -398,7 +458,9 @@ export const dom = () => {
   const createEditButton = (todo) => {
     const button = document.createElement("button");
     button.classList.add("edit-todo-button");
-    button.innerText = "Edit";
+    const imgElement = createImgElement();
+    const completeImg = addEditImgToElement(imgElement);
+    button.appendChild(completeImg);
 
     addEventListenerToTodoEditButton(button, todo);
 
@@ -420,7 +482,9 @@ export const dom = () => {
   const createDeleteButton = (todo) => {
     const button = document.createElement("button");
     button.classList.add("delete-todo-button");
-    button.innerText = "Delete";
+    const imgElement = createImgElement();
+    const completeImg = addDelImgToElement(imgElement);
+    button.appendChild(completeImg);
 
     addEventListenerToTodoDeleteButton(button, todo);
 
@@ -430,7 +494,7 @@ export const dom = () => {
   // Create Actions Div
   const createActionsDiv = (todo) => {
     const div = document.createElement("div");
-    div.classList.add("actions-div");
+    div.classList.add("action-div");
 
     const editButton = createEditButton(todo);
     const deleteButton = createDeleteButton(todo);
@@ -1047,8 +1111,9 @@ dom();
 /* 
 Punchlist:
 
-Currently Working On:
-
+Currently Working On: 
+- Styling: Begin styling the project
+- Add emojis/svgs before li items in todo divs
 
 
 
@@ -1056,7 +1121,6 @@ Pending:
 - Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before. 
 - Arrange todos by date - not alphabetically revisit .sort()
 - Emojis: How do you create an emoji selector and how can you pass emojis in for your projects?
-- Styling: Begin styling the project
 - Light/Dark Mode - look into switching modes
 - Work on an edit option for Projects - being able to edit the name may be a good thing
 - localStorage projects are now showing in Dropdown menu but they aren't in a specific order. Maybe look into making them alphabetical if you have time
