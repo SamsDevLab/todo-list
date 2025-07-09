@@ -134,8 +134,16 @@ Fonts
   grid-template-columns: 0.25fr 1fr;
 }
 
+/***************
+***** All ******
+****************/
+
 h2 {
   font-family: "Quicksand";
+}
+
+button:hover {
+  background-color: #ffb347;
 }
 
 /********************
@@ -216,6 +224,7 @@ Main Panel: #ffffff
 Text: #222222 (charcoal)
 Accents: #3A86FF (electric blue)
 Hover: #FFB347 (soft orange)
+Hover over filters/projs in sidebar: #E0E0E0 (Grey 200)
 
 Fonts
 - "Quicksand"
@@ -241,17 +250,6 @@ Fonts
   gap: 0.5rem;
 }
 
-.main-left .filter-container {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.main-left .project-div {
-  display: flex;
-  justify-content: space-between;
-}
-
 .main-left .section-header {
   display: flex;
   gap: 1rem;
@@ -259,24 +257,6 @@ Fonts
   font-size: 1.5rem;
   font-family: "Quicksand";
   margin-bottom: 1rem;
-}
-
-.section-header,
-.section-header-button,
-.todo-section-btn,
-.project-section-btn {
-  color: #2a2a2a;
-}
-
-.section-header-button,
-.todo-section-btn,
-.project-section-btn {
-  background-color: transparent;
-  border: none;
-}
-
-button:hover {
-  background-color: #ffb347; /* #32cd32 (Lime Green) - #ffb347 (orange)*/
 }
 
 .section-header-button {
@@ -287,10 +267,32 @@ button:hover {
   background-color: #3a86ff;
 }
 
+.section-header-button,
 .todo-section-btn,
+.project-section-btn {
+  background-color: transparent;
+  border: none;
+}
+
+.main-left .filter-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.main-left .project-container {
+  display: flex;
+  justify-content: space-between;
+}
+
 .project-section-btn {
   border-radius: 0.2rem;
   padding: 0.3rem;
+  background-color: #3a86ff;
+}
+
+.project-section-btn img {
+  height: 1.3rem;
 }
 
 /*****************************
