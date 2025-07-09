@@ -293,6 +293,20 @@ export const dom = () => {
     return div;
   };
 
+  const createPriorityColorBlock = (todo) => {
+    const colorBlock = document.createElement("span");
+
+    if (todo.priority === "low") {
+      colorBlock.classList = "green-block";
+    } else if (todo.priority === "medium") {
+      colorBlock.classList.add("yellow-block");
+    } else if (todo.priority === "high") {
+      colorBlock.classList.add("red-block");
+    }
+
+    return colorBlock;
+  };
+
   const markTodoComplete = (todo) => {
     const todoDiv = document.querySelector(`[data-todo-div-id = '${todo.id}']`);
     console.log(todoDiv);
@@ -357,6 +371,20 @@ export const dom = () => {
     return dueDateElement;
   };
 
+  const createPriorityElement = (todo) => {
+    const priority = document.createElement("p");
+
+    if (todo.priority === "low") {
+      priority.innerText = "Low";
+    } else if (todo.priority === "medium") {
+      priority.innerText = "Medium";
+    } else if (todo.priority === "high") {
+      priority.innerText = "High";
+    }
+
+    return priority;
+  };
+
   const createDetailsElement = (todo) => {
     const detailsElement = document.createElement("p");
 
@@ -370,11 +398,20 @@ export const dom = () => {
     const div = document.createElement("div");
     div.classList.add("info-div");
 
+    const priorityColorBlock = createPriorityColorBlock(todo);
     const todoCheckbox = createTodoCheckbox(todo);
     const title = createTitleElement(todo);
     const dueDate = createDueDateElement(todo);
+    const priority = createPriorityElement(todo);
     const details = createDetailsElement(todo);
-    div.append(todoCheckbox, title, dueDate, details);
+    div.append(
+      priorityColorBlock,
+      todoCheckbox,
+      title,
+      dueDate,
+      priority,
+      details
+    );
 
     return div;
   };
