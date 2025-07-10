@@ -152,11 +152,9 @@ export const dom = () => {
     updateTodoList(todoFilter, dataAttr);
   };
 
-  // Add Listener to Submit Todo Button:
-  const submitTodoButton = document.querySelector(
-    "[data-submit-button = 'submit-todo']"
-  );
-  submitTodoButton.addEventListener("click", (event) => {
+  // Add Listener to Todo Form
+  const newTodoForm = document.querySelector("[data-form = 'todo']");
+  newTodoForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const newTodo = submitTodo();
     const currentProjObj = getProjObj(newTodo);
@@ -248,12 +246,9 @@ export const dom = () => {
     queryProject().modal.close();
   };
 
-  // Add Event Listener to Submit Project Button
-  const submitProjButton = document.querySelector(
-    "[data-submit-button = 'submit-project']"
-  );
-
-  submitProjButton.addEventListener("click", (event) => {
+  // Add Event Listener to Project Form
+  const projForm = queryProjForm();
+  projForm.addEventListener("submit", (event) => {
     event.preventDefault();
     submitProject();
     addProjToDropdown();
@@ -724,12 +719,13 @@ export const dom = () => {
     return project;
   };
 
-  const addFunctionalityToTodoEditSaveBtn = () => {
+  const addFunctionalityToTodoEditForm = () => {
     const todoEditModal = queryTodoEditModal();
-    const todoEditSaveBtn = queryTodoEditSaveBtn();
+    const todoEditForm = queryTodoEditForm();
 
-    todoEditSaveBtn.addEventListener("click", (event) => {
+    todoEditForm.addEventListener("submit", (event) => {
       event.preventDefault();
+      event.stopPropagation();
       const projArr = getProjArr();
       const currentTodoId = storeCurrentTodoIds.getCurrentTodoId();
       const currentTodoProjId = storeCurrentTodoIds.getCurrentTodoProjId();
@@ -987,7 +983,6 @@ export const dom = () => {
     if (menuHeaderDisplay.innerText === currentProj.name) {
       clearMenuHeader(menuHeaderDisplay);
       clearTodoDisplay();
-      // Need a function to also clear the todo menu as the old project is still showing up there
     }
   };
 
@@ -1101,7 +1096,7 @@ export const dom = () => {
   addLocalStorageProjsToDropDown();
   addInputListenersToEditTodo();
   addFunctionalityToTodoEditCancelBtn();
-  addFunctionalityToTodoEditSaveBtn();
+  addFunctionalityToTodoEditForm();
 };
 
 dom();
@@ -1115,10 +1110,11 @@ Currently Working On:
 Pending: 
 - Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before. 
 - Arrange todos by date - not alphabetically revisit .sort()
-- Emojis: How do you create an emoji selector and how can you pass emojis in for your projects?
+- localStorage projects are now showing in Dropdown menu but they aren't in a specific order. Maybe look into making them alphabetical if you have time
+
+Features for a later date: 
 - Light/Dark Mode - look into switching modes
 - Work on an edit option for Projects - being able to edit the name may be a good thing
-- localStorage projects are now showing in Dropdown menu but they aren't in a specific order. Maybe look into making them alphabetical if you have time
 
 Completed:
 ✅ Todos 'delete' button: Add functionality
