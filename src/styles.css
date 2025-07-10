@@ -142,6 +142,7 @@ h2 {
   font-family: "Quicksand";
 }
 
+dialog button:hover,
 button:hover {
   background-color: #ffb347;
 }
@@ -210,7 +211,7 @@ textarea:focus {
 }
 
 #new-project-form {
-  height: 35%;
+  height: 30%;
   top: 20%;
 }
 
@@ -290,7 +291,7 @@ Fonts
 
 .main-left .project-div {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 /* .todo-section-btn, */
@@ -332,11 +333,7 @@ Fonts
   border-radius: 0.3rem;
   display: flex;
   align-items: center;
-}
-
-.main-right .section-header {
-  display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 
 .section-header h1 {
