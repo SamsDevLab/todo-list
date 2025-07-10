@@ -102,14 +102,6 @@
                 />
               </div>
               <div class="input-container">
-                <label for="edit-description">Description:</label>
-                <input
-                  type="text"
-                  id="edit-description"
-                  data-todo-edit-input="edit-description"
-                />
-              </div>
-              <div class="input-container">
                 <label for="edit-due-date">Due Date:</label>
                 <input
                   type="date"
@@ -130,20 +122,20 @@
                 </select>
               </div>
               <div class="input-container">
+                <label for="edit-details">Details</label>
+                <textarea
+                  name="textarea"
+                  id="edit-details"
+                  data-todo-edit-input="edit-details"
+                ></textarea>
+              </div>
+              <div class="input-container">
                 <label for="edit-project">Project:</label>
                 <select
                   name="edit-project"
                   id="edit-project"
                   data-todo-edit-input="edit-project"
                 ></select>
-              </div>
-              <div class="input-container">
-                <label for="edit-notes">Notes</label>
-                <textarea
-                  name="textarea"
-                  id="edit-notes"
-                  data-todo-edit-input="edit-notes"
-                ></textarea>
               </div>
               <div class="modal-btn-container">
               <button data-cancel-edit-button="cancel-edit-todo">Cancel</button>
