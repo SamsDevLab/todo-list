@@ -142,6 +142,7 @@ h2 {
   font-family: "Quicksand";
 }
 
+dialog button:hover,
 button:hover {
   background-color: #ffb347;
 }
@@ -290,7 +291,7 @@ Fonts
 
 .main-left .project-div {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 /* .todo-section-btn, */
