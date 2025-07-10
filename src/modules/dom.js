@@ -138,18 +138,19 @@ export const dom = () => {
 
   const checkMenuHeaderForDataAttr = () => {
     const menuHeader = queryMenuHeaderDisplay().innerText;
-    const buttonElement = checkMenuHeaderForTodoFilter(menuHeader);
+    const divElement = checkMenuHeaderForTodoFilter(menuHeader);
+    //buttonElement
+    if (divElement !== undefined) {
+      const dataAttr = extractDataAttr(divElement);
 
-    if (buttonElement !== undefined) {
-      const dataAttr = extractDataAttr(buttonElement);
-      return { buttonElement, dataAttr };
+      return { divElement, dataAttr };
     } else return;
   };
 
   const passFilterToUpdateTodoList = (filterObj) => {
-    const buttonElement = filterObj.buttonElement;
+    const divElement = filterObj.divElement;
     const dataAttr = filterObj.dataAttr;
-    updateTodoList(buttonElement, dataAttr);
+    updateTodoList(divElement, dataAttr);
   };
 
   // Add Listener to Submit Todo Button:
@@ -839,17 +840,17 @@ export const dom = () => {
   });
 
   const filterAllTodos = () => {
-    const todoArr = [];
+    const newTodoArr = [];
 
     const projArr = getProjArr();
     projArr.forEach((project) =>
-      project.todoArr.forEach((todo) => todoArr.push(todo))
+      project.todoArr.forEach((todo) => newTodoArr.push(todo))
     );
-    return todoArr;
+    return newTodoArr;
   };
 
   const filterTodayTodos = () => {
-    const todoArr = [];
+    const newTodoArr = [];
     const currentDate = getCurrentDateOrTime.getCurrentDate();
 
     const projArr = getProjArr();
@@ -858,16 +859,16 @@ export const dom = () => {
       project.todoArr.forEach((todo) => {
         const todoDateOnly = todo.dueDate.slice(0, 10);
         if (todoDateOnly === currentDate) {
-          todoArr.push(todo);
+          newTodoArr.push(todo);
         }
       });
     });
 
-    return todoArr;
+    return newTodoArr;
   };
 
   const filterUpcomingTodos = () => {
-    const todoArr = [];
+    const newTodoArr = [];
     const currentDate = getCurrentDateOrTime.getCurrentDate();
 
     const projArr = getProjArr();
@@ -877,39 +878,42 @@ export const dom = () => {
         const todoDateOnly = todo.dueDate.slice(0, 10);
         const result = isAfter(todoDateOnly, currentDate);
         if (result === true) {
-          todoArr.push(todo);
+          newTodoArr.push(todo);
         }
       })
     );
 
-    return todoArr;
+    return newTodoArr;
   };
 
   const filterNoDueDateTodos = () => {
-    const todoArr = [];
+    const newTodoArr = [];
     const projArr = getProjArr();
 
     projArr.forEach((project) =>
       project.todoArr.forEach((todo) => {
         if (todo.dueDate === "") {
-          todoArr.push(todo);
+          newTodoArr.push(todo);
         }
       })
     );
 
-    return todoArr;
+    return newTodoArr;
   };
 
-  const getProjTodos = (menuItem) => {
-    const todoArr = [];
-    const projArr = getProjArr();
-    const projId = menuItem.id;
+  // const getProjTodos = (menuItem) => {
+  //   console.log(menuItem);
+  //   // const todoArr = [];
+  //   const projArr = getProjArr();
+  //   const projId = menuItem.id;
 
-    const foundProject = projArr.find((project) => project.id === projId);
-    foundProject.todoArr.forEach((todo) => todoArr.push(todo));
+  //   const foundProject = projArr.find((project) => project.id === projId);
+  //   // foundProject.todoArr.forEach((todo) => todoArr.push(todo));
+  //   const newTodoArr = foundProject.todoArr;
+  //   console.log(newTodoArr);
 
-    return todoArr;
-  };
+  //   return newTodoArr;
+  // };
 
   const gatherTodoArr = (menuItem, dataAttr) => {
     let todoArr;
@@ -929,7 +933,8 @@ export const dom = () => {
     ) {
       todoArr = filterNoDueDateTodos();
     } else {
-      todoArr = getProjTodos(menuItem);
+      // todoArr = getProjTodos(menuItem);
+      todoArr = menuItem.todoArr;
     }
 
     createAndAppendTodos(todoArr);
@@ -972,22 +977,36 @@ export const dom = () => {
     return projSection;
   };
 
+  // Second Draft Below
+
+  // First Draft:
+  // const addEventListenerToProjBtn = (projectButton, currentProj) => {
+  //   projectButton.addEventListener("click", () =>
+  //     updateMainDisplay(currentProj)
+  //   );
+  // };
+
   // Second Draft:
-  const addEventListenerToProjBtn = (projectButton, currentProj) => {
-    projectButton.addEventListener("click", () =>
-      updateMainDisplay(currentProj)
-    );
+  const createProjTitle = (currentProj) => {
+    const title = document.createElement("p");
+    // button.classList.add("project-section-btn");
+    title.innerText = currentProj.name;
+
+    // addEventListenerToProjBtn(button, currentProj);
+
+    return title;
   };
 
-  const createProjButton = (currentProj) => {
-    const button = document.createElement("button");
-    button.classList.add("project-section-btn");
-    button.innerText = currentProj.name;
+  // First Draft:
+  // const createProjButton = (currentProj) => {
+  //   const button = document.createElement("button");
+  //   button.classList.add("project-section-btn");
+  //   button.innerText = currentProj.name;
 
-    addEventListenerToProjBtn(button, currentProj);
+  //   addEventListenerToProjBtn(button, currentProj);
 
-    return button;
-  };
+  //   return button;
+  // };
 
   const removeProjFromProjSection = (currentProj) => {
     const projDiv = document.querySelector(
@@ -1057,23 +1076,53 @@ export const dom = () => {
     const completeImg = addDelImgToElement(imgElement);
     projDelButton.appendChild(completeImg);
 
+    // Start here tomorrow - Trace the error beginning in fn below. Look at your second drafts throughout the fn chain and bring out debugger if needed.
+    //
+    //  I think that since I switched the data attr of the filters to their divs, there is a problem within the function chain that is causing an error when I delete a project
     addEventListenerToProjDeleteButton(projDelButton, currentProj);
 
     return projDelButton;
   };
 
+  // Second Draft:
+  const addEventListenerToProjDiv = (projectDiv, currentProj) => {
+    projectDiv.addEventListener("click", () => updateMainDisplay(currentProj));
+  };
+
+  // Second Draft:
   const createProjDiv = (currentProj) => {
     const projectDiv = document.createElement("div");
     projectDiv.classList.add("project-div");
     projectDiv.setAttribute("data-project-div", `${currentProj.id}`);
 
-    const projButton = createProjButton(currentProj);
+    // First Draft:
+    // const projButton = createProjButton(currentProj);
+
+    // Second Draft:
+    const projTitle = createProjTitle(currentProj);
+
     const projDelButton = createProjDelButton(currentProj);
 
-    projectDiv.append(projButton, projDelButton);
+    addEventListenerToProjDiv(projectDiv, currentProj);
+
+    projectDiv.append(projTitle, projDelButton);
 
     return projectDiv;
   };
+
+  // First Draft:
+  // const createProjDiv = (currentProj) => {
+  //   const projectDiv = document.createElement("div");
+  //   projectDiv.classList.add("project-div");
+  //   projectDiv.setAttribute("data-project-div", `${currentProj.id}`);
+
+  //   const projButton = createProjButton(currentProj);
+  //   const projDelButton = createProjDelButton(currentProj);
+
+  //   projectDiv.append(projButton, projDelButton);
+
+  //   return projectDiv;
+  // };
 
   const appendProjToDom = (currentProj) => {
     const projSection = queryProjSection();
@@ -1121,6 +1170,8 @@ Punchlist:
 Currently Working On: 
 - Styling: Begin styling the project
 - Add emojis/svgs before li items in todo divs
+
+- Red squigly error in debugger at line 913 (foundProject.todoArr.forEach((todo) => todoArr.push(todo));)
 
 
 
