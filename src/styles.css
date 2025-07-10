@@ -245,7 +245,7 @@ Fonts
   font-family: "OpenSans";
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
+  margin: 1.5rem;
   border-radius: 0.5rem;
   gap: 0.5rem;
 }
@@ -265,30 +265,38 @@ Fonts
   padding-right: 0.5rem;
   border-radius: 50%;
   background-color: #3a86ff;
+  border: none;
 }
 
-.section-header-button,
 .todo-section-btn,
 .project-section-btn {
   background-color: transparent;
   border: none;
 }
 
-.main-left .filter-container {
+.main-left .filter-div,
+.main-left .project-div {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0.5rem;
 }
 
-.main-left .project-container {
+.main-left .filter-div:hover,
+.main-left .project-div:hover {
+  background-color: #e0e0e0;
+  border-radius: 0.3rem;
+}
+
+.main-left .project-div {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
+/* .todo-section-btn, */
 .project-section-btn {
   border-radius: 0.2rem;
-  padding: 0.3rem;
-  background-color: #3a86ff;
+  padding: 0.2rem;
 }
 
 .project-section-btn img {
