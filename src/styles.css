@@ -332,11 +332,7 @@ Fonts
   border-radius: 0.3rem;
   display: flex;
   align-items: center;
-}
-
-.main-right .section-header {
-  display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 
 .section-header h1 {
