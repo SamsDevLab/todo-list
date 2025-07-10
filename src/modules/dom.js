@@ -447,7 +447,9 @@ export const dom = () => {
       event.preventDefault();
       const todoEditModal = queryTodoEditModal();
       const todoEditForm = queryTodoEditForm();
+      console.log(todoEditForm);
       const todoEditProjSelect = queryTodoEditProjSelect();
+      console.log(todoEditProjSelect);
       populateTodoEditProjSelect(todoEditProjSelect);
       populateTodoEditFormWithValues(todoEditForm, todo);
       storeCurrentTodoIds.setCurrentTodoId(todo.id);
@@ -563,11 +565,10 @@ export const dom = () => {
 
   const populateTodoEditFormWithValues = (todoEditForm, todo) => {
     todoEditForm.elements[0].value = todo.title;
-    todoEditForm.elements[1].value = todo.description;
-    todoEditForm.elements[2].value = todo.dueDate;
-    todoEditForm.elements[3].value = todo.priority;
+    todoEditForm.elements[1].value = todo.dueDate;
+    todoEditForm.elements[2].value = todo.priority;
+    todoEditForm.elements[3].value = todo.details;
     todoEditForm.elements[4].value = todo.project;
-    todoEditForm.elements[5].value = todo.notes;
   };
 
   const addInputListenersToEditTodo = () => {
@@ -640,13 +641,13 @@ export const dom = () => {
   const storeCurrentTodoIds = storeTodoIds();
 
   const extractUpdatedTodoEditValues = (updatedTodoEditForm) => {
+    console.log(updatedTodoEditForm);
     const todoEditValuesObj = {
       title: updatedTodoEditForm.elements[0].value,
-      description: updatedTodoEditForm.elements[1].value,
-      dueDate: updatedTodoEditForm.elements[2].value,
-      priority: updatedTodoEditForm.elements[3].value,
+      dueDate: updatedTodoEditForm.elements[1].value,
+      priority: updatedTodoEditForm.elements[2].value,
+      details: updatedTodoEditForm.elements[3].value,
       project: updatedTodoEditForm.elements[4].value,
-      notes: updatedTodoEditForm.elements[5].value,
     };
 
     return todoEditValuesObj;
@@ -654,11 +655,10 @@ export const dom = () => {
 
   const updateTodoValues = (todo, todoEditValuesObj) => {
     todo.title = todoEditValuesObj.title;
-    todo.description = todoEditValuesObj.description;
     todo.dueDate = todoEditValuesObj.dueDate;
     todo.priority = todoEditValuesObj.priority;
+    todo.details = todoEditValuesObj.details;
     todo.project = todoEditValuesObj.project;
-    todo.notes = todoEditValuesObj.notes;
 
     return todo;
   };
@@ -737,6 +737,8 @@ export const dom = () => {
 
       const todoEditValuesObj =
         extractUpdatedTodoEditValues(updatedTodoEditForm);
+
+      console.log(todoEditValuesObj);
 
       const editedTodo = updateEditedTodo(
         todoEditValuesObj,
@@ -1108,10 +1110,7 @@ dom();
 Punchlist:
 
 Currently Working On: 
-- Styling: Begin styling the project
 - Add emojis/svgs before li items in todo divs
-
-
 
 Pending: 
 - Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before. 
