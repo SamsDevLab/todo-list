@@ -138,18 +138,18 @@ export const dom = () => {
 
   const checkMenuHeaderForDataAttr = () => {
     const menuHeader = queryMenuHeaderDisplay().innerText;
-    const buttonElement = checkMenuHeaderForTodoFilter(menuHeader);
+    const todoFilter = checkMenuHeaderForTodoFilter(menuHeader);
+    if (todoFilter !== undefined) {
+      const dataAttr = extractDataAttr(todoFilter);
 
-    if (buttonElement !== undefined) {
-      const dataAttr = extractDataAttr(buttonElement);
-      return { buttonElement, dataAttr };
+      return { todoFilter, dataAttr };
     } else return;
   };
 
   const passFilterToUpdateTodoList = (filterObj) => {
-    const buttonElement = filterObj.buttonElement;
+    const todoFilter = filterObj.todoFilter;
     const dataAttr = filterObj.dataAttr;
-    updateTodoList(buttonElement, dataAttr);
+    updateTodoList(todoFilter, dataAttr);
   };
 
   // Add Listener to Submit Todo Button:
@@ -161,6 +161,7 @@ export const dom = () => {
     const newTodo = submitTodo();
     const currentProjObj = getProjObj(newTodo);
     const filterObj = checkMenuHeaderForDataAttr();
+    console.log(filterObj);
     if (filterObj !== undefined) {
       passFilterToUpdateTodoList(filterObj);
     } else {
@@ -446,7 +447,9 @@ export const dom = () => {
       event.preventDefault();
       const todoEditModal = queryTodoEditModal();
       const todoEditForm = queryTodoEditForm();
+      console.log(todoEditForm);
       const todoEditProjSelect = queryTodoEditProjSelect();
+      console.log(todoEditProjSelect);
       populateTodoEditProjSelect(todoEditProjSelect);
       populateTodoEditFormWithValues(todoEditForm, todo);
       storeCurrentTodoIds.setCurrentTodoId(todo.id);
@@ -562,11 +565,10 @@ export const dom = () => {
 
   const populateTodoEditFormWithValues = (todoEditForm, todo) => {
     todoEditForm.elements[0].value = todo.title;
-    todoEditForm.elements[1].value = todo.description;
-    todoEditForm.elements[2].value = todo.dueDate;
-    todoEditForm.elements[3].value = todo.priority;
+    todoEditForm.elements[1].value = todo.dueDate;
+    todoEditForm.elements[2].value = todo.priority;
+    todoEditForm.elements[3].value = todo.details;
     todoEditForm.elements[4].value = todo.project;
-    todoEditForm.elements[5].value = todo.notes;
   };
 
   const addInputListenersToEditTodo = () => {
@@ -639,13 +641,13 @@ export const dom = () => {
   const storeCurrentTodoIds = storeTodoIds();
 
   const extractUpdatedTodoEditValues = (updatedTodoEditForm) => {
+    console.log(updatedTodoEditForm);
     const todoEditValuesObj = {
       title: updatedTodoEditForm.elements[0].value,
-      description: updatedTodoEditForm.elements[1].value,
-      dueDate: updatedTodoEditForm.elements[2].value,
-      priority: updatedTodoEditForm.elements[3].value,
+      dueDate: updatedTodoEditForm.elements[1].value,
+      priority: updatedTodoEditForm.elements[2].value,
+      details: updatedTodoEditForm.elements[3].value,
       project: updatedTodoEditForm.elements[4].value,
-      notes: updatedTodoEditForm.elements[5].value,
     };
 
     return todoEditValuesObj;
@@ -653,11 +655,10 @@ export const dom = () => {
 
   const updateTodoValues = (todo, todoEditValuesObj) => {
     todo.title = todoEditValuesObj.title;
-    todo.description = todoEditValuesObj.description;
     todo.dueDate = todoEditValuesObj.dueDate;
     todo.priority = todoEditValuesObj.priority;
+    todo.details = todoEditValuesObj.details;
     todo.project = todoEditValuesObj.project;
-    todo.notes = todoEditValuesObj.notes;
 
     return todo;
   };
@@ -737,6 +738,8 @@ export const dom = () => {
       const todoEditValuesObj =
         extractUpdatedTodoEditValues(updatedTodoEditForm);
 
+      console.log(todoEditValuesObj);
+
       const editedTodo = updateEditedTodo(
         todoEditValuesObj,
         currentTodoId,
@@ -809,9 +812,9 @@ export const dom = () => {
   /********************************
     Gather Todo Array Section
   *********************************/
-  const queryTodoFilterBtns = () => {
-    const todoFilterBtns = document.querySelectorAll("[data-filter]");
-    return todoFilterBtns;
+  const queryTodoFilterDivs = () => {
+    const todoFilterDivs = document.querySelectorAll("[data-filter]");
+    return todoFilterDivs;
   };
 
   const extractDataAttr = (buttonElement) => {
@@ -822,29 +825,34 @@ export const dom = () => {
     return strValue;
   };
 
-  const todoFilterBtns = queryTodoFilterBtns();
-  todoFilterBtns.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      event.preventDefault();
-      const buttonElement = event.target;
-      const dataAttr = extractDataAttr(buttonElement);
+  const todoFilterDivs = queryTodoFilterDivs();
 
-      updateMainDisplay(buttonElement, dataAttr);
+  todoFilterDivs.forEach((div) => {
+    div.addEventListener("click", (event) => {
+      if (event.target !== event.currentTarget) {
+        const divElement = event.currentTarget;
+        const dataAttr = extractDataAttr(divElement);
+        updateMainDisplay(divElement, dataAttr);
+      } else if (event.target === event.currentTarget) {
+        const divElement = event.target;
+        const dataAttr = extractDataAttr(divElement);
+        updateMainDisplay(divElement, dataAttr);
+      }
     });
   });
 
   const filterAllTodos = () => {
-    const todoArr = [];
+    const newTodoArr = [];
 
     const projArr = getProjArr();
     projArr.forEach((project) =>
-      project.todoArr.forEach((todo) => todoArr.push(todo))
+      project.todoArr.forEach((todo) => newTodoArr.push(todo))
     );
-    return todoArr;
+    return newTodoArr;
   };
 
   const filterTodayTodos = () => {
-    const todoArr = [];
+    const newTodoArr = [];
     const currentDate = getCurrentDateOrTime.getCurrentDate();
 
     const projArr = getProjArr();
@@ -853,16 +861,16 @@ export const dom = () => {
       project.todoArr.forEach((todo) => {
         const todoDateOnly = todo.dueDate.slice(0, 10);
         if (todoDateOnly === currentDate) {
-          todoArr.push(todo);
+          newTodoArr.push(todo);
         }
       });
     });
 
-    return todoArr;
+    return newTodoArr;
   };
 
   const filterUpcomingTodos = () => {
-    const todoArr = [];
+    const newTodoArr = [];
     const currentDate = getCurrentDateOrTime.getCurrentDate();
 
     const projArr = getProjArr();
@@ -872,38 +880,27 @@ export const dom = () => {
         const todoDateOnly = todo.dueDate.slice(0, 10);
         const result = isAfter(todoDateOnly, currentDate);
         if (result === true) {
-          todoArr.push(todo);
+          newTodoArr.push(todo);
         }
       })
     );
 
-    return todoArr;
+    return newTodoArr;
   };
 
   const filterNoDueDateTodos = () => {
-    const todoArr = [];
+    const newTodoArr = [];
     const projArr = getProjArr();
 
     projArr.forEach((project) =>
       project.todoArr.forEach((todo) => {
         if (todo.dueDate === "") {
-          todoArr.push(todo);
+          newTodoArr.push(todo);
         }
       })
     );
 
-    return todoArr;
-  };
-
-  const getProjTodos = (menuItem) => {
-    const todoArr = [];
-    const projArr = getProjArr();
-    const projId = menuItem.id;
-
-    const foundProject = projArr.find((project) => project.id === projId);
-    foundProject.todoArr.forEach((todo) => todoArr.push(todo));
-
-    return todoArr;
+    return newTodoArr;
   };
 
   const gatherTodoArr = (menuItem, dataAttr) => {
@@ -924,7 +921,7 @@ export const dom = () => {
     ) {
       todoArr = filterNoDueDateTodos();
     } else {
-      todoArr = getProjTodos(menuItem);
+      todoArr = menuItem.todoArr;
     }
 
     createAndAppendTodos(todoArr);
@@ -968,20 +965,10 @@ export const dom = () => {
   };
 
   // Second Draft:
-  const addEventListenerToProjBtn = (projectButton, currentProj) => {
-    projectButton.addEventListener("click", () =>
-      updateMainDisplay(currentProj)
-    );
-  };
-
-  const createProjButton = (currentProj) => {
-    const button = document.createElement("button");
-    button.classList.add("project-section-btn");
-    button.innerText = currentProj.name;
-
-    addEventListenerToProjBtn(button, currentProj);
-
-    return button;
+  const createProjTitle = (currentProj) => {
+    const title = document.createElement("p");
+    title.innerText = currentProj.name;
+    return title;
   };
 
   const removeProjFromProjSection = (currentProj) => {
@@ -1023,6 +1010,7 @@ export const dom = () => {
 
     projDeleteButton.addEventListener("click", (event) => {
       event.preventDefault();
+      event.stopPropagation();
       const foundProjIndex = projArr.findIndex(
         (project) => project.id === currentProj.id
       );
@@ -1048,22 +1036,32 @@ export const dom = () => {
   const createProjDelButton = (currentProj) => {
     const projDelButton = document.createElement("button");
     projDelButton.classList.add("project-section-btn");
-    projDelButton.innerText = "Delete";
+    const imgElement = createImgElement();
+    const completeImg = addDelImgToElement(imgElement);
+    projDelButton.appendChild(completeImg);
 
     addEventListenerToProjDeleteButton(projDelButton, currentProj);
 
     return projDelButton;
   };
 
+  // Second Draft:
+  const addEventListenerToProjDiv = (projectDiv, currentProj) => {
+    projectDiv.addEventListener("click", () => updateMainDisplay(currentProj));
+  };
+
+  // Second Draft:
   const createProjDiv = (currentProj) => {
     const projectDiv = document.createElement("div");
     projectDiv.classList.add("project-div");
     projectDiv.setAttribute("data-project-div", `${currentProj.id}`);
 
-    const projButton = createProjButton(currentProj);
+    const projTitle = createProjTitle(currentProj);
     const projDelButton = createProjDelButton(currentProj);
 
-    projectDiv.append(projButton, projDelButton);
+    addEventListenerToProjDiv(projectDiv, currentProj);
+
+    projectDiv.append(projTitle, projDelButton);
 
     return projectDiv;
   };
@@ -1112,10 +1110,7 @@ dom();
 Punchlist:
 
 Currently Working On: 
-- Styling: Begin styling the project
 - Add emojis/svgs before li items in todo divs
-
-
 
 Pending: 
 - Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before. 
