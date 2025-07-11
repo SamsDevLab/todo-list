@@ -390,10 +390,67 @@ export const dom = () => {
     return priority;
   };
 
+  const createDetailsExpansionBtn = () => {
+    const expansionBtn = document.createElement("button");
+    expansionBtn.classList.add("expand-details-btn");
+    expansionBtn.innerText = "+";
+
+    return expansionBtn;
+  };
+
+  const queryTodoDetailsModal = () => {
+    const todoDetailsModal = document.querySelector(
+      "[data-modal = 'todo-details']"
+    );
+
+    return todoDetailsModal;
+  };
+
+  const queryTodoDetailsParagraph = () => {
+    const paragraph = document.querySelector(
+      "[data-paragraph = 'todo-details']"
+    );
+
+    return paragraph;
+  };
+
+  const addEventListenerToExpandBtn = (expandBtn, detailsStr) => {
+    const todoDetailsModal = queryTodoDetailsModal();
+    const detailsParagraph = queryTodoDetailsParagraph();
+
+    expandBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      detailsParagraph.innerText = "";
+      detailsParagraph.innerText = detailsStr;
+      todoDetailsModal.show();
+    });
+  };
+
+  const addEventListenerToTodoDetailsModal = () => {
+    const todoDetailsModal = queryTodoDetailsModal();
+    todoDetailsModal.addEventListener("blur", () => {
+      todoDetailsModal.close();
+    });
+  };
+
   const createDetailsElement = (todo) => {
     const detailsElement = document.createElement("li");
+    detailsElement.classList.add("details-li");
+    const detailsStr = todo.details;
 
-    detailsElement.innerText = todo.details;
+    if (detailsStr.length < 60) {
+      detailsElement.innerText = todo.details;
+    } else if (detailsStr.length >= 60) {
+      const slicedStr = detailsStr.slice(0, 60);
+      detailsElement.innerText = slicedStr;
+
+      const detailsExpansionBtn = createDetailsExpansionBtn();
+
+      addEventListenerToExpandBtn(detailsExpansionBtn, detailsStr);
+      addEventListenerToTodoDetailsModal();
+
+      detailsElement.appendChild(detailsExpansionBtn);
+    }
 
     return detailsElement;
   };
@@ -449,7 +506,7 @@ export const dom = () => {
       populateTodoEditFormWithValues(todoEditForm, todo);
       storeCurrentTodoIds.setCurrentTodoId(todo.id);
       storeCurrentTodoIds.setCurrentTodoProjId(todo.projId);
-      todoEditModal.show();
+      todoEditModal.showModal();
     });
   };
 
@@ -1105,12 +1162,13 @@ dom();
 Punchlist:
 
 Currently Working On: 
-- Add emojis/svgs before li items in todo divs
+- localStorage projects are now showing in Dropdown menu but they aren't in a specific order. Maybe look into making them alphabetical if you have time
+- Arrange todos by date - not alphabetically revisit .sort()
 
 Pending: 
-- Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before. 
-- Arrange todos by date - not alphabetically revisit .sort()
-- localStorage projects are now showing in Dropdown menu but they aren't in a specific order. Maybe look into making them alphabetical if you have time
+- Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before.
+
+
 
 Features for a later date: 
 - Light/Dark Mode - look into switching modes
@@ -1152,5 +1210,6 @@ Completed:
 ✅ Revisit removeTodoFromLocalStorage after debugging deleteTodo
 ✅ Work on edit localStorage when a project is deleted - needs to take its localStorage todos with it
 ✅ Work on refreshing the todo immediately when it's edited. Right now, the original todo persists until you click away and click back (THIS ONLY APPLIES WHEN FILTERS ARE SHOWING. If the project is showing in the main container, the bug disappears)
+✅ Truncate "Details" if the section goes passes a certain number of chars
 
 */
