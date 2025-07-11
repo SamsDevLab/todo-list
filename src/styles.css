@@ -170,8 +170,6 @@ dialog {
 dialog:open {
   left: 37.5%;
   top: 12.5%;
-  height: 67.5%;
-  width: 25%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -179,6 +177,22 @@ dialog:open {
   padding: 2rem;
   border-radius: 0.5rem;
   border: 2px solid #222222;
+}
+
+#add-todo-modal,
+#edit-todo-modal {
+  height: 67.5%;
+  width: 25%;
+}
+
+#todo-details-modal {
+  z-index: 1;
+  width: 25%;
+}
+
+#todo-details-modal p {
+  width: 90%;
+  overflow-wrap: break-word;
 }
 
 .input-container {
@@ -314,6 +328,7 @@ Main Panel: #ffffff
 Text: #222222 (charcoal)
 Accents: #3A86FF (electric blue)
 Hover: #FFB347 (soft orange)
+Hover over filters/projs in sidebar: #E0E0E0 (Grey 200)
 
 Fonts
 - "Quicksand"
@@ -368,6 +383,24 @@ Fonts
   justify-content: space-between;
   align-items: center;
   margin: 0;
+}
+
+li {
+  position: relative;
+}
+
+.expand-details-btn {
+  position: absolute;
+  top: 0.3rem;
+  margin-left: 0.2rem;
+  border: 1px solid black;
+  border-radius: 1rem;
+  color: #000000;
+  width: 1.1rem;
+  height: 1.1rem;
+  background: none;
+  background-color: #f4f4f4; /*#E0E0E0 #f4f4f4 */
+  line-height: 1rem;
 }
 
 .strikethrough {
