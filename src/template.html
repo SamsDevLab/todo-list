@@ -44,7 +44,7 @@
 </svg>
         <p>No Due Date</p>
         </div>
-          <dialog data-modal="add-new-todo">
+          <dialog id="add-todo-modal" data-modal="add-new-todo">
             <h2>Add Todo</h2>
             <form action="./index.js" method="get" data-form="todo">
               <div class="input-container">
@@ -88,6 +88,10 @@
                 <button data-submit-button="submit-todo">Submit</button>
               </div>
             </form>
+          </dialog>
+          <dialog id="todo-details-modal"data-modal="todo-details">
+            <h2>Details</h2>
+            <p data-paragraph="todo-details"></p>
           </dialog>
           <dialog id="edit-todo-modal" data-modal="edit-todo">
             <h2>Edit Todo</h2>
