@@ -69,7 +69,6 @@ export const editlocalStorage = function () {
     return targetTodo;
   };
 
-  // Second Draft:
   const editTodoInLocalStorage = (editedTodo) => {
     const localTodoArrStr = localStorage.getItem("todoArr");
     const parsedLocalTodoArr = JSON.parse(localTodoArrStr);
@@ -85,26 +84,34 @@ export const editlocalStorage = function () {
     localStorage.setItem("todoArr", stringifiedTodoArr);
   };
 
-  const removeObjFromLocalStorage = (key) => {
-    localStorage.removeItem(key);
+  const removeTodoFromStorage = (currentTodo) => {
+    const todoArrStr = localStorage.getItem("todoArr");
+    const parsedTodoArr = JSON.parse(todoArrStr);
+
+    console.log(parsedTodoArr);
+
+    const targetTodo = parsedTodoArr.findIndex(
+      (todo) => todo.id === currentTodo.id
+    );
+
+    parsedTodoArr.splice(targetTodo, 1);
+
+    const updatedTodoArrStr = JSON.stringify(parsedTodoArr);
+    localStorage.setItem("todoArr", updatedTodoArrStr);
   };
 
-  // Remove From Local Storage
-  const removeFromLocalStorage = (objToRemove) => {
-    console.log(objToRemove);
-    const storageItems = { ...localStorage };
-    for (const [key, value] of Object.entries(storageItems)) {
-      if (
-        (key.startsWith("proj-") && key.endsWith(objToRemove.id)) ||
-        (key.startsWith("todo-") && value.includes(objToRemove.id))
-      ) {
-        removeObjFromLocalStorage(key);
-      }
-    }
-  };
+  const removeProjFromStorage = (proj) => {
+    const projArrStr = localStorage.getItem("projArr");
+    const parsedProjArr = JSON.parse(projArrStr);
 
-  const clearLocalStorage = () => {
-    console.log("RZA");
+    const targetProj = parsedProjArr.findIndex(
+      (project) => project.id === proj.id
+    );
+
+    parsedProjArr.splice(targetProj, 1);
+
+    const updatedProjArrStr = JSON.stringify(parsedProjArr);
+    localStorage.setItem("projArr", updatedProjArrStr);
   };
 
   return {
@@ -112,7 +119,8 @@ export const editlocalStorage = function () {
     getLocalStorageProjs,
     getLocalStorageTodos,
     editTodoInLocalStorage,
-    removeFromLocalStorage,
+    removeTodoFromStorage,
+    removeProjFromStorage,
     clearLocalStorage,
   };
 };
