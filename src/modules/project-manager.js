@@ -6,31 +6,38 @@ const editLocalStorage = editlocalStorage();
 export const projManager = function () {
   const projArr = [];
 
-  const reconstructProjArr = (localStorageStrs) => {
-    for (const [key, value] of Object.entries(localStorageStrs)) {
-      if (key.startsWith("proj-")) {
-        const parsedProj = JSON.parse(value);
-        projArr.push(parsedProj);
-      }
-    }
+  const reconstructProjArr = (parsedProjArr) => {
+    parsedProjArr.forEach((project) => {
+      projArr.push(project);
+    });
   };
 
-  const reconstructTodoArrs = (localStorageStrs) => {
-    for (const [key, value] of Object.entries(localStorageStrs)) {
-      if (key.startsWith("todo-")) {
-        const parsedTodo = JSON.parse(value);
-        const foundProj = projArr.find(
-          (project) => project.id === parsedTodo.projId
-        );
-        foundProj.todoArr.push(parsedTodo);
-      }
-    }
+  const reconstructTodoArrs = (parsedTodoArr) => {
+    parsedTodoArr.forEach((todo) => {
+      projArr.forEach((project) => {
+        if (todo.projId === project.id) {
+          project.todoArr.push(todo);
+        }
+      });
+    });
   };
 
-  const routeLocalStorageData = () => {
-    const localStorageStrs = editLocalStorage.getLocalStorageObjs();
-    reconstructProjArr(localStorageStrs);
-    reconstructTodoArrs(localStorageStrs);
+  // Projects:
+  const routeLocalStorageProjs = () => {
+    const parsedProjArr = editLocalStorage.getLocalStorageProjs();
+
+    if (parsedProjArr !== undefined) {
+      reconstructProjArr(parsedProjArr);
+    } else return;
+  };
+
+  // Todos:
+  const routeLocalStorageTodos = () => {
+    const parsedTodoArr = editLocalStorage.getLocalStorageTodos();
+
+    if (parsedTodoArr !== undefined) {
+      reconstructTodoArrs(parsedTodoArr);
+    } else return;
   };
 
   // Creates project and adds it to projArr
@@ -108,10 +115,11 @@ export const projManager = function () {
     console.log(todo);
   };
 
-  routeLocalStorageData();
+  // routeLocalStorageData();
+  routeLocalStorageProjs();
+  routeLocalStorageTodos();
   if (projArr.length === 0) {
     addDefaultProjToArray();
-    console.log(projArr);
   }
   return {
     projArr,
