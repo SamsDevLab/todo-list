@@ -24,9 +24,8 @@ export const dom = () => {
 
   const currentDateOrTime = () => {
     const newDate = new Date();
-    // console.log(newDate);
+
     const currentDateAndTime = newDate.toLocaleString();
-    console.log(currentDateAndTime);
 
     const getCurrentDate = () => {
       const formattedIsoDate = formatISO(currentDateAndTime);
@@ -96,7 +95,7 @@ export const dom = () => {
 
   const submitTodo = () => {
     const todoObj = queryTodoInputs();
-
+    console.log(todoObj);
     const newTodo = projectManager.addTodo(todoObj);
 
     return newTodo;
@@ -160,7 +159,6 @@ export const dom = () => {
   newTodoForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const newTodo = submitTodo();
-    console.log(newTodo);
     const currentProjObj = getProjObj(newTodo);
     const filterObj = checkMenuHeaderForDataAttr();
     if (filterObj !== undefined) {
@@ -359,14 +357,9 @@ export const dom = () => {
 
   const formatTodoDate = (todo) => {
     const currentTime = getCurrentDateOrTime.getCurrentTime();
-    console.log(currentTime);
     const timestampedTodo = todo.dueDate + currentTime;
-    console.log(timestampedTodo);
-
-    // Start here tomorrow - really close to figuring out the formatting. Get this to where it prints correctly and can be called by filters, then create README and ship this project 😎
 
     const formattedDate = format(timestampedTodo, "PPP");
-    console.log(formattedDate);
 
     return formattedDate;
   };
@@ -567,6 +560,10 @@ export const dom = () => {
 
   const createAndAppendTodos = (todoArr) => {
     const todoDisplay = clearTodoDisplay();
+
+    todoArr.sort(
+      (a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+    );
 
     todoArr.forEach((todo) => {
       const todoDiv = createTodoDiv(todo);
@@ -955,9 +952,6 @@ export const dom = () => {
   const gatherTodoArr = (menuItem, dataAttr) => {
     let todoArr;
 
-    console.log(menuItem.dataset.filter);
-    console.log(dataAttr);
-
     if (dataAttr === "filter" && menuItem.dataset.filter === "all") {
       todoArr = filterAllTodos();
     } else if (dataAttr === "filter" && menuItem.dataset.filter === "today") {
@@ -993,7 +987,6 @@ export const dom = () => {
   const updateTodoList = (menuItem, dataAttr) => {
     const menuHeader = document.querySelector("[data-display = 'menu-header']");
     const currentMenuHeader = menuHeader.innerText;
-    console.log(dataAttr);
 
     if (dataAttr === "filter" && menuItem.innerText === currentMenuHeader) {
       gatherTodoArr(menuItem, dataAttr);
@@ -1012,6 +1005,7 @@ export const dom = () => {
   /*****************************************************
   Project Section: Dynamically Construct Add/New Project
   ******************************************************/
+
   const queryProjSection = () => {
     const projSection = document.querySelector("[data-section = 'projects']");
     return projSection;
@@ -1154,6 +1148,40 @@ export const dom = () => {
   addInputListenersToEditTodo();
   addFunctionalityToTodoEditCancelBtn();
   addFunctionalityToTodoEditForm();
+
+  const addDemoProjToDisplay = () => {
+    const newProj = projectManager.addProject(["Leisure"]);
+    addProjToProjectsSection(newProj);
+  };
+
+  const addDemoTodoToDisplay = () => {
+    const currentDate = getCurrentDateOrTime.getCurrentDate();
+
+    const vacation = {
+      title: "Trip to Grand Canyon",
+      dueDate: `${currentDate}`,
+      priority: "low",
+      details:
+        "Family road trip down Route 66. Stop at Grand Canyon on the way.",
+      project: "Leisure",
+    };
+
+    const newTodo = projectManager.addTodo(vacation);
+
+    const currentProjObj = getProjObj(newTodo);
+    const filterObj = checkMenuHeaderForDataAttr();
+    if (filterObj !== undefined) {
+      passFilterToUpdateTodoList(filterObj);
+    } else {
+      updateTodoList(currentProjObj);
+    }
+  };
+
+  const projArr = getProjArr();
+  if (projArr.length <= 1) {
+    addDemoProjToDisplay();
+    addDemoTodoToDisplay();
+  }
 };
 
 dom();
@@ -1162,12 +1190,7 @@ dom();
 Punchlist:
 
 Currently Working On:
-
-- Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before.
-
-Pending: 
-- Arrange todos by date - not alphabetically revisit .sort()
-- Add default project (other than (none)) and todo for when page loads
+N/A
 
 Features for a later date: 
 - Light/Dark Mode - look into switching modes
@@ -1211,5 +1234,8 @@ Completed:
 ✅ Work on refreshing the todo immediately when it's edited. Right now, the original todo persists until you click away and click back (THIS ONLY APPLIES WHEN FILTERS ARE SHOWING. If the project is showing in the main container, the bug disappears)
 ✅ Truncate "Details" if the section goes passes a certain number of chars
 ✅ localStorage projects are now showing in Dropdown menu but they aren't in a specific order. Maybe look into making them alphabetical if you have time
+✅ Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before.
+✅ Arrange todos by date - not alphabetically revisit .sort()
+✅ Add default project (other than (none)) and todo for when page loads
 
 */
