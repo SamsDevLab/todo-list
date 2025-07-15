@@ -100,6 +100,16 @@ export const editlocalStorage = function () {
     localStorage.setItem("todoArr", updatedTodoArrStr);
   };
 
+  const removeProjsTodosFromStorage = (proj) => {
+    const todoArrStr = localStorage.getItem("todoArr");
+    const parsedTodoArr = JSON.parse(todoArrStr);
+
+    const newArr = parsedTodoArr.filter((todo) => todo.projId !== proj.id);
+    console.log(newArr);
+    const newArrStr = JSON.stringify(newArr);
+    localStorage.setItem("todoArr", newArrStr);
+  };
+
   const removeProjFromStorage = (proj) => {
     const projArrStr = localStorage.getItem("projArr");
     const parsedProjArr = JSON.parse(projArrStr);
@@ -109,6 +119,8 @@ export const editlocalStorage = function () {
     );
 
     parsedProjArr.splice(targetProj, 1);
+
+    removeProjsTodosFromStorage(proj);
 
     const updatedProjArrStr = JSON.stringify(parsedProjArr);
     localStorage.setItem("projArr", updatedProjArrStr);
@@ -121,6 +133,5 @@ export const editlocalStorage = function () {
     editTodoInLocalStorage,
     removeTodoFromStorage,
     removeProjFromStorage,
-    clearLocalStorage,
   };
 };
