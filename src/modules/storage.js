@@ -88,8 +88,6 @@ export const editlocalStorage = function () {
     const todoArrStr = localStorage.getItem("todoArr");
     const parsedTodoArr = JSON.parse(todoArrStr);
 
-    console.log(parsedTodoArr);
-
     const targetTodo = parsedTodoArr.findIndex(
       (todo) => todo.id === currentTodo.id
     );
@@ -101,13 +99,17 @@ export const editlocalStorage = function () {
   };
 
   const removeProjsTodosFromStorage = (proj) => {
+    console.log(proj);
     const todoArrStr = localStorage.getItem("todoArr");
-    const parsedTodoArr = JSON.parse(todoArrStr);
 
-    const newArr = parsedTodoArr.filter((todo) => todo.projId !== proj.id);
-    console.log(newArr);
-    const newArrStr = JSON.stringify(newArr);
-    localStorage.setItem("todoArr", newArrStr);
+    if (todoArrStr !== null) {
+      const parsedTodoArr = JSON.parse(todoArrStr);
+
+      const newArr = parsedTodoArr.filter((todo) => todo.projId !== proj.id);
+
+      const newArrStr = JSON.stringify(newArr);
+      localStorage.setItem("todoArr", newArrStr);
+    } else return;
   };
 
   const removeProjFromStorage = (proj) => {
