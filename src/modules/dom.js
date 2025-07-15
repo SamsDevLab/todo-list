@@ -7,9 +7,6 @@ const editLocalStorage = editlocalStorage();
 const projectManager = projManager();
 
 export const dom = () => {
-  // Grab Main Container
-  const mainContainer = document.querySelector("#main-container");
-
   const getProjArr = () => {
     const projArr = projectManager.projArr;
     return projArr;
@@ -95,7 +92,6 @@ export const dom = () => {
 
   const submitTodo = () => {
     const todoObj = queryTodoInputs();
-    console.log(todoObj);
     const newTodo = projectManager.addTodo(todoObj);
 
     return newTodo;
@@ -308,7 +304,7 @@ export const dom = () => {
 
   const markTodoComplete = (todo) => {
     const todoDiv = document.querySelector(`[data-todo-div-id = '${todo.id}']`);
-    console.log(todoDiv);
+
     if (!todoDiv.classList.contains("strikethrough")) {
       todoDiv.classList.add("strikethrough");
     } else if (todoDiv.classList.contains("strikethrough")) {
@@ -696,7 +692,6 @@ export const dom = () => {
   const storeCurrentTodoIds = storeTodoIds();
 
   const extractUpdatedTodoEditValues = (updatedTodoEditForm) => {
-    console.log(updatedTodoEditForm);
     const todoEditValuesObj = {
       title: updatedTodoEditForm.elements[0].value,
       dueDate: updatedTodoEditForm.elements[1].value,
@@ -1187,55 +1182,7 @@ export const dom = () => {
 dom();
 
 /* 
-Punchlist:
-
-Currently Working On:
-N/A
-
 Features for a later date: 
 - Light/Dark Mode - look into switching modes
 - Work on an edit option for Projects - being able to edit the name may be a good thing
-
-Completed:
-✅ Todos 'delete' button: Add functionality
-✅ Todos Edit 'save' button: Add functionality
-✅ Todo Edit Button - Can't switch projects. Program functionality.
-✅ Project choice persistence should appear when clicking on "edit" button
-✅ Todo should completely shift to different project's todoArr upon choosing different project and hitting save
-✅ Project should update immediately when adding a todo
-✅ Refactor todoEditModal - there should only be one todoEditModal which edits all todos. Right now each todo has its own modal! Fix this before tackling the bug right below
- ✅ List of projects in todo edit dropdown should update automatically when a new project is added - As of now, this doesn't happen and you have to click away and click back to see the project populate in the todo edit's dropdown
-✅ queryTodoForm/resetTodoForm: Revisit and debug
-✅ If you add a bunch of todos to a project and migrate one to a different project, it takes that one you intended plus all of the other todos that come after it in the array (this may be the cause of incrememnting rather than decrementing in a for loop - not sure)
-✅ The migrated todo will then alter ALL of the other todos in the new project todo list to match its name. So you'll have multiple todos with a matching name
-✅ Need to refactor the project-header data attribute in template.html to menu-header. This is more accurate now that the filter options also appear in that header. 
-✅ If you're in your current project and add a new todo to a DIFFERENT project, rather than your current one, the new todo will also add to your current project until you click away - only then does it disappear
-✅ Need to figure out how to filter all todos initially and display it in the todo display section. Will need to filter by date, probably, and show All Todos in the header.
-✅ Revisit the second draft of updateTodoList to get that working
-✅ datefns: Look at datfns and how you may be able to employ them (these functions should be handy for filtering by 'Today', 'Upcoming' and 'Anytime');
-✅ 'none' default arr:  This will feature all of the todos that don't live in a specific, created project - place them in todos section in the todos pane.
-✅ Debug Filters in general - they aren't updating (refreshing the display in real time.
-✅ Need to handle todos in real time when a filter is being displayed - right now, they only add to project in real time if the project is being displayed
-✅ Projects 'delete' button: Add functionality and label to the button
-✅ Need a function to also clear the todo menu as the old project is still showing up there
-✅ Need to set up a default view (Today) for when a project that is being displayed is deleted and for a default when the page loads
-✅ Format dates in todo display. You want them to remain in YYYY-MM-DD while the data is transferred on the "backend". But this is not good for the UI. Format dates when they hit the UI
-✅ Date is printing incorrectly in Today filter - it's saying that today's date is June 26th (it's actually June 27) - revisit on Monday (refer to createDueDateElement)
-✅ Revisit filters now that date has been refactored
-✅ Enable functionality in todo checkboxes (strikethrough divs)
-✅ Revisit adding dates (still has a bug where the current date and the next day can both be added to "Today" filter)
-✅ localStorage: Look into it and how you can go about implementing it in your storage.js file.
-✅ Debug (none) project duplication in localStorage
-✅ Work on rendering the Projects/Todos from localStorage
-✅ Work on editing localStorage through the editTodo modal
-✅ Work on rendering localStorage Projects in the todo dropdown menu. As of now, they aren't showing up
-✅ Revisit removeTodoFromLocalStorage after debugging deleteTodo
-✅ Work on edit localStorage when a project is deleted - needs to take its localStorage todos with it
-✅ Work on refreshing the todo immediately when it's edited. Right now, the original todo persists until you click away and click back (THIS ONLY APPLIES WHEN FILTERS ARE SHOWING. If the project is showing in the main container, the bug disappears)
-✅ Truncate "Details" if the section goes passes a certain number of chars
-✅ localStorage projects are now showing in Dropdown menu but they aren't in a specific order. Maybe look into making them alphabetical if you have time
-✅ Debug Date issue Still having issues with Dates... Adding a todo from today's date and it reverts to the day before.
-✅ Arrange todos by date - not alphabetically revisit .sort()
-✅ Add default project (other than (none)) and todo for when page loads
-
 */

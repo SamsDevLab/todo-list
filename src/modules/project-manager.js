@@ -112,7 +112,6 @@ export const projManager = function () {
   // Change todo's priority
   const updatePriority = (todo, newPriority) => {
     todo.priority = newPriority;
-    console.log(todo);
   };
 
   // routeLocalStorageData();
