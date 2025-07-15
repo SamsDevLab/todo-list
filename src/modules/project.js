@@ -1,7 +1,7 @@
-export const createProject = (name, emoji) => {
+export const createProject = (name) => {
   const value = name;
   const todoArr = [];
   const id = crypto.randomUUID();
 
-  return { name, emoji, todoArr, value, id }; //name
+  return { name, todoArr, value, id }; //name
 };
