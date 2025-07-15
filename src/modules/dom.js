@@ -159,7 +159,6 @@ export const dom = () => {
     const newTodo = submitTodo();
     const currentProjObj = getProjObj(newTodo);
     const filterObj = checkMenuHeaderForDataAttr();
-    console.log(filterObj);
     if (filterObj !== undefined) {
       passFilterToUpdateTodoList(filterObj);
     } else {
@@ -499,9 +498,7 @@ export const dom = () => {
       event.preventDefault();
       const todoEditModal = queryTodoEditModal();
       const todoEditForm = queryTodoEditForm();
-      console.log(todoEditForm);
       const todoEditProjSelect = queryTodoEditProjSelect();
-      console.log(todoEditProjSelect);
       populateTodoEditProjSelect(todoEditProjSelect);
       populateTodoEditFormWithValues(todoEditForm, todo);
       storeCurrentTodoIds.setCurrentTodoId(todo.id);
@@ -743,13 +740,6 @@ export const dom = () => {
     return newTodo;
   };
 
-  const updateLocalStorage = (editedTodo) => {
-    const parsedTodo = editLocalStorage.editTodoInLocalStorage(editedTodo);
-    const newParsedTodo = updateTodoValues(parsedTodo, editedTodo);
-
-    editLocalStorage.saveToLocalStorage(newParsedTodo);
-  };
-
   const removeFromOldProj = (todo, project) => {
     const todoId = todo.id;
     const indexToRemove = project.todoArr.findIndex(
@@ -791,8 +781,6 @@ export const dom = () => {
       const todoEditValuesObj =
         extractUpdatedTodoEditValues(updatedTodoEditForm);
 
-      console.log(todoEditValuesObj);
-
       const editedTodo = updateEditedTodo(
         todoEditValuesObj,
         currentTodoId,
@@ -809,7 +797,7 @@ export const dom = () => {
         updateTodoList(currentProj);
       }
 
-      updateLocalStorage(editedTodo);
+      editLocalStorage.editTodoInLocalStorage(editedTodo);
 
       todoEditModal.close();
     });
