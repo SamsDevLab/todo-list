@@ -24,6 +24,7 @@
 
 - Dark/Light mode toggle option
 - Project renaming capabilities
+- Mobile/Tablet Optimization
 
 ## 🗣️ Description
 
