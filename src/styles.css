@@ -188,6 +188,7 @@ dialog:open {
 #todo-details-modal {
   z-index: 1;
   width: 25%;
+  top: 20%;
 }
 
 #todo-details-modal p {
